@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('get-logout',[UserController::class,'destroy'])->name('get-logout');
     Route::get('user-profile',[CustomerController::class,'index'])->name('user-profile');
+    Route::post('filter-user',[CustomerController::class,'filterdata'])->name('filter-user');
 });
 
 require __DIR__.'/auth.php';

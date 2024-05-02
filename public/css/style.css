@@ -87,7 +87,7 @@
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 .gradient_one {
@@ -12785,7 +12785,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 /*
@@ -12986,7 +12986,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 @media only screen and (min-width: 48rem) {
@@ -13213,7 +13213,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 @media (min-width: 64rem) {
@@ -18699,7 +18699,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="transparent"] {
@@ -18826,7 +18826,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="dark"] {
@@ -20634,7 +20634,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 /* input[type="checkbox"] {
@@ -21111,7 +21111,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 /*
@@ -21360,7 +21360,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 .clipboard-btn {
@@ -21405,7 +21405,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 .twitter-typeahead {
@@ -21458,7 +21458,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 .noUi-target {
@@ -29549,7 +29549,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title: MuseoModerno, cursive;
+  --font-family-title:  Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="dark"] {

@@ -36,19 +36,24 @@
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <input type="date" id="startDate" class="form-control input-primary-active shadow-sm">
-                        <input type="date" id="endDate" class="form-control input-primary-active shadow-sm">
-                        <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                            style=" right:135px;
-                bottom: 2px;">Apply</button>
-                        <button class="btn btn-primary position-absolute " onclick="clearFilter()"
-                            style=" right:46px;
-                bottom: 2px;"><i class="fas fa-sync"></i></button>
+                        <form action="{{ route('filter-user') }}" method="post">
+                            @csrf
+                            <div>
+                                <input type="date" name="startDate" id="startDate"
+                                    class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm" value="{{ $start ?? '' }}">
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" id="endDate"
+                                    class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm" value="{{ $end ?? '' }}">
+                            </div>
+                            <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
+                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                            <a href="{{ route('user-profile') }}" class="btn btn-primary position-absolute "
+                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                        </form>
                     </div>
-
                 </div>
             </div>
-
             <div class="col-md-5 d-flex justify-content-end">
                 <div class="customer-search mb-sm-0 mb-3">
                     <div class="input-group search-area">
@@ -86,27 +91,28 @@
                     </thead>
                     <tbody>
                         @foreach ($customers as $customer)
-                        <tr data-customer-id="{{$customer->id}}">
-                            <td>{{$loop->iteration}}</td>
-                            <td><img class="rounded-circle" width="35" src="{{asset($customer->photo)}}" alt="No"></td>
-                            <td>{{$customer->cin_no}}</td>
-                            <td class="wspace-no">{{$customer->created_at->format('d/m/y')}}</td>
-                            <td>{{$customer->name}}</td>
-                            <td class="text-ov">+91{{$customer->phone_number}}</td>
-                            <td class="text-ov">{{$customer->email}}</td>
-                            <td class="text-ov">{{$customer->category}}</td>
-                            <td class="text-ov">{{$customer->pincode}}</td>
-                            <td class="text-ov">{{$customer->state}}</td>
-                            <td class="text-ov">{{$customer->city}}</td>
-                            <td class="text-ov">{{$customer->address}}</td>
-                            <td class="text-ov">{{$customer->coordinates}}</td>
-                            <td>
-                                <select name="status" id="status" class="custom-select bg-success">
-                                    <option value="accept" class="text-success">Accept</option>
-                                    <option value="block" class="text-danger">Block</option>
-                                </select>
-                            </td>
-                        </tr>
+                            <tr data-customer-id="{{ $customer->id }}">
+                                <td>{{ $loop->iteration }}</td>
+                                <td><img class="rounded-circle" width="35" src="{{ asset($customer->photo) }}"
+                                        alt="No"></td>
+                                <td>{{ $customer->cin_no }}</td>
+                                <td class="wspace-no">{{ $customer->created_at->format('d/m/y') }}</td>
+                                <td>{{ $customer->name }}</td>
+                                <td class="text-ov">+91{{ $customer->phone_number }}</td>
+                                <td class="text-ov">{{ $customer->email }}</td>
+                                <td class="text-ov">{{ $customer->category }}</td>
+                                <td class="text-ov">{{ $customer->pincode }}</td>
+                                <td class="text-ov">{{ $customer->state }}</td>
+                                <td class="text-ov">{{ $customer->city }}</td>
+                                <td class="text-ov">{{ $customer->address }}</td>
+                                <td class="text-ov">{{ $customer->coordinates }}</td>
+                                <td>
+                                    <select name="status" id="status" class="custom-select bg-success">
+                                        <option value="accept" class="text-success">Accept</option>
+                                        <option value="block" class="text-danger">Block</option>
+                                    </select>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -116,7 +122,7 @@
 @endsection
 @section('script')
     <script>
-        function changestatus(){
+        function changestatus() {
 
         }
     </script>
@@ -161,9 +167,6 @@
         function filterByDate() {
             var startDate = document.getElementById("startDate").value;
             var endDate = document.getElementById("endDate").value;
-            // Your filtering logic here
-            // For example, you can use startDate and endDate to filter content
-            // Replace this with your actual filtering logic
             console.log("Start Date:", startDate);
             console.log("End Date:", endDate);
         }
@@ -181,5 +184,8 @@
             document.getElementById("endDate").value = "";
         }
         document.querySelector('#datePickerContainer button:nth-child(3)').addEventListener('click', clearFilter);
+    </script>
+    <script>
+        let table = new DataTable('#example7');
     </script>
 @endsection
