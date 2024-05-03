@@ -32,8 +32,8 @@ class CustomerController extends Controller
         $photoRelativePath = null;
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photoFileName = uniqid() . '.' . $request->photo->extension();
-            $photoPath = $request->file('photo')->move(public_path('images'), $photoFileName);
-            $photoRelativePath = 'images/' . $photoFileName;
+            $photoPath = $request->file('photo')->move(public_path('user/profile_images'), $photoFileName);
+            $photoRelativePath = 'user/profile_images/' . $photoFileName;
         }
         $cin_no = 'CIN' . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $user = Customer::create([
@@ -82,8 +82,8 @@ class CustomerController extends Controller
         // Update photo if provided
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photoFileName = uniqid() . '.' . $request->photo->extension();
-            $photoPath = $request->file('photo')->move(public_path('images'), $photoFileName);
-            $photoRelativePath = 'images/' . $photoFileName;
+            $photoPath = $request->file('photo')->move(public_path('user/profile_images'), $photoFileName);
+            $photoRelativePath = 'user/profile_images/' . $photoFileName;
             $customer->photo = $photoRelativePath;
         }
         $customer->save();

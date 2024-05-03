@@ -33,8 +33,7 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <div class="text-center mb-3">
-                                        <a href="/"><img src="{{ asset('images/logo-full.png') }}"
-                                                alt=""></a>
+                                        <a href="/"><img src="{{ asset('images/Final_UrjaOne_Logo.png') }}" style="height:150px !important;" alt=""></a>
                                     </div>
                                     <h4 class="text-center mb-4">Sign in your account</h4>
                                     <x-auth-session-status class="mb-4" :status="session('status')" />

@@ -1,7 +1,7 @@
 <div class="nav-header">
     <a href="index.php" class="brand-logo">
         <!-- <img class="logo-abbr" src="images/logo-full.png"> -->
-        <img class="brand-title" src="{{asset('images/logo-full.png')}}">
+        <img class="brand-title" src="{{asset('images/Final_UrjaOne_Logo.png')}}">
     </a>
     <div class="nav-control">
         <div class="hamburger">

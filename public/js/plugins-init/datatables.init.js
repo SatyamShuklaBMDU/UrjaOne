@@ -145,18 +145,18 @@ let dataSet = [
 		
 	}); 
 	var table = $('#example7').DataTable({
-		searching: false,
+		searching: true,
 		paging:true,
-		select: false,
+		select: true,
 		info: true,         
-		lengthChange:false ,
+		lengthChange:true ,
 		language: {
+            "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
 			paginate: {
 			  previous: '<i class="fas fa-angle-double-left"></i>',
 			  next: '<i class="fas fa-angle-double-right"></i>' 
 			}
 		  }
-		
 	}); 
 	
 	// dataTable6

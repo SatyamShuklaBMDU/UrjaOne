@@ -10,7 +10,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{route('user-profile')}}">User Profile</a></li>
-                    <li><a href="vendor-profile.php">Vendor Profile</a></li>
+                    <li><a href="{{route('vendor-profile')}}">Vendor Profile</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">

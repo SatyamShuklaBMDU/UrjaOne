@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\VendorController;
+use App\Http\Controllers\VendorConrtoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +24,10 @@ Route::post('/users',[CustomerController::class,'register']);
 Route::post('login',[CustomerController::class,'login']);
 Route::middleware('auth:sanctum')->post('/logout', [CustomerController::class,'logout']);
 Route::post('user-update',[CustomerController::class,'update'])->middleware('auth:sanctum');
+
+// Vendor API
+Route::post('vendor-register',[VendorController::class,'register']);
+Route::post('vendor-login',[VendorController::class,'login']);
+Route::post('vendor-update',[VendorController::class,'update'])->middleware('auth:sanctum');
+Route::post('upload-kyc-images',[VendorController::class,'uploadImages'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->post('/vendor-logout', [VendorController::class,'logout']);

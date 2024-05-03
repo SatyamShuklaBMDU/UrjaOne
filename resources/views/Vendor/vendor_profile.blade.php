@@ -50,7 +50,7 @@
 @endsection
 @section('content')
     <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">User Profile</h2>
+        <h2 class="mb-3 me-auto">Vendor Profile</h2>
 
     </div>
 
@@ -59,7 +59,7 @@
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-user') }}" method="post">
+                        <form action="{{ route('filter-vendor') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -71,14 +71,14 @@
                                     class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
                                     value="{{ $end ?? '' }}">
                             </div>
-                            <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('user-profile') }}" class="btn btn-primary position-absolute "
-                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                            <a href="{{ route('vendor-profile') }}" class="btn btn-primary position-absolute " style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
+
                 </div>
             </div>
+
             {{-- <div class="col-md-5 d-flex justify-content-end">
                 <div class="customer-search mb-sm-0 mb-3">
                     <div class="input-group search-area">
@@ -88,24 +88,27 @@
                     </div>
                 </div>
             </div> --}}
+
         </div>
     </div>
     <div class="row">
         <div class="col-xl-12 card">
             <div class="table-responsive">
-                <table class="table display mb-2 dataTablesCard order-table card-table text-black" id="example7">
+                <table class="table display mb-4 dataTablesCard order-table card-table text-black"
+                    id="example7">
                     <thead>
                         <tr>
                             <th>S No.</th>
                             <th>Prof Img</th>
                             <th>CIN No</th>
                             <th>Join Date</th>
+                            <th>Company</th>
                             <th>Name</th>
                             <th>Phone-Number</th>
                             <th>Email</th>
-                            <th>Category</th>
-                            {{-- <th>Pin Code</th> --}}
-                            {{-- <th>State</th>
+                            {{-- <th>Category</th>
+                            <th>Pin Code</th>
+                            <th>State</th>
                             <th>City</th>
                             <th>Address</th>
                             <th>Coordinates</th> --}}
@@ -113,36 +116,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($customers as $customer)
-                            <tr data-customer-id="{{ $customer->id }}">
-                                <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                <td style="text-align: center;"><a href="{{ asset($customer->photo) }}" target="_blank"
-                                        rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                            src="{{ asset($customer->photo) }}" alt="No"></a></td>
-                                <td style="text-align: center;">{{ $customer->cin_no }}</td>
-                                <td style="text-align: center;" class="wspace-no">
-                                    {{ $customer->created_at->format('d/m/y') }}</td>
-                                <td style="text-align: center;">{{ $customer->name }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->phone_number }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->email }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->category }}</td>
-                                {{-- <td style="text-align: center;" class="text-ov">{{ $customer->pincode }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->state }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->city }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->address }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
-                                <td>
-                                    <div class="d-flex">
-                                        <i id="eyeViewMore"
-                                            style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
-                                            class="fas fa-eye"></i>
-                                        <input type="checkbox" id="statusSwitch"
-                                            {{ $customer->status === 'active' ? 'checked' : '' }}
-                                            data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
-                                            data-onstyle="success" data-offstyle="danger">
-                                    </div>
-                                </td>
-                            </tr>
+                        @foreach ($vendors as $vendor)
+                        <tr data-vendor-id={{$vendor->id}}>
+                            <td style="text-align: center;">{{$loop->iteration}}</td>
+                            <td style="text-align: center;"><a href="{{$vendor->photo}}" target="_blank" rel="noopener noreferrer"><img class="rounded-circle" width="35" src="{{$vendor->photo}}" alt></a></td>
+                            <td style="text-align: center;">{{$vendor->cin_no}}</td>
+                            <td style="text-align: center;" class="wspace-no">{{$vendor->created_at->format('d/m/y')}}</td>
+                            <td style="text-align: center;">{{$vendor->company_name}}</td>
+                            <td style="text-align: center;">{{$vendor->name}}</td>
+                            <td style="text-align: center;" class="text-ov">{{$vendor->phone_number}}</td>
+                            <td style="text-align: center;" class="text-ov">{{$vendor->email}}</td>
+                            {{-- <td class="text-ov">{{$vendor->category}}</td>
+                            <td class="text-ov">{{$vendor->pincode}}</td>
+                            <td class="text-ov">{{$vendor->city}}</td>
+                            <td class="text-ov">{{$vendor->state}}</td>
+                            <td class="text-ov">{{$vendor->address}}</td>
+                            <td class="text-ov">{{$vendor->coordinates}}</td> --}}
+                            <td>
+                                <div class="d-flex">
+                                    <i id="eyeViewMore" style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;" class="fas fa-eye"></i>
+                                    <a style="padding-right: 10px;margin-top:7px;cursor: pointer;" href="{{route('image-verification',encrypt($vendor->id))}}">KYC</a>
+                                    <input type="checkbox" id="statusSwitch"
+                                        {{ $vendor->status === 'active' ? 'checked' : '' }}
+                                        data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
+                                        data-onstyle="success" data-offstyle="danger">
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -154,7 +154,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                    <h5 class="modal-title" id="customerDetailsModalLabel">Vendor Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -178,8 +178,8 @@
         $(document).ready(function() {
             $('#eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
-                var customerId = currentRow.data('customer-id');
-                var baseUrl = "{{ route('get-customer', ['id' => '__id__']) }}";
+                var customerId = currentRow.data('vendor-id');
+                var baseUrl = "{{ route('get-vendor', ['id' => '__id__']) }}";
                 var customerDetailsUrl = baseUrl.replace('__id__', customerId);
                 $.ajax({
                     url: customerDetailsUrl,
@@ -211,14 +211,13 @@
             var isChecked = $(this).prop('checked');
             var status = isChecked ? 'active' : 'inactive';
             var currentRow = $(this).closest('tr');
-            var customerId = currentRow.data('customer-id');
-            // AJAX request to update status
+            var vendorId = currentRow.data('vendor-id');
             $.ajax({
-                url: '{{ route('update-status') }}',
+                url: '{{ route('update-status-vendor') }}',
                 method: 'POST',
                 data: {
                     status: status,
-                    customer: customerId,
+                    vendor: vendorId,
                 },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'

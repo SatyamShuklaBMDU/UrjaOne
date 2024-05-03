@@ -26,4 +26,23 @@ class CustomerController extends Controller
         // dd($filteredCustomers);
         return view('Users.user_profile', ['customers' => $filteredCustomers, 'start'=>$startDate, 'end'=>$endDate]);
     }
+
+    public function alldata($id){
+        // dd($id);
+        $customer = Customer::find($id);
+        // dd($customer);
+        return response()->json($customer);
+    }
+    public function statuschange(Request $request)
+    {
+        $status = $request->input('status');
+        try {
+            $customer = Customer::findOrFail($request->customer);
+            $customer->status = $status;
+            $customer->save();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
