@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorConrtoller;
+use Faker\Guesser\Name;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +42,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-status-vendor',[VendorConrtoller::class,'statuschange'])->name('update-status-vendor');
     Route::post('filter-vendor',[VendorConrtoller::class,'filterdata'])->name('filter-vendor');
     Route::get('image-verification/{id}',[VendorConrtoller::class,'imageVerification'])->name('image-verification');
-});
+    Route::post('image-remark',[VendorConrtoller::class,'ImageRemark'])->name('image-remark');
 
+    // Faq Route
+    Route::get('faq-index',[FaqController::class,'index'])->name('faq-index');
+    Route::post('faq-store',[FaqController::class,'store'])->name('faqs-store');
+    Route::get('/faq/edit-detail/{id}', [FaqController::class,'edit'])->name('faq-details');
+    Route::post('/faq/update-status', [FaqController::class,'updateStatus'])->name('update-faq-status');
+    Route::post('/faq/update-details', [FaqController::class,'update'])->name('update-faq');
+    Route::delete('/faq/delete/{id}', [FaqController::class,'delete'])->name('faq-delete');
+    Route::post('filter-faq',[FaqController::class,'filterdata'])->name('filter-faq');
+});
+Route::get('mi',function(){
+    Artisan::call('migrate --path=database\migrations\2024_05_03_130527_create_vendor_related_images_table.php');
+    Artisan::call('migrate --path=database\migrations\2024_05_03_111914_create_vendors_table.php');
+});
 require __DIR__.'/auth.php';

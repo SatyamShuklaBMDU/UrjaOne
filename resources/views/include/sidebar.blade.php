@@ -43,7 +43,7 @@
                 </a>
             </li>
             <!-- next start -->
-            <li><a class="ai-icon" href="faq.php" aria-expanded="false">
+            <li><a class="ai-icon" href="{{route('faq-index')}}" aria-expanded="false">
                     <i class="fa-solid fa-circle-question fa-lg" style="color: #969ba0;"></i>
                     <span class="nav-text">FAQs</span>
                 </a>

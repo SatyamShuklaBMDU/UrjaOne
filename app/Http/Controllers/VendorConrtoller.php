@@ -11,9 +11,10 @@ class VendorConrtoller extends Controller
     public function index()
     {
         $vendors = Vendor::all();
-        return view('Vendor.vendor_profile',compact('vendors'));
+        return view('Vendor.vendor_profile', compact('vendors'));
     }
-    public function alldata($id){
+    public function alldata($id)
+    {
         $vendor = Vendor::find($id);
         return response()->json($vendor);
     }
@@ -38,11 +39,25 @@ class VendorConrtoller extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $filteredCustomers = Vendor::whereBetween('created_at', [$startDate, $endDate])->get();
-        return view('Vendor.vendor_profile', ['vendors' => $filteredCustomers, 'start'=>$startDate, 'end'=>$endDate]);
+        return view('Vendor.vendor_profile', ['vendors' => $filteredCustomers, 'start' => $startDate, 'end' => $endDate]);
     }
-    public function imageVerification($id){
+    public function imageVerification($id)
+    {
         $Did = decrypt($id);
-        $vendors = VendorRelatedImage::where('vendor_id',$Did)->get();
-        return view('Vendor.image_verification',compact('vendors'));
+        $vendors = VendorRelatedImage::where('vendor_id', $Did)->get();
+        return view('Vendor.image_verification', compact('vendors'));
+    }
+    public function ImageRemark(Request $request)
+    {
+        $vendor = VendorRelatedImage::find($request->imageId);
+        if (!$vendor) {
+            return response()->json(['error' => 'Vendor not found'], 404);
+        }
+        // dd($request->all());
+        $vendor->status = $request->status;
+        $vendor->remark = $request->remark;
+        $vendor->save();
+        return response()->json(['message' => 'Data updated successfully!']);
+
     }
 }

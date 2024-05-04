@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('number')->nullable()->unique();
             $table->string('image')->nullable();
-            $table->boolean('status')->default(false);
+            $table->tinyInteger('status')->default(0);
             $table->string('remark')->nullable();
             $table->timestamps();
         });

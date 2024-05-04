@@ -15,7 +15,6 @@ class CustomerController extends Controller
     }
     public function filterdata(Request $request)
     {
-        // Define validation rules
         $request->validate([
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
@@ -23,14 +22,11 @@ class CustomerController extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $filteredCustomers = Customer::whereBetween('created_at', [$startDate, $endDate])->get();
-        // dd($filteredCustomers);
         return view('Users.user_profile', ['customers' => $filteredCustomers, 'start'=>$startDate, 'end'=>$endDate]);
     }
 
     public function alldata($id){
-        // dd($id);
         $customer = Customer::find($id);
-        // dd($customer);
         return response()->json($customer);
     }
     public function statuschange(Request $request)

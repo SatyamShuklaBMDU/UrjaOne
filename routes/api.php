@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\faqController;
 use App\Http\Controllers\API\VendorController;
 use App\Http\Controllers\VendorConrtoller;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ Route::post('login',[CustomerController::class,'login']);
 Route::middleware('auth:sanctum')->post('/logout', [CustomerController::class,'logout']);
 Route::post('user-update',[CustomerController::class,'update'])->middleware('auth:sanctum');
 
+// FAQ Api 
+Route::get('/faqs', [faqController::class,'index']);
 // Vendor API
 Route::post('vendor-register',[VendorController::class,'register']);
 Route::post('vendor-login',[VendorController::class,'login']);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number')->unique();
-            $table->string('whatsapp_number')->nullable();
+            $table->text('landmark')->nullable();
             $table->text('address')->nullable();
             $table->string('pincode')->nullable();
             $table->string('city')->nullable();
@@ -31,7 +31,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

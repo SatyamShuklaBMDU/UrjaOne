@@ -18,7 +18,7 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email',
             'phone_number' => 'required|string|max:255|unique:customers,phone_number',
-            'whatsapp_number' => 'nullable|string|max:255',
+            'landmark' => 'nullable|string|max:255',
             'address' => 'nullable|string',
             'pincode' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
@@ -41,7 +41,6 @@ class CustomerController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'whatsapp_number' => $request->whatsapp_number ?? null,
             'address' => $request->address,
             'pincode' => $request->pincode,
             'city' => $request->city,
@@ -60,12 +59,11 @@ class CustomerController extends Controller
             'name' => 'string|max:255',
             'email' => 'email|unique:customers,email,' . $customer->id,
             'phone_number' => 'string|max:255|unique:customers,phone_number,' . $customer->id,
-            'whatsapp_number' => 'nullable|string|max:255',
+            'landmark' => 'nullable|string',
             'address' => 'nullable|string',
             'pincode' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
-            'password' => 'string|min:8',
             'coordinates' => 'nullable|numeric|between:-9999999.9999999,9999999.9999999',
             'category' => 'nullable|in:residential,commercial,industrial,agricultural',
             'photo' => 'nullable|image|max:2048',
@@ -73,13 +71,10 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-        // Update customer fields
         $customer->fill($request->except(['password', 'photo']));
-        // Update password if provided
         if ($request->has('password')) {
             $customer->password = Hash::make($request->password);
         }
-        // Update photo if provided
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photoFileName = uniqid() . '.' . $request->photo->extension();
             $photoPath = $request->file('photo')->move(public_path('user/profile_images'), $photoFileName);

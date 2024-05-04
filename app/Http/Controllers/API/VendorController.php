@@ -47,9 +47,15 @@ class VendorController extends Controller
 
         if (Auth::guard('vendor')->attempt($credentials)) {
             $user = Auth::guard('vendor')->user();
+
+            // Check if the user status is active
+            if ($user->status !== 'active') {
+                return response()->json(['message' => 'User not active'], 401);
+            }
+
             // Generate API token
             $token = $user->createToken('AuthToken')->plainTextToken;
-            return response()->json(['Message' => 'Login Successfull', 'token' => $token], 200);
+            return response()->json(['Message' => 'Login Successful', 'token' => $token], 200);
         } else {
             return response()->json(['message' => 'Unauthorized'], 401);
         }

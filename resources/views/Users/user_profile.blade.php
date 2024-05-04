@@ -133,10 +133,8 @@
                                 {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
                                 <td>
                                     <div class="d-flex">
-                                        <i id="eyeViewMore"
-                                            style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
-                                            class="fas fa-eye"></i>
-                                        <input type="checkbox" id="statusSwitch"
+                                        <div class="eyeViewMore"><i style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;" class="fas fa-eye"></i></div>
+                                        <input type="checkbox" class="statusSwitch"
                                             {{ $customer->status === 'active' ? 'checked' : '' }}
                                             data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
                                             data-onstyle="success" data-offstyle="danger">
@@ -158,13 +156,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>WhatsApp Number: <span id="customer-whatsapp-number"></span></p>
-                    <p>Address: <span id="customer-address"></span></p>
-                    <p>Pincode: <span id="customer-pincode"></span></p>
-                    <p>City: <span id="customer-city"></span></p>
-                    <p>State: <span id="customer-state"></span></p>
-                    <p>Coordinates: <span id="customer-coordinates"></span></p>
-                    <p>Category: <span id="customer-category"></span></p>
+                    <p><b>Landmark:</b> <span id="customer-whatsapp-number"></span></p>
+                    <p><b>Address:</b> <span id="customer-address"></span></p>
+                    <p><b>Pincode:</b> <span id="customer-pincode"></span></p>
+                    <p><b>City:</b> <span id="customer-city"></span></p>
+                    <p><b>State:</b> <span id="customer-state"></span></p>
+                    <p><b>Coordinates:</b> <span id="customer-coordinates"></span></p>
+                    <p><b>Category:</b> <span id="customer-category"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -176,7 +174,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#eyeViewMore').on('click', function() {
+            $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
                 var customerId = currentRow.data('customer-id');
                 var baseUrl = "{{ route('get-customer', ['id' => '__id__']) }}";
@@ -186,8 +184,7 @@
                     type: 'GET',
                     success: function(data) {
                         console.log(data.whatsapp_number);
-                        $('#customer-whatsapp-number').text(data.whatsapp_number ||
-                            'Not Available');
+                        $('#customer-whatsapp-number').text(data.landmark || 'Not Available');
                         $('#customer-address').text(data.address || 'Not Available');
                         $('#customer-pincode').text(data.pincode || 'Not Available');
                         $('#customer-city').text(data.city || 'Not Available');
@@ -207,7 +204,7 @@
         });
     </script>
     <script>
-        $('#statusSwitch').on('change', function() {
+        $('.statusSwitch').on('change', function() {
             var isChecked = $(this).prop('checked');
             var status = isChecked ? 'active' : 'inactive';
             var currentRow = $(this).closest('tr');
