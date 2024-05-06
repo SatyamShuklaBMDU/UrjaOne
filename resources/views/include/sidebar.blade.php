@@ -31,16 +31,23 @@
                     <li><a href="#">Vendor</a></li>
                 </ul>
             </li>
-            <li><a class="ai-icon" href="feedback.php" aria-expanded="false">
+            <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
                     <i class="flaticon-072-printer"></i>
-                    <span class="nav-text">Feedback</span>
+                    <span class="nav-text">Feedback </span>
                 </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{route('customer-feedback')}}">User</a></li>
+                    <li><a href="{{route('vendor-feedback')}}">Vendor</a></li>
+                </ul>
             </li>
-            <li><a class="ai-icon" href="complaints.php" aria-expanded="false">
-                    <i class="fa-solid fa-clipboard-question fa-lg" style="color: #969ba0;"></i>
-                    <!-- <i class="fa-solid fa-book-bookmark" style="color: #969ba0;"></i> -->
-                    <span class="nav-text">Complaints</span>
+            <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="fa-solid fa-clipboard-question fa-lg"></i>
+                    <span class="nav-text">Complaints </span>
                 </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{route('customer-complaint')}}">User</a></li>
+                    <li><a href="{{route('vendor-complaint')}}">Vendor</a></li>
+                </ul>
             </li>
             <!-- next start -->
             <li><a class="ai-icon" href="{{route('faq-index')}}" aria-expanded="false">

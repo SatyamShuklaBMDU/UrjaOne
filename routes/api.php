@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\API\CustomerComplaintController;
 use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\CustomerFeedbackController;
 use App\Http\Controllers\API\faqController;
+use App\Http\Controllers\API\VendorComplaintController;
 use App\Http\Controllers\API\VendorController;
+use App\Http\Controllers\API\VendorFeedbackController;
 use App\Http\Controllers\VendorConrtoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +30,8 @@ Route::post('/users',[CustomerController::class,'register']);
 Route::post('login',[CustomerController::class,'login']);
 Route::middleware('auth:sanctum')->post('/logout', [CustomerController::class,'logout']);
 Route::post('user-update',[CustomerController::class,'update'])->middleware('auth:sanctum');
+Route::post('customer-feedback',[CustomerFeedbackController::class,'store'])->middleware('auth:sanctum');
+Route::post('customer-complaint',[CustomerComplaintController::class,'store'])->middleware('auth:sanctum');
 
 // FAQ Api 
 Route::get('/faqs', [faqController::class,'index']);
@@ -33,4 +40,6 @@ Route::post('vendor-register',[VendorController::class,'register']);
 Route::post('vendor-login',[VendorController::class,'login']);
 Route::post('vendor-update',[VendorController::class,'update'])->middleware('auth:sanctum');
 Route::post('upload-kyc-images',[VendorController::class,'uploadImages'])->middleware('auth:sanctum');
+Route::post('vendor-feedback',[VendorFeedbackController::class,'store'])->middleware('auth:sanctum');
+Route::post('vendor-complaint',[VendorComplaintController::class,'store'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->post('/vendor-logout', [VendorController::class,'logout']);

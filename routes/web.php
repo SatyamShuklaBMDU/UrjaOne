@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\CustomerComplaintController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerFeedbackController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorComplaintController;
 use App\Http\Controllers\VendorConrtoller;
+use App\Http\Controllers\VendorFeedbackController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -52,9 +56,36 @@ Route::middleware('auth')->group(function () {
     Route::post('/faq/update-details', [FaqController::class,'update'])->name('update-faq');
     Route::delete('/faq/delete/{id}', [FaqController::class,'delete'])->name('faq-delete');
     Route::post('filter-faq',[FaqController::class,'filterdata'])->name('filter-faq');
+
+    // Vendor Feedback Route
+    Route::get('vendor-feedback',[VendorFeedbackController::class,'index'])->name('vendor-feedback');
+    Route::post('/vendorreplyTofeedback', [VendorFeedbackController::class,'replyTofeedback'])->name('vendorreplyTofeedback');
+    Route::post('filter-vendor-feedback',[VendorFeedbackController::class, 'filterdata'])->name('filter-vendor-feedback');
+    Route::post('/update-vendor-reply', [VendorFeedbackController::class, 'updateReply'])->name('updateVendorReply');
+
+    // Customer Feedback Route
+    Route::get('customer-feedback',[CustomerFeedbackController::class,'index'])->name('customer-feedback');
+    Route::post('/customerreplyTofeedback', [CustomerFeedbackController::class,'replyTofeedback'])->name('customerreplyTofeedback');
+    Route::post('filter-customer-feedback',[CustomerFeedbackController::class, 'filterdata'])->name('filter-customer-feedback');
+    Route::post('/update-Customer-reply', [CustomerFeedbackController::class, 'updateReply'])->name('updateCustomerReply');
+
+    // Customer Complaint ROute
+    Route::get('customer-complaint',[CustomerComplaintController::class,'index'])->name('customer-complaint');
+    Route::post('/customerreplyToComplaint', [CustomerComplaintController::class,'replyToComplaint'])->name('customerreplyToComplaint');
+    Route::post('/customerupdateComplaintStatus', [CustomerComplaintController::class, 'updateStatus'])->name('customerupdateComplaintStatus');
+    Route::post('filter-customer-complaint',[CustomerComplaintController::class, 'filterdata'])->name('filter-customer-complaint');
+    Route::post('/update-customer-reply-complaint', [CustomerComplaintController::class, 'updateReply'])->name('updateCustomerReplyComplaint');
+
+    // Vendor Complaint Route
+    Route::get('vendor-complaint',[VendorComplaintController::class,'index'])->name('vendor-complaint');
+    Route::post('/vendorreplyToComplaint', [VendorComplaintController::class,'replyToComplaint'])->name('vendorreplyToComplaint');
+    Route::post('/vendorupdateComplaintStatus', [VendorComplaintController::class, 'updateStatus'])->name('vendorupdateComplaintStatus');
+    Route::post('filter-vendor-complaint',[VendorComplaintController::class, 'filterdata'])->name('filter-vendor-complaint');
+    Route::post('/update-vendor-reply-complaint', [VendorComplaintController::class, 'updateReply'])->name('updateVendorReplyComplaint');
+
 });
-Route::get('mi',function(){
-    Artisan::call('migrate --path=database\migrations\2024_05_03_130527_create_vendor_related_images_table.php');
-    Artisan::call('migrate --path=database\migrations\2024_05_03_111914_create_vendors_table.php');
+Route::get('clear',function(){
+    Artisan::call('optimize:clear');
+    Artisan::call('optimize');
 });
 require __DIR__.'/auth.php';

@@ -19,13 +19,29 @@
                 width: 80px !important;
                 height: 30px !important;
             }
+
+            .dt-search label {
+                margin-left: 50rem !important;
+            }
+
+            .dt-paging {
+                margin-left: 66rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .dt-button {
+                background: #FD683E !important;
+                padding: .7rem !important;
+                color: #fff !important;
+                border-radius: 1.125rem !important;
+            }
         </style>
     @endsection
     @section('content')
-        <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
             <h2 class="mb-3 me-auto">All FAQs</h2>
         </div>
-        <div class="justify-content-between align-items-center mb-4">
+        <div class="mb-5 justify-content-between align-items-center mb-4">
             <div class="row">
                 <div class="col-md-7">
                     <div class=" align-items-center">
@@ -33,19 +49,26 @@
                             <form action="{{ route('filter-faq') }}" method="post">
                                 @csrf
                                 <div>
-                                    <input type="date" name="startDate" id="startDate" class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm" value="{{ $start ?? '' }}">
+                                    <input type="date" name="startDate" id="startDate"
+                                        class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm"
+                                        value="{{ $start ?? '' }}">
                                 </div>
                                 <div>
-                                    <input type="date" name="endDate" id="endDate" class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm" value="{{ $end ?? '' }}">
+                                    <input type="date" name="endDate" id="endDate"
+                                        class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
+                                        value="{{ $end ?? '' }}">
                                 </div>
-                                <button class="btn btn-primary position-absolute btn-style-apply" type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                                <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
+                                    style="right:135px; bottom: 2px;">Apply</button>
                                 <a href="{{ route('faq-index') }}" class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                             </form>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-1">
-                    <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="modal" data-bs-target="#basicModal2" style="width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
+                    <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="modal"
+                        data-bs-target="#basicModal2"
+                        style="margin-left:25rem !important;width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
                 </div>
             </div>
         </div>
@@ -169,6 +192,20 @@
     @endsection
     @section('script')
         <script>
+            $(document).ready(function() {
+                $('#example3').DataTable({
+                    dom: 'Bfrtip', // Add buttons to the DOM
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
+                    ],
+                    language: {
+                        paginate: {
+                            next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                            previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
+                        }
+                    }
+                });
+            });
             document.getElementById("saveFAQBtn").addEventListener("click", function() {
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 var title = document.getElementById("faqTitle").value;

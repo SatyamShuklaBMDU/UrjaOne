@@ -46,15 +46,33 @@
         div.dt-container .dt-paging {
             color: black !important;
         }
+
+        .dt-search label {
+            margin-left: 53rem !important;
+        }
+        .dt-search{
+            margin-top: 1rem !important;
+        }
+        .dt-paging {
+            margin-left: 69rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .dt-button {
+            background: #FD683E !important;
+            padding: .7rem !important;
+            color: #fff !important;
+            border-radius: 1.125rem !important;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
+    <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
         <h2 class="mb-3 me-auto">User Profile</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-4">
+    <div class="justify-content-between align-items-center mb-5">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -93,7 +111,7 @@
     <div class="row">
         <div class="col-xl-12 card">
             <div class="table-responsive">
-                <table class="table display mb-2 dataTablesCard order-table card-table text-black" id="example7">
+                <table class="display mb-2 text-black pt-4" id="example7">
                     <thead>
                         <tr>
                             <th>S No.</th>
@@ -133,7 +151,9 @@
                                 {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
                                 <td>
                                     <div class="d-flex">
-                                        <div class="eyeViewMore"><i style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;" class="fas fa-eye"></i></div>
+                                        <div class="eyeViewMore"><i
+                                                style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
+                                                class="fas fa-eye"></i></div>
                                         <input type="checkbox" class="statusSwitch"
                                             {{ $customer->status === 'active' ? 'checked' : '' }}
                                             data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
@@ -174,6 +194,24 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            $('#example7').DataTable({
+                dom: 'Bfrtip', // Add buttons to the DOM
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
+                ],
+                searching: true,
+                paging: true,
+                select: true,
+                info: true,
+                lengthChange: true,
+                language: {
+                    "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
+                    paginate: {
+                        previous: '<i class="fas fa-angle-double-left"></i>',
+                        next: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                }
+            });
             $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
                 var customerId = currentRow.data('customer-id');

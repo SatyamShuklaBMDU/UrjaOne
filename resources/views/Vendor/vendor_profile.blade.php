@@ -46,15 +46,32 @@
         div.dt-container .dt-paging {
             color: black !important;
         }
+        .dt-search label {
+            margin-left: 53rem !important;
+        }
+        .dt-search{
+            margin-top: 1rem !important;
+        }
+        .dt-paging {
+            margin-left: 69rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .dt-button {
+            background: #FD683E !important;
+            padding: .7rem !important;
+            color: #fff !important;
+            border-radius: 1.125rem !important;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
+    <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
         <h2 class="mb-3 me-auto">Vendor Profile</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-4">
+    <div class="justify-content-between align-items-center mb-5">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -71,8 +88,10 @@
                                     class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
                                     value="{{ $end ?? '' }}">
                             </div>
-                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit" style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('vendor-profile') }}" class="btn btn-primary position-absolute " style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
+                                style="right:135px; bottom: 2px;">Apply</button>
+                            <a href="{{ route('vendor-profile') }}" class="btn btn-primary position-absolute "
+                                style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
 
@@ -94,8 +113,7 @@
     <div class="row">
         <div class="col-xl-12 card">
             <div class="table-responsive">
-                <table class="table display mb-4 dataTablesCard order-table card-table text-black"
-                    id="example7">
+                <table class="table display mb-4 dataTablesCard order-table card-table text-black" id="example7">
                     <thead>
                         <tr>
                             <th>S No.</th>
@@ -117,32 +135,38 @@
                     </thead>
                     <tbody>
                         @foreach ($vendors as $vendor)
-                        <tr data-vendor-id={{$vendor->id}}>
-                            <td style="text-align: center;">{{$loop->iteration}}</td>
-                            <td style="text-align: center;"><a href="{{$vendor->photo}}" target="_blank" rel="noopener noreferrer"><img class="rounded-circle" width="35" src="{{$vendor->photo}}" alt></a></td>
-                            <td style="text-align: center;">{{$vendor->cin_no}}</td>
-                            <td style="text-align: center;" class="wspace-no">{{$vendor->created_at->format('d/m/y')}}</td>
-                            <td style="text-align: center;">{{$vendor->company_name}}</td>
-                            <td style="text-align: center;">{{$vendor->name}}</td>
-                            <td style="text-align: center;" class="text-ov">{{$vendor->phone_number}}</td>
-                            <td style="text-align: center;" class="text-ov">{{$vendor->email}}</td>
-                            {{-- <td class="text-ov">{{$vendor->category}}</td>
+                            <tr data-vendor-id={{ $vendor->id }}>
+                                <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                <td style="text-align: center;"><a href="{{ $vendor->photo }}" target="_blank"
+                                        rel="noopener noreferrer"><img class="rounded-circle" width="35"
+                                            src="{{ $vendor->photo }}" alt></a></td>
+                                <td style="text-align: center;">{{ $vendor->cin_no }}</td>
+                                <td style="text-align: center;" class="wspace-no">{{ $vendor->created_at->format('d/m/y') }}
+                                </td>
+                                <td style="text-align: center;">{{ $vendor->company_name }}</td>
+                                <td style="text-align: center;">{{ $vendor->name }}</td>
+                                <td style="text-align: center;" class="text-ov">{{ $vendor->phone_number }}</td>
+                                <td style="text-align: center;" class="text-ov">{{ $vendor->email }}</td>
+                                {{-- <td class="text-ov">{{$vendor->category}}</td>
                             <td class="text-ov">{{$vendor->pincode}}</td>
                             <td class="text-ov">{{$vendor->city}}</td>
                             <td class="text-ov">{{$vendor->state}}</td>
                             <td class="text-ov">{{$vendor->address}}</td>
                             <td class="text-ov">{{$vendor->coordinates}}</td> --}}
-                            <td>
-                                <div class="d-flex">
-                                    <div class="eyeViewMore"><i style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;" class="fas fa-eye"></i></div>
-                                    <a style="padding-right: 10px;margin-top:7px;cursor: pointer;" href="{{route('image-verification',encrypt($vendor->id))}}">KYC</a>
-                                    <input type="checkbox" class="statusSwitch"
-                                        {{ $vendor->status === 'active' ? 'checked' : '' }}
-                                        data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
-                                        data-onstyle="success" data-offstyle="danger">
-                                </div>
-                            </td>
-                        </tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="eyeViewMore"><i
+                                                style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
+                                                class="fas fa-eye"></i></div>
+                                        <a style="padding-right: 10px;margin-top:7px;cursor: pointer;"
+                                            href="{{ route('image-verification', encrypt($vendor->id)) }}">KYC</a>
+                                        <input type="checkbox" class="statusSwitch"
+                                            {{ $vendor->status === 'active' ? 'checked' : '' }} data-toggle="switchbutton"
+                                            data-onlabel="Active" data-offlabel="Block" data-onstyle="success"
+                                            data-offstyle="danger">
+                                    </div>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -176,6 +200,24 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            $('#example7').DataTable({
+                dom: 'Bfrtip', // Add buttons to the DOM
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
+                ],
+                searching: true,
+                paging: true,
+                select: true,
+                info: true,
+                lengthChange: true,
+                language: {
+                    "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
+                    paginate: {
+                        previous: '<i class="fas fa-angle-double-left"></i>',
+                        next: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                }
+            });
             $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
                 var customerId = currentRow.data('vendor-id');

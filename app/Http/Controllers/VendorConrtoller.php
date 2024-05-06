@@ -53,7 +53,6 @@ class VendorConrtoller extends Controller
         if (!$vendor) {
             return response()->json(['error' => 'Vendor not found'], 404);
         }
-        // dd($request->all());
         $vendor->status = $request->status;
         $vendor->remark = $request->remark;
         $vendor->save();

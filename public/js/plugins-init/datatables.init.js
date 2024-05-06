@@ -144,20 +144,6 @@ let dataSet = [
 		  }
 		
 	}); 
-	var table = $('#example7').DataTable({
-		searching: true,
-		paging:true,
-		select: true,
-		info: true,         
-		lengthChange:true ,
-		language: {
-            "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
-			paginate: {
-			  previous: '<i class="fas fa-angle-double-left"></i>',
-			  next: '<i class="fas fa-angle-double-right"></i>' 
-			}
-		  }
-	}); 
 	
 	// dataTable6
 		var table = $('#example6').DataTable({
@@ -176,7 +162,7 @@ let dataSet = [
 		});
 		
 	// table row
-	var table = $('#dataTable1, #dataTable2, #dataTable3, #dataTable4,  #example3, #example4 ').DataTable({
+	var table = $('#dataTable1, #dataTable2, #dataTable3, #dataTable4, #example4 ').DataTable({
 		language: {
 			paginate: {
 			  next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
