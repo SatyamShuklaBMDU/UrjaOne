@@ -19,7 +19,8 @@ class VendorFeedbackController extends Controller
             ]);
             if ($validate->fails()) {
                 return response()->json([
-                    'status' => 400,
+                    'status' => false,
+                    'code' => 400,
                     'errors' => $validate->messages(),
                 ]);
             }
@@ -34,13 +35,15 @@ class VendorFeedbackController extends Controller
                 'image' => $photoRelativePath,
             ]);
             return response()->json([
-                'status' => 200,
+                'status' => true,
+                'code' => 200,
                 'message' => 'Feedback Sent Successfully',
                 'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 500,
+                'status' => false,
+                'code' => 500,
                 'error' => 'Internal Server Error',
                 'message' => $e->getMessage(),
             ]);

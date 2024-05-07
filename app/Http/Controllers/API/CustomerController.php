@@ -17,7 +17,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email',
-            'phone_number' => 'required|string|max:255|unique:customers,phone_number',
+            'phone_number' => 'required|digits:10|regex:/^[6-9][0-9]{9}$/|unique:customers,phone_number',
             'landmark' => 'nullable|string|max:255',
             'address' => 'nullable|string',
             'pincode' => 'nullable|string|max:255',
@@ -26,9 +26,8 @@ class CustomerController extends Controller
             'photo' => 'nullable|image|max:2048',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
-        // dd($request->all());
         $photoRelativePath = null;
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             $photoFileName = uniqid() . '.' . $request->photo->extension();
@@ -49,7 +48,7 @@ class CustomerController extends Controller
             'photo' => $photoRelativePath,
             'status' => 'active',
         ]);
-        return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
+        return response()->json(['status' => true, 'message' => 'User registered successfully', 'user' => $user], 201);
     }
     public function update(Request $request)
     {
@@ -69,7 +68,7 @@ class CustomerController extends Controller
             'photo' => 'nullable|image|max:2048',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $customer->fill($request->except(['password', 'photo']));
         if ($request->has('password')) {
@@ -82,7 +81,7 @@ class CustomerController extends Controller
             $customer->photo = $photoRelativePath;
         }
         $customer->save();
-        return response()->json(['message' => 'User details updated successfully', 'user' => $customer], 200);
+        return response()->json(['status' => true, 'message' => 'User details updated successfully', 'user' => $customer], 200);
     }
     public function login(Request $request)
     {
@@ -91,24 +90,28 @@ class CustomerController extends Controller
             'password' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $credentials = $request->only('password');
         $user = Customer::where('email', $request->email_or_mobile)
             ->orWhere('phone_number', $request->email_or_mobile)
             ->first();
         if ($user->status !== 'active') {
-            return response()->json(['message' => 'Account is not active'], 403);
+            return response()->json(['status' => false, 'message' => 'Account is not active'], 403);
         }
         if ($user && Auth::guard('customers')->attempt(['email' => $user->email, 'password' => $credentials['password']])) {
             $token = $user->createToken('app-token')->plainTextToken;
-            return response()->json(['message' => 'Login successful', 'user' => $user, 'token' => $token], 200);
+            return response()->json(['status' => true, 'message' => 'Login successful', 'user' => $user, 'token' => $token], 200);
         }
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['status' => false, 'message' => 'Unauthorized'], 401);
     }
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['status' => true, 'message' => 'Logged out successfully'], 200);
+    }
+    public function profile(Request $request)
+    {
+        return response()->json(['status' => true, 'user' => $request->user()], 200);
     }
 }

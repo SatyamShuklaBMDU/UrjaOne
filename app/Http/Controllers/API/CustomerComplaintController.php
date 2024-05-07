@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\CustomerFeedback;
 use App\Models\UserComplaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,20 +17,22 @@ class CustomerComplaintController extends Controller
                 'message' => 'required|string',
             ]);
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json(['status' => false, $validator->errors()]);
             }
             $data = UserComplaint::create([
                 'message' => $request->message,
                 'customer_id' => Auth::id(),
             ]);
             return response()->json([
-                'status' => 200,
+                'status' => true,
+                'code' => 200,
                 'message' => 'Complaint Sent Successfully',
                 'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 500,
+                'status' => false,
+                'code' => 500,
                 'error' => 'Internal Server Error',
                 'message' => $e->getMessage(),
             ]);

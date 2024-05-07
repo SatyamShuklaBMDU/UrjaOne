@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CustomerComplaintController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerFeedbackController;
@@ -83,9 +85,29 @@ Route::middleware('auth')->group(function () {
     Route::post('filter-vendor-complaint',[VendorComplaintController::class, 'filterdata'])->name('filter-vendor-complaint');
     Route::post('/update-vendor-reply-complaint', [VendorComplaintController::class, 'updateReply'])->name('updateVendorReplyComplaint');
 
+    // Blogs Route
+    Route::get('get-blog-page',[BlogController::class,'index'])->name('get-blog-page');
+    Route::get('add-blog-page',[BlogController::class,'AddBlogs'])->name('add-blog-page');
+    Route::post('blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::post('blogs-update', [BlogController::class, 'update'])->name('blogs.update');
+    Route::post('filter-blog',[BlogController::class,'filterdata'])->name('filter-blog');
+    Route::delete('/blog/delete/{id}', [BlogController::class,'delete'])->name('blog-delete');
+
+    // Banner Route
+    Route::get('main-banner-page',[BannerController::class,'index'])->name('main-banner-page');
+    Route::get('vendor-main-banner-page',[BannerController::class,'VendorIndex'])->name('vendor-main-banner-page');
+    Route::get('vendor-banner/{name}',[BannerController::class,'VendorBanner'])->name('vendor-banner');
+    Route::get('user-banner/{name}',[BannerController::class,'UserBanner'])->name('user-banner');
+    Route::post('/user-banners', [BannerController::class, 'UserStore'])->name('user.banners.store');
+    Route::post('/vendor-banners', [BannerController::class, 'VendorStore'])->name('vendor.banners.store');
+    Route::post('/user-edit-banners', [BannerController::class, 'UserEdit'])->name('user.banners.edit');
+    Route::post('/vendor-edit-banners', [BannerController::class, 'VendorEdit'])->name('vendor.banners.edit');
+    Route::delete('vendor/banner/delete/{id}', [BannerController::class,'Vendordelete'])->name('vendor-banner-delete');
 });
 Route::get('clear',function(){
     Artisan::call('optimize:clear');
+    Artisan::call('route:clear');
     Artisan::call('optimize');
+    echo "DONE";
 });
 require __DIR__.'/auth.php';

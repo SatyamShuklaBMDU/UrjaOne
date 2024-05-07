@@ -9,8 +9,8 @@
                     <span class="nav-text">Profile</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('user-profile')}}">User Profile</a></li>
-                    <li><a href="{{route('vendor-profile')}}">Vendor Profile</a></li>
+                    <li><a href="{{ route('user-profile') }}">User Profile</a></li>
+                    <li><a href="{{ route('vendor-profile') }}">Vendor Profile</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
@@ -36,8 +36,8 @@
                     <span class="nav-text">Feedback </span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('customer-feedback')}}">User</a></li>
-                    <li><a href="{{route('vendor-feedback')}}">Vendor</a></li>
+                    <li><a href="{{ route('customer-feedback') }}">User</a></li>
+                    <li><a href="{{ route('vendor-feedback') }}">Vendor</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
@@ -45,12 +45,12 @@
                     <span class="nav-text">Complaints </span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{route('customer-complaint')}}">User</a></li>
-                    <li><a href="{{route('vendor-complaint')}}">Vendor</a></li>
+                    <li><a href="{{ route('customer-complaint') }}">User</a></li>
+                    <li><a href="{{ route('vendor-complaint') }}">Vendor</a></li>
                 </ul>
             </li>
             <!-- next start -->
-            <li><a class="ai-icon" href="{{route('faq-index')}}" aria-expanded="false">
+            <li><a class="ai-icon" href="{{ route('faq-index') }}" aria-expanded="false">
                     <i class="fa-solid fa-circle-question fa-lg" style="color: #969ba0;"></i>
                     <span class="nav-text">FAQs</span>
                 </a>
@@ -69,17 +69,20 @@
                     <span class="nav-text">Blogs</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="blog.php">All Blogs</a></li>
-                    <li><a href="add-blog.php">Add Blog</a></li>
+                    <li><a href="{{ route('get-blog-page') }}">All Blogs</a></li>
+                    <li><a href="{{ route('add-blog-page') }}">Add Blog</a></li>
                 </ul>
             </li>
             <!-- next end -->
             <!-- next start -->
-            <li><a class="ai-icon" href="banner-manage.php" aria-expanded="false">
+            <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
                     <i class="fa-solid fa-sheet-plastic fa-lg" style="color: #969ba0;"></i>
                     <span class="nav-text">Banner Manage</span>
                 </a>
-
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('main-banner-page') }}">User Banner</a></li>
+                    <li><a href="{{ route('vendor-main-banner-page') }}">Vendor Banner</a></li>
+                </ul>
             </li>
             <!-- next end -->
             <!-- next start -->

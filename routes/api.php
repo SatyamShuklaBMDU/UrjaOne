@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CustomerComplaintController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\CustomerFeedbackController;
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->post('/logout', [CustomerController::class,'l
 Route::post('user-update',[CustomerController::class,'update'])->middleware('auth:sanctum');
 Route::post('customer-feedback',[CustomerFeedbackController::class,'store'])->middleware('auth:sanctum');
 Route::post('customer-complaint',[CustomerComplaintController::class,'store'])->middleware('auth:sanctum');
+Route::get('customer-profile',[CustomerController::class,'profile'])->middleware('auth:sanctum');
 
 // FAQ Api 
 Route::get('/faqs', [faqController::class,'index']);
@@ -39,7 +41,13 @@ Route::get('/faqs', [faqController::class,'index']);
 Route::post('vendor-register',[VendorController::class,'register']);
 Route::post('vendor-login',[VendorController::class,'login']);
 Route::post('vendor-update',[VendorController::class,'update'])->middleware('auth:sanctum');
+Route::get('vendor-profile',[VendorController::class,'profile'])->middleware('auth:sanctum');
 Route::post('upload-kyc-images',[VendorController::class,'uploadImages'])->middleware('auth:sanctum');
 Route::post('vendor-feedback',[VendorFeedbackController::class,'store'])->middleware('auth:sanctum');
 Route::post('vendor-complaint',[VendorComplaintController::class,'store'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->post('/vendor-logout', [VendorController::class,'logout']);
+
+// Route for Blogs Like and Views
+
+Route::post('blogs/{id}/views', [BlogController::class, 'incrementViews']);
+Route::post('blogs/{id}/likes', [BlogController::class, 'incrementLikes']);

@@ -11,7 +11,7 @@ class faqController extends Controller
     public function index(){
         $faqs = Faq::where('status','1')->get();
         if ($faqs->isEmpty()) {
-            return response()->json(['message' => 'No FAQs found.'], 404);
+            return response()->json(['status' => false, 'message' => 'No FAQs found.'], 404);
         }
         return response()->json($faqs);
     }

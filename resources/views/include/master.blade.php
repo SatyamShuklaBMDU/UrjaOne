@@ -9,13 +9,13 @@
     <meta name="robots" content />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Energy Book Dashboard" />
-    <meta property="og:title" content="Energy Book Dashboard" />
-    <meta property="og:description" content="Energy Book Dashboard" />
+    <meta name="description" content="Urja One" />
+    <meta property="og:title" content="Urja One" />
+    <meta property="og:description" content="Urja One" />
     <meta property="og:image" content="." />
     <meta name="format-detection" content="telephone=no">
     <!-- PAGE TITLE HERE -->
-    <title>Energy Book Dashboard </title>
+    <title>Urja One </title>
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}" />
     <style>

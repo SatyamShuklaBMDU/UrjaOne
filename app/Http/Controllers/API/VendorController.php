@@ -21,7 +21,7 @@ class VendorController extends Controller
             'company_name' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $cin_no = 'CIN' . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $vendor = Vendor::create([
@@ -32,7 +32,7 @@ class VendorController extends Controller
             'password' => Hash::make('123456'),
             'cin_no' => $cin_no,
         ]);
-        return response()->json(['message' => 'Vendor registered successfully', 'vendor' => $vendor], 201);
+        return response()->json(['status' => true, 'message' => 'Vendor registered successfully', 'vendor' => $vendor], 201);
     }
     public function login(Request $request)
     {
@@ -41,7 +41,7 @@ class VendorController extends Controller
             'password' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $credentials = $request->only('phone_number', 'password');
 
@@ -50,14 +50,14 @@ class VendorController extends Controller
 
             // Check if the user status is active
             if ($user->status !== 'active') {
-                return response()->json(['message' => 'User not active'], 401);
+                return response()->json(['status' => false, 'message' => 'User not active'], 401);
             }
 
             // Generate API token
             $token = $user->createToken('AuthToken')->plainTextToken;
-            return response()->json(['Message' => 'Login Successful', 'token' => $token], 200);
+            return response()->json(['status' => true, 'Message' => 'Login Successful', 'token' => $token], 200);
         } else {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['status' => false, 'message' => 'Unauthorized'], 401);
         }
     }
     public function update(Request $request)
@@ -80,7 +80,7 @@ class VendorController extends Controller
             'photo' => 'nullable|image|max:2048',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $customer->fill($request->except(['password', 'photo']));
         if ($request->has('password')) {
@@ -93,12 +93,12 @@ class VendorController extends Controller
             $customer->photo = $photoRelativePath;
         }
         $customer->save();
-        return response()->json(['message' => 'Vendor details updated successfully', 'user' => $customer], 200);
+        return response()->json(['status' => true, 'message' => 'Vendor details updated successfully', 'user' => $customer], 200);
     }
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['status' => true, 'message' => 'Logged out successfully'], 200);
     }
     public function uploadImages(Request $request)
     {
@@ -109,7 +109,7 @@ class VendorController extends Controller
             'numbers.*' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
         $images = $request->file('images');
         $titles = $request->titles;
@@ -127,6 +127,10 @@ class VendorController extends Controller
                 'number' => $number,
             ]);
         }
-        return response()->json(['message' => 'Images uploaded successfully'], 200);
+        return response()->json(['status' => true, 'message' => 'Images uploaded successfully'], 200);
+    }
+    public function profile(Request $request)
+    {
+        return response()->json(['status' => true, 'vendor' => $request->user()], 200);
     }
 }
