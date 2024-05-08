@@ -131,6 +131,11 @@ class VendorController extends Controller
     }
     public function profile(Request $request)
     {
-        return response()->json(['status' => true, 'vendor' => $request->user()], 200);
+        $user = $request->user();
+        if ($user->photo !== null) {
+            $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
+            $user->photo = $baseUrl . $user->photo;
+        }
+        return response()->json(['status' => true, 'user' => $user], 200);
     }
 }

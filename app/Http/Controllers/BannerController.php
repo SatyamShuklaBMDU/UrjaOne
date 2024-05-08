@@ -21,13 +21,13 @@ class BannerController extends Controller
     public function UserBanner($name)
     {
         $users = Banner::where('for', $name)->get();
-        return view('dashboard.Banners.User.banner', compact('users'));
+        return view('dashboard.Banners.User.banner', compact('users','name'));
     }
 
     public function VendorBanner($name)
     {
         $users = VendorBanner::where('for', $name)->get();
-        return view('dashboard.Banners.Vendor.vendor_banner', compact('users'));
+        return view('dashboard.Banners.Vendor.vendor_banner', compact('users','name'));
     }
 
     public function UserStore(Request $request)
@@ -54,7 +54,6 @@ class BannerController extends Controller
             'for' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         foreach ($request->file('images') as $image) {
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('Banner/Vendor/'), $imageName);
@@ -72,6 +71,12 @@ class BannerController extends Controller
         $blog->delete();
         return response()->json(['success' => true]);
     }
+    public function Userdelete($id)
+    {
+        $blog = Banner::findOrFail($id);
+        $blog->delete();
+        return response()->json(['success' => true]);
+    }
 
     public function VendorEdit(Request $request)
     {
@@ -79,12 +84,11 @@ class BannerController extends Controller
             'for' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        dd($request->image);
-        if($request->hasFile($request->image)){
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imageName = time() . '_' . $request->image->getClientOriginalName();
             $request->image->move(public_path('Banner/Vendor/'), $imageName);
             $imagepath = 'Banner/Vendor/' . $imageName;
-            $banner = new VendorBanner();
+            $banner = VendorBanner::find($request->bannerId);
             $banner->for = $request->input('for');
             $banner->banner = $imagepath;
             $banner->save();
@@ -97,15 +101,55 @@ class BannerController extends Controller
             'for' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        if($request->hasFile($request->image)){
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imageName = time() . '_' . $request->image->getClientOriginalName();
             $request->image->move(public_path('Banner/User/'), $imageName);
             $imagepath = 'Banner/User/' . $imageName;
-            $banner = new Banner();
+            $banner = Banner::find($request->bannerId);
             $banner->for = $request->input('for');
             $banner->banner = $imagepath;
             $banner->save();
         }
         return redirect()->back()->with('success', 'Banner(s) uploaded successfully');
+    }
+
+    public function filterdataVendor(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        // dD($request->all());
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $users = Banner::where('for',$request->for)->whereBetween('created_at', [$startDate, $endDate])->get();
+        // dd($users);
+        return view('dashboard.Banners.User.banner', ['users' => $users, 'start' => $startDate, 'end' => $endDate, 'name' => $request->for]);
+    }
+    public function statuschange(Request $request)
+    {
+        // dd($request->all());    
+        $status = $request->input('status');
+        try {
+            $vendor = Banner::findOrFail($request->banner);
+            $vendor->status = $status;
+            $vendor->save();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function statusVendorchange(Request $request)
+    {
+        // dd($request->all());    
+        $status = $request->input('status');
+        try {
+            $vendor = VendorBanner::findOrFail($request->banner);
+            $vendor->status = $status;
+            $vendor->save();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

@@ -27,8 +27,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="align-items-center">
-                        <a href="{{ route('vendor-banner', 'Blog') }}" class="btn btn-primary mb-2 btn-rounded"><span
-                                class="text-white fw-bold"> Blog Banner</span></a>
+                        {{-- <a href="{{ route('vendor-banner', 'Blog') }}" class="btn btn-primary mb-2 btn-rounded"><span
+                                class="text-white fw-bold"> Blog Banner</span></a> --}}
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                                 <option value="" selected disabled>Choose For</option>
                                 <option value="Home">Home</option>
                                 <option value="About">About</option>
-                                <option value="Blog">Blog</option>
+                                {{-- <option value="Blog">Blog</option> --}}
                             </Select>
                             <small class="text-primary h6">(e.g., Banner )</small>
                         </div>

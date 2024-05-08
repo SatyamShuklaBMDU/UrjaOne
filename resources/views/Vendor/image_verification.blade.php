@@ -83,14 +83,14 @@
                 <table class="table display mb-4 dataTablesCard order-table card-table text-black" id="example7">
                     <thead>
                         <tr>
-                            <th>S No.</th>
-                            <th>CIN No</th>
-                            <th>Name</th>
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Number</th>
-                            <th>Action</th>
-                            <th>Remark</th>
+                            <th style="text-align: center;">S No.</th>
+                            <th style="text-align: center;">CIN No</th>
+                            <th style="text-align: center;">Name</th>
+                            <th style="text-align: center;">Title</th>
+                            <th style="text-align: center;">Image</th>
+                            <th style="text-align: center;">Number</th>
+                            <th style="text-align: center;">Action</th>
+                            <th style="text-align: center;">Remark</th>
                         </tr>
                     </thead>
                     @foreach ($vendors as $vendor)
@@ -146,6 +146,20 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            $('#example7').DataTable({
+                searching: true,
+                paging: true,
+                select: true,
+                info: true,
+                lengthChange: false,
+                language: {
+                    "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
+                    paginate: {
+                        previous: '<i class="fas fa-angle-double-left"></i>',
+                        next: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                }
+            });
             function setSelectedColor(selectElement) {
                 var selectedOption = $(selectElement).find('option:selected');
                 var bgColor = selectedOption.css('background-color');

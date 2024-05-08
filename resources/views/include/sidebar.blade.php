@@ -1,7 +1,7 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
-            <li><a class href="dashboard.php" aria-expanded="false">
+            <li><a class href="{{url('dashboard')}}" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Dashboard</span> </a></li>
             <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">

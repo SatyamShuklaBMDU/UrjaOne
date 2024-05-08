@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::post('filter-customer-feedback',[CustomerFeedbackController::class, 'filterdata'])->name('filter-customer-feedback');
     Route::post('/update-Customer-reply', [CustomerFeedbackController::class, 'updateReply'])->name('updateCustomerReply');
 
-    // Customer Complaint ROute
+    // Customer Complaint Route
     Route::get('customer-complaint',[CustomerComplaintController::class,'index'])->name('customer-complaint');
     Route::post('/customerreplyToComplaint', [CustomerComplaintController::class,'replyToComplaint'])->name('customerreplyToComplaint');
     Route::post('/customerupdateComplaintStatus', [CustomerComplaintController::class, 'updateStatus'])->name('customerupdateComplaintStatus');
@@ -103,6 +103,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/user-edit-banners', [BannerController::class, 'UserEdit'])->name('user.banners.edit');
     Route::post('/vendor-edit-banners', [BannerController::class, 'VendorEdit'])->name('vendor.banners.edit');
     Route::delete('vendor/banner/delete/{id}', [BannerController::class,'Vendordelete'])->name('vendor-banner-delete');
+    Route::delete('user/banner/delete/{id}', [BannerController::class,'Userdelete'])->name('user-banner-delete');
+    Route::post('filter-vendor-banner',[BannerController::class,'filterdataVendor'])->name('filter-vendor-banner');
+    Route::post('/update-banner-status',[BannerController::class,'statuschange'])->name('update-banner-status');
+    Route::post('/update-banner-vendor',[BannerController::class,'statusVendorchange'])->name('update-banner-vendor');
 });
 Route::get('clear',function(){
     Artisan::call('optimize:clear');

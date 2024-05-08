@@ -6,8 +6,11 @@
         }
 
         .dt-paging {
-            margin-left: 66rem !important;
             margin-bottom: 1rem !important;
+        }
+
+        .dt-paging.paging_full_numbers {
+            float: right;
         }
 
         .dt-button {
@@ -20,7 +23,7 @@
 @endsection
 @section('content')
     <div class="mt-4 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">Vendor Banner </h2>
+        <h2 class="mb-3 me-auto">{{ $name }} Banner </h2>
     </div>
     <div class="justify-content-between align-items-center mb-4">
         <div class="row">
@@ -52,13 +55,13 @@
                                     <th style="text-align: center;">Update Date, <br> Time</th>
                                     <th style="text-align: center;">Banner Image</th>
                                     <th style="text-align: center;">Banner For</th>
-                                    {{-- <th>Status</th> --}}
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr>
+                                    <tr data-banner-id="{{$user->id}}">
                                         <td style="text-align: center;">{{ $loop->iteration }}</td>
                                         <td style="text-align: center;">
                                             {{ $user->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
@@ -72,18 +75,21 @@
                                                 rel="noopener noreferrer"><img class="rounded-circle" width="35"
                                                     src="{{ asset($user->banner) }}" alt=""></a></td>
                                         <td style="text-align: center;">{{ $user->for }}</td>
-                                        {{-- <td>
-                                            <select class="form-select border-dark fw-bold" style="width:100px;">
-                                                <option value="active" class="bg-success text-light">Active</option>
-                                                <option value="deactive" class="bg-danger text-light">Deactive</option>
+                                        <td>
+                                            <select class="form-select border-dark fw-bold statusSwitch"
+                                                style="width:100px;">
+                                                <option value="1" {{ $user->status == '1' ? 'selected' : '' }}
+                                                    class="bg-success text-light">Active</option>
+                                                <option value="0" {{ $user->status == '0' ? 'selected' : '' }}
+                                                    class="bg-danger text-light">Deactive</option>
                                             </select>
-                                        </td> --}}
+                                        </td>
                                         <td>
                                             <div class="d-flex">
-                                                {{-- <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"
+                                                <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"
                                                     data-bs-toggle="modal"
                                                     onclick="editBanner({{ $user->id }}, '{{ $user->for }}')"
-                                                    data-bs-target="#basicModal"><i class="fas fa-pencil-alt"></i></a> --}}
+                                                    data-bs-target="#basicModal"><i class="fas fa-pencil-alt"></i></a>
                                                 <a data-banner-id="{{ $user->id }}"
                                                     class="btn btn-danger shadow btn-xs sharp deleteBtn"><i
                                                         class="fa fa-trash"></i></a>
@@ -106,7 +112,7 @@
                     <h5 class="modal-title h2">Edit Banner</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="{{route('vendor.banners.edit')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('vendor.banners.edit') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
@@ -116,7 +122,7 @@
                                 <option value="" selected disabled>Choose Title</option>
                                 <option value="Home">Home</option>
                                 <option value="About">About</option>
-                                <option value="Blog">Blog</option>
+                                {{-- <option value="Blog">Blog</option> --}}
                             </select>
                             <small class="text-primary h6">(e.g., Banner)</small>
                         </div>
@@ -218,6 +224,40 @@
                     });
                 });
         }
+    </script>
+    <script>
+        $('.statusSwitch').on('change', function() {
+            var selectElement = $(this).closest('tr').find('select'); // Find the select element in the current row
+            var status = selectElement.val(); // Get the selected value (1 or 0)
+            var bannerId = $(this).closest('tr').data('banner-id'); // Get the data-banner-id attribute value
+            $.ajax({
+                url: '{{ route('update-banner-vendor') }}',
+                method: 'POST',
+                data: {
+                    status: status,
+                    banner: bannerId, // Pass the banner ID
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Status updated successfully.');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Status updated successfully!',
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating status:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'An error occurred while updating the status!',
+                    });
+                }
+            });
+        });
     </script>
     <script>
         @if (session('success'))

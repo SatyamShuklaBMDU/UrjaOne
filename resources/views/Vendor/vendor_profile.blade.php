@@ -46,23 +46,69 @@
         div.dt-container .dt-paging {
             color: black !important;
         }
+
         .dt-search label {
             margin-left: 53rem !important;
         }
-        .dt-search{
-            margin-top: 1rem !important;
-        }
+
         .dt-paging {
-            margin-left: 69rem !important;
             margin-bottom: 1rem !important;
         }
 
+        .dt-paging.paging_full_numbers {
+            float: right;
+        }
         .dt-button {
             background: #FD683E !important;
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
         }
+
+        .statusSwitch {
+            --s: 20px;
+            /* adjust this to control the size*/
+
+            height: calc(var(--s) + var(--s)/5);
+            width: auto;
+            /* some browsers need this */
+            aspect-ratio: 2.25;
+            border-radius: var(--s);
+            margin: calc(var(--s)/2);
+            display: grid;
+            cursor: pointer;
+            background-color: #ff7a7a;
+            box-sizing: content-box;
+            overflow: hidden;
+            transition: .3s .1s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .statusSwitch:before {
+            content: "";
+            padding: calc(var(--s)/10);
+            --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+            background:
+                var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                #fff;
+            mix-blend-mode: darken;
+            filter: blur(calc(var(--s)/12)) contrast(11);
+            transition: .4s, background-position .4s .1s,
+                padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+        }
+
+        .statusSwitch:checked {
+            background-color: #85ff7a;
+        }
+
+        .statusSwitch:checked:before {
+            padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+            --_p: 100%;
+            --_i: 1;
+        }   
     </style>
 @endsection
 @section('content')
@@ -160,10 +206,12 @@
                                                 class="fas fa-eye"></i></div>
                                         <a style="padding-right: 10px;margin-top:7px;cursor: pointer;"
                                             href="{{ route('image-verification', encrypt($vendor->id)) }}">KYC</a>
-                                        <input type="checkbox" class="statusSwitch"
+                                        <input class="statusSwitch" {{ $vendor->status === 'active' ? 'checked' : '' }}
+                                            type="checkbox">
+                                        {{-- <input type="checkbox" class="statusSwitch"
                                             {{ $vendor->status === 'active' ? 'checked' : '' }} data-toggle="switchbutton"
                                             data-onlabel="Active" data-offlabel="Block" data-onstyle="success"
-                                            data-offstyle="danger">
+                                            data-offstyle="danger"> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -200,24 +248,24 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#example7').DataTable({
-                dom: 'Bfrtip', // Add buttons to the DOM
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
-                ],
-                searching: true,
-                paging: true,
-                select: true,
-                info: true,
-                lengthChange: true,
-                language: {
-                    "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
-                    paginate: {
-                        previous: '<i class="fas fa-angle-double-left"></i>',
-                        next: '<i class="fas fa-angle-double-right"></i>'
+                $('#example7').DataTable({
+                    dom: 'Bfrtip', // Add buttons to the DOM
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
+                    ],
+                    searching: true,
+                    paging: true,
+                    select: true,
+                    info: true,
+                    lengthChange: true,
+                    language: {
+                        "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
+                        paginate: {
+                            previous: '<i class="fas fa-angle-double-left"></i>',
+                            next: '<i class="fas fa-angle-double-right"></i>'
+                        }
                     }
-                }
-            });
+                });
             $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
                 var customerId = currentRow.data('vendor-id');

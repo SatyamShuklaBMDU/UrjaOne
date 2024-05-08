@@ -50,12 +50,13 @@
         .dt-search label {
             margin-left: 53rem !important;
         }
-        .dt-search{
+
+        .dt-search {
             margin-top: 1rem !important;
         }
-        .dt-paging {
-            margin-left: 69rem !important;
-            margin-bottom: 1rem !important;
+
+        .dt-paging.paging_full_numbers {
+            float: right;
         }
 
         .dt-button {
@@ -64,15 +65,61 @@
             color: #fff !important;
             border-radius: 1.125rem !important;
         }
+
+        .statusSwitch {
+            --s: 20px;
+            /* adjust this to control the size*/
+
+            height: calc(var(--s) + var(--s)/5);
+            width: auto;
+            /* some browsers need this */
+            aspect-ratio: 2.25;
+            border-radius: var(--s);
+            margin: calc(var(--s)/2);
+            display: grid;
+            cursor: pointer;
+            background-color: #ff7a7a;
+            box-sizing: content-box;
+            overflow: hidden;
+            transition: .3s .1s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .statusSwitch:before {
+            content: "";
+            padding: calc(var(--s)/10);
+            --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+            background:
+                var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                #fff;
+            mix-blend-mode: darken;
+            filter: blur(calc(var(--s)/12)) contrast(11);
+            transition: .4s, background-position .4s .1s,
+                padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+        }
+
+        .statusSwitch:checked {
+            background-color: #85ff7a;
+        }
+
+        .statusSwitch:checked:before {
+            padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+            --_p: 100%;
+            --_i: 1;
+        }
     </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 @endsection
 @section('content')
-    <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">User Profile</h2>
+    <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <h2 class="mb-2 me-auto">User Profile</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-5">
+    <div class="justify-content-between align-items-center mb-1">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -111,7 +158,7 @@
     <div class="row">
         <div class="col-xl-12 card">
             <div class="table-responsive">
-                <table class="display mb-2 text-black pt-4" id="example7">
+                <table class="display mb-2 text-black pt-4" id="userTable" style="width:100%">
                     <thead>
                         <tr>
                             <th>S No.</th>
@@ -151,13 +198,16 @@
                                 {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
                                 <td>
                                     <div class="d-flex">
-                                        <div class="eyeViewMore"><i
+                                        {{-- <button class="btn btn-primary view-more-btn" data-toggle="modal" data-target="#customerDetailsModal">View More</button> --}}
+                                        <div class="view-more-btn"><i
                                                 style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
                                                 class="fas fa-eye"></i></div>
-                                        <input type="checkbox" class="statusSwitch"
+                                        {{-- <input type="checkbox" class="statusSwitch"
                                             {{ $customer->status === 'active' ? 'checked' : '' }}
                                             data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
-                                            data-onstyle="success" data-offstyle="danger">
+                                            data-onstyle="success" data-offstyle="danger"> --}}
+                                        <input class="statusSwitch" {{ $customer->status === 'active' ? 'checked' : '' }}
+                                            type="checkbox">
                                     </div>
                                 </td>
                             </tr>
@@ -165,6 +215,7 @@
                     </tbody>
                 </table>
             </div>
+            {{-- {{ $customers->links() }} --}}
         </div>
     </div>
     <div class="modal fade" id="customerDetailsModal" tabindex="-1" aria-labelledby="customerDetailsModalLabel"
@@ -194,49 +245,60 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#example7').DataTable({
+            $('#userTable').DataTable({
                 dom: 'Bfrtip', // Add buttons to the DOM
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
-                searching: true,
-                paging: true,
-                select: true,
-                info: true,
-                lengthChange: true,
-                language: {
-                    "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
-                    paginate: {
-                        previous: '<i class="fas fa-angle-double-left"></i>',
-                        next: '<i class="fas fa-angle-double-right"></i>'
-                    }
-                }
+                lengthChange: false,
+                // paginate: false,
             });
-            $('.eyeViewMore').on('click', function() {
-                var currentRow = $(this).closest('tr');
-                var customerId = currentRow.data('customer-id');
-                var baseUrl = "{{ route('get-customer', ['id' => '__id__']) }}";
-                var customerDetailsUrl = baseUrl.replace('__id__', customerId);
-                $.ajax({
-                    url: customerDetailsUrl,
-                    type: 'GET',
-                    success: function(data) {
-                        console.log(data.whatsapp_number);
-                        $('#customer-whatsapp-number').text(data.landmark || 'Not Available');
-                        $('#customer-address').text(data.address || 'Not Available');
-                        $('#customer-pincode').text(data.pincode || 'Not Available');
-                        $('#customer-city').text(data.city || 'Not Available');
-                        $('#customer-state').text(data.state || 'Not Available');
-                        $('#customer-coordinates').text(data.coordinates || 'Not Available');
-                        $('#customer-category').text(data.category || 'Not Available');
-                        // Show the modal
-                        $('#customerDetailsModal').modal('show');
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('Error fetching customer details:', textStatus,
-                            errorThrown);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var viewMoreButtons = document.querySelectorAll('.view-more-btn');
+            viewMoreButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var currentRow = this.closest('tr');
+                    var customerId = currentRow.getAttribute('data-customer-id');
+                    var baseUrl = "{{ route('get-customer', ['id' => '__id__']) }}";
+                    var customerDetailsUrl = baseUrl.replace('__id__', customerId);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', customerDetailsUrl);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            document.getElementById('customer-whatsapp-number').textContent =
+                                data.landmark || 'Not Available';
+                            document.getElementById('customer-address').textContent = data
+                                .address || 'Not Available';
+                            document.getElementById('customer-pincode').textContent = data
+                                .pincode || 'Not Available';
+                            document.getElementById('customer-city').textContent = data.city ||
+                                'Not Available';
+                            document.getElementById('customer-state').textContent = data
+                                .state || 'Not Available';
+                            document.getElementById('customer-coordinates').textContent = data
+                                .coordinates || 'Not Available';
+                            document.getElementById('customer-category').textContent = data
+                                .category || 'Not Available';
+                            // Show the modal
+                            var modal = document.getElementById('customerDetailsModal');
+                            var modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        } else {
+                            console.error('Error fetching customer details. Status:', xhr
+                                .status);
+                            // Handle errors appropriately (e.g., display an error message to the user)
+                        }
+                    };
+                    xhr.onerror = function() {
+                        console.error('Error fetching customer details. Network error.');
                         // Handle errors appropriately (e.g., display an error message to the user)
-                    }
+                    };
+                    xhr.send();
                 });
             });
         });

@@ -49,4 +49,32 @@ class VendorFeedbackController extends Controller
             ]);
         }
     }
+
+    public function fetch(Request $request)
+    {
+        try {
+            $data = VendorFeedback::where('vendor_id', Auth::id())->get();
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No data found',
+                ]);
+            }
+            $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
+            $data->each(function ($item) use ($baseUrl) {
+                $item->image = $baseUrl . $item->image;
+            });
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Internal Server Error',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
 }
