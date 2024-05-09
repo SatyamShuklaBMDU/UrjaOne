@@ -15,13 +15,20 @@ class VendorComplaintController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'message' => 'required|string',
+                'image' => 'required|mimes:jpg,jpeg,png',
             ]);
             if ($validator->fails()) {
                 return response()->json(['status' => false, $validator->errors()]);
             }
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $photoFileName = uniqid() . '.' . $request->image->extension();
+                $photoPath = $request->file('image')->move(public_path('Complaint/vendor/'), $photoFileName);
+                $photoRelativePath = 'Complaint/vendor/' . $photoFileName;
+            }
             $data = VendorComplaint::create([
                 'message' => $request->message,
                 'vendor_id' => Auth::id(),
+                'image' => $photoRelativePath,
             ]);
             return response()->json([
                 'status' => true,

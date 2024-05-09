@@ -20,13 +20,13 @@ class BannerController extends Controller
 
     public function UserBanner($name)
     {
-        $users = Banner::where('for', $name)->get();
+        $users = Banner::where('for', $name)->latest()->get();
         return view('dashboard.Banners.User.banner', compact('users','name'));
     }
 
     public function VendorBanner($name)
     {
-        $users = VendorBanner::where('for', $name)->get();
+        $users = VendorBanner::where('for', $name)->latest()->get();
         return view('dashboard.Banners.Vendor.vendor_banner', compact('users','name'));
     }
 
@@ -114,6 +114,18 @@ class BannerController extends Controller
     }
 
     public function filterdataVendor(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        // dD($request->all());
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $users = VendorBanner::where('for',$request->for)->whereBetween('created_at', [$startDate, $endDate])->get();
+        return view('dashboard.Banners.Vendor.vendor_banner', ['users' => $users, 'start' => $startDate, 'end' => $endDate, 'name' => $request->for]);
+    }
+    public function filterdata(Request $request)
     {
         $request->validate([
             'startDate' => 'required|date',

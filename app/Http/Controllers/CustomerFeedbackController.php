@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CustomerFeedbackController extends Controller
 {
     public function index(){
-        $userFeedback = CustomerFeedback::all();
+        $userFeedback = CustomerFeedback::latest()->get();
         return view('dashboard.Feedbacks.UserFeedback',compact('userFeedback'));
     }
     public function replyTofeedback(Request $request)

@@ -10,7 +10,7 @@ class VendorConrtoller extends Controller
 {
     public function index()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::latest()->get();
         return view('Vendor.vendor_profile', compact('vendors'));
     }
     public function alldata($id)

@@ -16,13 +16,35 @@
             color: #fff !important;
             border-radius: 1.125rem !important;
         }
+
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
+        }
+
+        .dt-paging.paging_full_numbers {
+            float: right;
+            margin-top: 5px;
+        }
+
+        .dt-button {
+            background: #FD683E !important;
+            padding: .7rem !important;
+            color: #fff !important;
+            border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,
+        label {
+            margin-top: 6px;
+        }
     </style>
 @endsection
 @section('content')
     <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">Blog</h2>
+        <h2 class="mb-3 me-auto">All Blog</h2>
     </div>
-    <div class="justify-content-between align-items-center mb-4">
+    <div class="justify-content-between align-items-center mb-3">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -40,17 +62,17 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 2px;">Apply</button>
+                                style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('get-blog-page') }}"
-                                class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('add-blog-page') }}" class="btn btn-primary mb-2 btn-rounded"><span
-                        class="text-white fw-bold"> +</span></a>
+                <a href="{{ route('add-blog-page') }}" class="btn btn-primary mb-2 btn-rounded"
+                    style="transform: translateY(-28px); margin-left:25rem !important;"><span class="text-white fw-bold"> +</span></a>
             </div>
         </div>
     </div>
@@ -102,7 +124,8 @@
                                                     data-description="{{ $blog->description }}"
                                                     data-status="{{ $blog->status }}" onclick="editBlog(this)"> <i
                                                         class="fas fa-pencil-alt"></i></a>
-                                                <a data-blog-id="{{$blog->id}}" class="btn btn-danger shadow btn-xs sharp deleteBtn"><i
+                                                <a data-blog-id="{{ $blog->id }}"
+                                                    class="btn btn-danger shadow btn-xs sharp deleteBtn"><i
                                                         class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
@@ -197,7 +220,7 @@
     <script>
         $(document).ready(function() {
             $('#example3').DataTable({
-                dom: 'Bfrtip',
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
@@ -206,7 +229,8 @@
                         next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
-                }
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
         });
     </script>
@@ -237,6 +261,7 @@
                 });
             });
         });
+
         function deleteFAQ(faqId) {
             var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             var url = "{{ route('blog-delete', ':faqId') }}".replace(':faqId', faqId);

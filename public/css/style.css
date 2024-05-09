@@ -87,7 +87,7 @@
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 .gradient_one {
@@ -441,6 +441,12 @@ kbd {
     padding: 0;
     font-size: 1em;
     font-weight: 700; }
+
+    .deznav {
+      background: #295aa6 !important;
+      color: #fff !important;
+  }
+
 
 figure {
   margin: 0 0 1rem; }
@@ -12378,7 +12384,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
             width: auto;
             font-size: 1.5rem;
             padding: 0;
-            color: #969BA0; } }
+            color: #fff!important; } }
         @media only screen and (max-width: 1400px) {
           .deznav .metismenu > li a > i {
             margin-right: 0.5rem; } }
@@ -12386,7 +12392,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
         font-weight: 400;
         display: inline-block;
         font-size: 1.125rem;
-        color: #9fa4a6; }
+        color: #fff; }
         .deznav .metismenu > li > a i {
           height: 3.1875rem;
           width: 3.1875rem;
@@ -12473,7 +12479,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       display: block;
       padding: 0.625rem 1.875rem;
       outline-width: 0;
-      color: #9fa4a6;
+      color: #fff;
       text-decoration: none; }
       @media only screen and (max-width: 767px) {
         .deznav .metismenu a {
@@ -12554,7 +12560,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .copyright {
   padding: 0 1.875rem;
-  color: #9fa4a6;
+  color: #fff;
   margin-top: 1.875rem; }
   .copyright p {
     font-size: 0.75rem; }
@@ -12785,7 +12791,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 /*
@@ -12986,7 +12992,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 @media only screen and (min-width: 48rem) {
@@ -13213,7 +13219,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 @media (min-width: 64rem) {
@@ -18699,7 +18705,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="transparent"] {
@@ -18826,7 +18832,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="dark"] {
@@ -20634,7 +20640,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 /* input[type="checkbox"] {
@@ -21111,7 +21117,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 /*
@@ -21360,7 +21366,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 .clipboard-btn {
@@ -21405,7 +21411,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 .twitter-typeahead {
@@ -21458,7 +21464,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 .noUi-target {
@@ -29549,7 +29555,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   --rgba-primary-8: rgba(253, 104, 62, 0.8);
   --rgba-primary-9: rgba(253, 104, 62, 0.9);
   --font-family-base: Roboto, sans-serif;
-  --font-family-title:  Roboto, sans-serif;
+  --font-family-title: Roboto, sans-serif;
   --title: #000; }
 
 [data-theme-version="dark"] {

@@ -24,24 +24,77 @@
                 margin-left: 50rem !important;
             }
 
-            .dt-paging {
-                margin-left: 66rem !important;
-                margin-bottom: 1rem !important;
+            .dt-search label,input {
+            transform: translateY(-30px);
+        }
+
+        .dt-paging.paging_full_numbers {
+            float: right;
+            margin-top: 5px;    
+        }
+
+        .dt-button {
+            background: #FD683E !important;
+            padding: .7rem !important;
+            color: #fff !important;
+            border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,label{
+            margin-top: 6px;
+        }
+
+            .statusSwitch {
+                --s: 20px;
+                /* adjust this to control the size*/
+
+                height: calc(var(--s) + var(--s)/5);
+                width: auto;
+                /* some browsers need this */
+                aspect-ratio: 2.25;
+                border-radius: var(--s);
+                margin: calc(var(--s)/2);
+                display: grid;
+                cursor: pointer;
+                background-color: #ff7a7a;
+                box-sizing: content-box;
+                overflow: hidden;
+                transition: .3s .1s;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
             }
 
-            .dt-button {
-                background: #FD683E !important;
-                padding: .7rem !important;
-                color: #fff !important;
-                border-radius: 1.125rem !important;
+            .statusSwitch:before {
+                content: "";
+                padding: calc(var(--s)/10);
+                --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+                background:
+                    var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                    var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                    #fff;
+                mix-blend-mode: darken;
+                filter: blur(calc(var(--s)/12)) contrast(11);
+                transition: .4s, background-position .4s .1s,
+                    padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+            }
+
+            .statusSwitch:checked {
+                background-color: #85ff7a;
+            }
+
+            .statusSwitch:checked:before {
+                padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+                --_p: 100%;
+                --_i: 1;
             }
         </style>
     @endsection
     @section('content')
-        <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <div class="mt-3 mb-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
             <h2 class="mb-3 me-auto">All FAQs</h2>
         </div>
-        <div class="mb-5 justify-content-between align-items-center mb-4">
+        <div class="justify-content-between align-items-center">
             <div class="row">
                 <div class="col-md-7">
                     <div class=" align-items-center">
@@ -59,8 +112,10 @@
                                         value="{{ $end ?? '' }}">
                                 </div>
                                 <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                    style="right:135px; bottom: 2px;">Apply</button>
-                                <a href="{{ route('faq-index') }}" class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                    style="right:135px; bottom: 28px;">Apply</button>
+                                <a href="{{ route('faq-index') }}"
+                                    class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                        class="fas fa-sync"></i></a>
                             </form>
                         </div>
                     </div>
@@ -68,7 +123,7 @@
                 <div class="col-md-1">
                     <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="modal"
                         data-bs-target="#basicModal2"
-                        style="margin-left:25rem !important;width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
+                        style="transform: translateY(-28px); margin-left:25rem !important;width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
                 </div>
             </div>
         </div>
@@ -100,10 +155,8 @@
                                             <td>{{ $faq->title }}</td>
                                             <td>{{ $faq->description }}</td>
                                             <td>
-                                                <input type="checkbox" class="statusSwitch"
-                                                    {{ $faq->status == '1' ? 'checked' : '' }} data-toggle="switchbutton"
-                                                    data-onlabel="Show" data-offlabel="Hide" data-onstyle="success"
-                                                    data-offstyle="danger" data-faq-id="{{ $faq->id }}">
+                                                <input style="transform: translateY(0px);" class="statusSwitch" {{ $faq->status == '1' ? 'checked' : '' }}
+                                                    data-faq-id="{{ $faq->id }}" type="checkbox">
                                             </td>
                                             <td>
                                                 <div class="d-flex">
@@ -111,16 +164,15 @@
                                                         data-bs-toggle="modal" data-bs-target="#basicModal"><i
                                                             data-faq-id="{{ $faq->id }}"
                                                             class="fas fa-pencil-alt editBtn"></i></a>
-                                                    <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
+                                                    {{-- <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
                                                         data-faq-id="{{ $faq->id }}"><i
-                                                            class="fa fa-trash "></i></button>
+                                                            class="fa fa-trash "></i></button> --}}
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -194,7 +246,7 @@
         <script>
             $(document).ready(function() {
                 $('#example3').DataTable({
-                    dom: 'Bfrtip', // Add buttons to the DOM
+                    dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                     ],
@@ -203,7 +255,8 @@
                             next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                             previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                         }
-                    }
+                    },
+                    lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
                 });
             });
             document.getElementById("saveFAQBtn").addEventListener("click", function() {

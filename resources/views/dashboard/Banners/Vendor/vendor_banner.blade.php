@@ -5,12 +5,14 @@
             margin-left: 50rem !important;
         }
 
-        .dt-paging {
-            margin-bottom: 1rem !important;
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
         }
 
         .dt-paging.paging_full_numbers {
             float: right;
+            margin-top: 5px;
         }
 
         .dt-button {
@@ -18,6 +20,11 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,
+        label {
+            margin-top: 6px;
         }
     </style>
 @endsection
@@ -30,13 +37,25 @@
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <input type="date" id="startDate" class="form-control input-primary-active shadow-sm">
-                        <input type="date" id="endDate" class="form-control input-primary-active shadow-sm">
-                        <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                            style=" right:135px;
-                               bottom: 2px;">Apply</button>
-                        <button class="btn btn-primary position-absolute " onclick="clearFilter()"
-                            style=" right:46px;bottom: 2px;"><i class="fas fa-sync" aria-hidden="true"></i></button>
+                        <form action="{{ route('filter-vendor-banner') }}" method="post">
+                            @csrf
+                            <div>
+                                <input type="date" name="startDate" id="startDate"
+                                    class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $start ?? '' }}">
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" id="endDate"
+                                    class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $end ?? '' }}">
+                            </div>
+                            <input type="hidden" name="for" value="{{ $name }}">
+                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
+                                style="right:135px; bottom: 28px;">Apply</button>
+                            <a href="{{ route('vendor-banner', $name) }}"
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                    class="fas fa-sync"></i></a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -61,7 +80,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr data-banner-id="{{$user->id}}">
+                                    <tr data-banner-id="{{ $user->id }}">
                                         <td style="text-align: center;">{{ $loop->iteration }}</td>
                                         <td style="text-align: center;">
                                             {{ $user->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
@@ -71,9 +90,10 @@
                                             {{ $user->updated_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $user->updated_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
-                                        <td style="text-align: center;"><a href="{{ asset($user->banner) }}" target="_blank"
-                                                rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                                    src="{{ asset($user->banner) }}" alt=""></a></td>
+                                        <td style="text-align: center;"><a href="{{ asset($user->banner) }}"
+                                                target="_blank" rel="noopener noreferrer"><img class="rounded-circle"
+                                                    width="35" src="{{ asset($user->banner) }}" alt=""></a>
+                                        </td>
                                         <td style="text-align: center;">{{ $user->for }}</td>
                                         <td>
                                             <select class="form-select border-dark fw-bold statusSwitch"
@@ -153,7 +173,7 @@
     <script>
         $(document).ready(function() {
             $('#example3').DataTable({
-                dom: 'Bfrtip',
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
@@ -162,7 +182,8 @@
                         next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
-                }
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
         });
     </script>

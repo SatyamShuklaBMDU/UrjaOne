@@ -23,22 +23,7 @@
             color: #ffffff;
             /* Change to the desired color */
         }
-
-        .switch-on {
-            margin: -7px !important;
-            left: -16px !important;
-        }
-
-        .switch-off {
-            margin: -7px !important;
-            left: 58% !important;
-        }
-
-        .switch {
-            width: 80px !important;
-            height: 30px !important;
-        }
-
+        
         div.dt-container .dt-length,
         div.dt-container .dt-search,
         div.dt-container .dt-info,
@@ -48,15 +33,17 @@
         }
 
         .dt-search label {
-            margin-left: 53rem !important;
+            margin-left: 50rem !important;
         }
 
-        .dt-search {
-            margin-top: 1rem !important;
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
         }
 
         .dt-paging.paging_full_numbers {
             float: right;
+            margin-top: 5px;
         }
 
         .dt-button {
@@ -64,6 +51,11 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,
+        label {
+            margin-top: 6px;
         }
 
         .statusSwitch {
@@ -137,9 +129,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                                type="submit" style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('user-profile') }}" class="btn btn-primary position-absolute "
-                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                onclick="clearFilter()" style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
@@ -157,63 +149,65 @@
     </div>
     <div class="row">
         <div class="col-xl-12 card">
-            <div class="table-responsive">
-                <table class="display mb-2 text-black pt-4" id="userTable" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>S No.</th>
-                            <th>Prof Img</th>
-                            <th>CIN No</th>
-                            <th>Join Date</th>
-                            <th>Name</th>
-                            <th>Phone-Number</th>
-                            <th>Email</th>
-                            <th>Category</th>
-                            {{-- <th>Pin Code</th> --}}
-                            {{-- <th>State</th>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="display mb-2 text-black pt-4" id="userTable" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>S No.</th>
+                                <th>Prof Img</th>
+                                <th>CIN No</th>
+                                <th>Join Date</th>
+                                <th>Name</th>
+                                <th>Phone-Number</th>
+                                <th>Email</th>
+                                <th>Category</th>
+                                {{-- <th>Pin Code</th> --}}
+                                {{-- <th>State</th>
                             <th>City</th>
                             <th>Address</th>
                             <th>Coordinates</th> --}}
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($customers as $customer)
-                            <tr data-customer-id="{{ $customer->id }}">
-                                <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                <td style="text-align: center;"><a href="{{ asset($customer->photo) }}" target="_blank"
-                                        rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                            src="{{ asset($customer->photo) }}" alt="No"></a></td>
-                                <td style="text-align: center;">{{ $customer->cin_no }}</td>
-                                <td style="text-align: center;" class="wspace-no">
-                                    {{ $customer->created_at->format('d/m/y') }}</td>
-                                <td style="text-align: center;">{{ $customer->name }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->phone_number }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->email }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $customer->category }}</td>
-                                {{-- <td style="text-align: center;" class="text-ov">{{ $customer->pincode }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->state }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->city }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->address }}</td> --}}
-                                {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
-                                <td>
-                                    <div class="d-flex">
-                                        {{-- <button class="btn btn-primary view-more-btn" data-toggle="modal" data-target="#customerDetailsModal">View More</button> --}}
-                                        <div class="view-more-btn"><i
-                                                style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
-                                                class="fas fa-eye"></i></div>
-                                        {{-- <input type="checkbox" class="statusSwitch"
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($customers as $customer)
+                                <tr data-customer-id="{{ $customer->id }}">
+                                    <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                    <td style="text-align: center;"><a href="{{ asset($customer->photo) }}" target="_blank"
+                                            rel="noopener noreferrer"><img class="rounded-circle" width="35"
+                                                src="{{ asset($customer->photo) }}" alt="No"></a></td>
+                                    <td style="text-align: center;">{{ $customer->cin_no }}</td>
+                                    <td style="text-align: center;" class="wspace-no">
+                                        {{ $customer->created_at->format('d/m/y') }}</td>
+                                    <td style="text-align: center;">{{ $customer->name }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $customer->phone_number }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $customer->email }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $customer->category }}</td>
+                                    {{-- <td style="text-align: center;" class="text-ov">{{ $customer->pincode }}</td> --}}
+                                    {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->state }}</td> --}}
+                                    {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->city }}</td> --}}
+                                    {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->address }}</td> --}}
+                                    {{-- <td style="text-align: justify;" class="text-ov">{{ $customer->coordinates }}</td> --}}
+                                    <td>
+                                        <div class="d-flex">
+                                            {{-- <button class="btn btn-primary view-more-btn" data-toggle="modal" data-target="#customerDetailsModal">View More</button> --}}
+                                            <div class="view-more-btn"><i
+                                                    style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
+                                                    class="fas fa-eye"></i></div>
+                                            {{-- <input type="checkbox" class="statusSwitch"
                                             {{ $customer->status === 'active' ? 'checked' : '' }}
                                             data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Block"
                                             data-onstyle="success" data-offstyle="danger"> --}}
-                                        <input class="statusSwitch" {{ $customer->status === 'active' ? 'checked' : '' }}
-                                            type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                            <input class="statusSwitch" style="transform: translateY(0px);"
+                                                {{ $customer->status === 'active' ? 'checked' : '' }} type="checkbox">
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {{-- {{ $customers->links() }} --}}
         </div>
@@ -246,12 +240,17 @@
     <script>
         $(document).ready(function() {
             $('#userTable').DataTable({
-                dom: 'Bfrtip', // Add buttons to the DOM
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
-                lengthChange: false,
-                // paginate: false,
+                language: {
+                    paginate: {
+                        next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                        previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
+                    }
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
         });
     </script>

@@ -15,9 +15,13 @@
             margin-left: 50rem !important;
         }
 
-        .dt-paging {
-            margin-left: 66rem !important;
-            margin-bottom: 1rem !important;
+        .dt-search label,input {
+            transform: translateY(-30px);
+        }
+
+        .dt-paging.paging_full_numbers {
+            float: right;
+            margin-top: 5px;    
         }
 
         .dt-button {
@@ -25,6 +29,10 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,label{
+            margin-top: 6px;
         }
     </style>
 @endsection
@@ -52,9 +60,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 2px;">Apply</button>
+                                style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('customer-feedback') }}" class="btn btn-primary position-absolute"
-                                style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
@@ -69,44 +77,45 @@
                         <table id="example3" class="display" style="min-width: 845px">
                             <thead>
                                 <tr>
-                                    <th>Sr NO.</th>
-                                    <th>Created Date, <br> Time</th>
-                                    <th>CIN No</th>
-                                    <th>Mobile No</th>
-                                    <th>User Name</th>
-                                    <th>Feedback <br> Image</th>
-                                    <th>Feedback Message</th>
-                                    <th>Replied Date, <br> Time</th>
-                                    <th>Reply</th>
+                                    <th style="text-align: center;">Sr NO.</th>
+                                    <th style="text-align: center;">Created Date, <br> Time</th>
+                                    <th style="text-align: center;">CIN No</th>
+                                    <th style="text-align: center;">Mobile No</th>
+                                    <th style="text-align: center;">User Name</th>
+                                    <th style="text-align: center;">Feedback <br> Image</th>
+                                    <th style="text-align: center;">Feedback Message</th>
+                                    <th style="text-align: center;">Replied Date, <br> Time</th>
+                                    <th style="text-align: center;">Reply</th>
                                     {{-- <th>Status</th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($userFeedback as $uf)
-                                <tr data-feedback-id="{{ $uf->id }}">
-                                    <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center;">
-                                        {{ $uf->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                        {{ $uf->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
-                                    </td>
-                                    <td style="text-align: center;">{{ $uf->customer->cin_no }}</td>
-                                    <td style="text-align: center;">{{ $uf->customer->phone_number }}</td>
-                                    <td style="text-align: center;">{{ $uf->customer->name }}</td>
-                                    <td style="text-align: center;"><a href="{{ asset($uf->image) }}" target="_blank"
-                                            rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                                src="{{ asset($uf->image) }}" alt="No"></a></td>
-                                    <td style="text-align: center;"><a href="javascript:void(0);"><strong>{{ $uf->message }}</strong></a></td>
-                                    <td style="text-align: center;">
-                                        @if ($uf->reply_datetime)
-                                            {{ $uf->reply_datetime->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                            {{ $uf->reply_datetime->timezone('Asia/Kolkata')->format('h:i A') }}
-                                        @endif
-                                    </td>
-                                    <td style="text-align: center;" class="reply-message"><a
-                                            href="javascript:void(0);"><strong>{{ $uf->reply ?? '--' }}</strong></a>
-                                    </td>
-                                    {{-- <td>
+                                    <tr data-feedback-id="{{ $uf->id }}">
+                                        <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                        <td style="text-align: center;">
+                                            {{ $uf->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
+                                            {{ $uf->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
+                                        </td>
+                                        <td style="text-align: center;">{{ $uf->customer->cin_no }}</td>
+                                        <td style="text-align: center;">{{ $uf->customer->phone_number }}</td>
+                                        <td style="text-align: center;">{{ $uf->customer->name }}</td>
+                                        <td style="text-align: center;"><a href="{{ asset($uf->image) }}" target="_blank"
+                                                rel="noopener noreferrer"><img class="rounded-circle" width="35"
+                                                    src="{{ asset($uf->image) }}" alt="No"></a></td>
+                                        <td style="text-align: center;"><a
+                                                href="javascript:void(0);"><strong>{{ $uf->message }}</strong></a></td>
+                                        <td style="text-align: center;">
+                                            @if ($uf->reply_datetime)
+                                                {{ $uf->reply_datetime->timezone('Asia/Kolkata')->format('d F Y') }}<br>
+                                                {{ $uf->reply_datetime->timezone('Asia/Kolkata')->format('h:i A') }}
+                                            @endif
+                                        </td>
+                                        <td style="text-align: center;" class="reply-message"><a
+                                                href="javascript:void(0);"><strong>{{ $uf->reply ?? '--' }}</strong></a>
+                                        </td>
+                                        {{-- <td>
                                         <select name="status" id="status" class="custom-select bg-success">
                                             <option value="confirm" {{ $uf->status == 'confirm' ? 'selected' : '' }}
                                                 class="text-success">Confirm</option>
@@ -114,19 +123,19 @@
                                                 class="text-warning">Follow</option>
                                         </select>
                                     </td> --}}
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="#" class="btn btn-primary shadow btn-1x sharp me-1 reply-btn"
-                                                data-feedback-id="{{ $uf->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#basicModal">Reply
-                                            </a>
-                                            <a href="#"
-                                                class="btn btn-primary shadow btn-1x sharp me-1 edit-reply-btn"
-                                                data-bs-toggle="modal" data-bs-target="#editReplyModal"
-                                                data-feedback-id="{{ $uf->id }}"><i class="fas fa-edit"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        <td>
+                                            <div class="d-flex">
+                                                <a href="#" class="btn btn-primary shadow btn-1x sharp me-1 reply-btn"
+                                                    data-feedback-id="{{ $uf->id }}" data-bs-toggle="modal"
+                                                    data-bs-target="#basicModal">Reply
+                                                </a>
+                                                {{-- <a href="#"
+                                                    class="btn btn-primary shadow btn-1x sharp me-1 edit-reply-btn"
+                                                    data-bs-toggle="modal" data-bs-target="#editReplyModal"
+                                                    data-feedback-id="{{ $uf->id }}"><i class="fas fa-edit"></i></a> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -187,9 +196,20 @@
 @endsection
 @section('script')
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const replyButtons = document.querySelectorAll('.reply-btn');
+            replyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const feedbackId = this.getAttribute('data-feedback-id');
+                    document.getElementById('feedbackId').value = feedbackId;
+                });
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             $('#example3').DataTable({
-                dom: 'Bfrtip', // Add buttons to the DOM
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
@@ -198,13 +218,9 @@
                         next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
-                }
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
-            $('.reply-btn').click(function() {
-                var feedbackId = $(this).data('feedback-id');
-                $('#feedbackId').val(feedbackId);
-            });
-
             $('#sendReply').click(function() {
                 var replyMessage = $('#replyMessage').val();
                 var feedbackId = $('#feedbackId').val();

@@ -15,16 +15,23 @@
             margin-left: 50rem !important;
         }
 
-        .dt-paging {
-            margin-left: 66rem !important;
-            margin-bottom: 1rem !important;
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
         }
-
+        .dt-paging.paging_full_numbers {
+            float: right;
+            margin-top: 5px;
+        }
         .dt-button {
             background: #FD683E !important;
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
+        }
+        .dt-length select,
+        label {
+            margin-top: 6px;
         }
     </style>
 @endsection
@@ -50,9 +57,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                                type="submit" style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('customer-complaint') }}" class="btn btn-primary position-absolute "
-                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                onclick="clearFilter()" style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
 
@@ -68,16 +75,16 @@
                         <table id="example3" class="display" style="min-width: 845px">
                             <thead>
                                 <tr>
-                                    <th>Sr NO.</th>
-                                    <th>Created Date, <br> Time</th>
-                                    <th>CIN No</th>
-                                    <th>Mobile No</th>
-                                    <th>User Name</th>
-                                    <th>Complaint Message</th>
-                                    <th>Replied Date, <br> Time</th>
-                                    <th>Reply</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th style="text-align: center;">Sr NO.</th>
+                                    <th style="text-align: center;">Created Date, <br> Time</th>
+                                    <th style="text-align: center;">CIN No</th>
+                                    <th style="text-align: center;">Mobile No</th>
+                                    <th style="text-align: center;">User Name</th>
+                                    <th style="text-align: center;">Complaint Message</th>
+                                    <th style="text-align: center;">Replied Date, <br> Time</th>
+                                    <th style="text-align: center;">Reply</th>
+                                    <th style="text-align: center;">Status</th>
+                                    <th style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,10 +123,10 @@
                                                     data-complaint-id="{{ $vc->id }}" data-bs-toggle="modal"
                                                     data-bs-target="#basicModal">Reply
                                                 </a>
-                                                <a href="#"
+                                                {{-- <a href="#"
                                                     class="btn btn-primary shadow btn-1x sharp me-1 edit-reply-btn"
                                                     data-bs-toggle="modal" data-bs-target="#editReplyModal"
-                                                    data-complaint-id="{{ $vc->id }}"><i class="fas fa-edit"></i></a>
+                                                    data-complaint-id="{{ $vc->id }}"><i class="fas fa-edit"></i></a> --}}
                                             </div>
                                         </td>
                                     </tr>
@@ -183,9 +190,20 @@
 @endsection
 @section('script')
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const replyButtons = document.querySelectorAll('.reply-btn');
+            replyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const complaintId = this.getAttribute('data-complaint-id');
+                    document.getElementById('complaintId').value = complaintId;
+                });
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             $('#example3').DataTable({
-                dom: 'Bfrtip', // Add buttons to the DOM
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
                 ],
@@ -194,7 +212,8 @@
                         next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
-                }
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
             $('.reply-btn').click(function() {
                 var complaintId = $(this).data('complaint-id');

@@ -6,8 +6,7 @@
             <!-- Modal -->
             <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="modal"
                 data-bs-target="#basicModal2"
-                style="width: 85px; height: 40px; text-align: center; font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height: normal;">+
-                Add</a>
+                style="width: 85px; height: 40px; text-align: center; font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height: normal;">+</a>
         </div>
     </div>
     <div class="justify-content-between align-items-center mb-5">
@@ -15,13 +14,13 @@
             <div class="col-md-12 d-flex">
                 <div class="col-md-3">
                     <div class="align-items-center">
-                        <a href="{{ route('vendor-banner', 'Home') }}" class="btn btn-primary mb-2 btn-rounded"><span
+                        <a href="{{ route('vendor-banner', 'Home') }}" class="btn btn-primary mb-2 btn-rounded" style="width: 150px; height: 50px;font-size: 15px;box-shadow: 2px 10px 9px 0px #00000063 !important;"><span
                                 class="text-white fw-bold"> Home Banner</span></a>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="align-items-center">
-                        <a href="{{ route('vendor-banner', 'About') }}" class="btn btn-primary mb-2 btn-rounded"><span
+                        <a href="{{ route('vendor-banner', 'About') }}" class="btn btn-primary mb-2 btn-rounded" style="width: 150px; height: 50px;font-size: 15px;box-shadow: 2px 10px 9px 0px #00000063 !important;"><span
                                 class="text-white fw-bold"> About Banner</span></a>
                     </div>
                 </div>

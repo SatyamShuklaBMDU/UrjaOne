@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->post('/vendor-logout', [VendorController::cla
 // Blog API
 Route::get('get-blogs', [BlogController::class, 'index'])->middleware('auth:sanctum');
 // Route::get('get-blogs', [BlogController::class, 'index']);
+
 // Route for Blogs Like and Views
 Route::post('blogs/{id}/views', [BlogController::class, 'incrementViews']);
 Route::post('blogs/{id}/likes', [BlogController::class, 'incrementLikes']);

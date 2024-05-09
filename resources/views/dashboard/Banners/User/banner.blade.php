@@ -30,7 +30,7 @@
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-vendor-banner') }}" method="post">
+                        <form action="{{ route('filter-banner') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -44,9 +44,9 @@
                             </div>
                             <input type="hidden" name="for" value="{{ $name }}">
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 2px;">Apply</button>
+                                style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('user-banner', $name) }}"
-                                class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
                     </div>

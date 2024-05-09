@@ -9,7 +9,7 @@ class VendorFeedbackController extends Controller
 {
     public function index()
     {
-        $vendorFeedback = VendorFeedback::all();
+        $vendorFeedback = VendorFeedback::latest()->get();
         return view('dashboard.Feedbacks.VendorFeedback', compact('vendorFeedback'));
     }
     public function replyTofeedback(Request $request)

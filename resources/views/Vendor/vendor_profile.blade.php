@@ -48,21 +48,29 @@
         }
 
         .dt-search label {
-            margin-left: 53rem !important;
+            margin-left: 50rem !important;
         }
 
-        .dt-paging {
-            margin-bottom: 1rem !important;
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
         }
 
         .dt-paging.paging_full_numbers {
             float: right;
+            margin-top: 5px;
         }
+
         .dt-button {
             background: #FD683E !important;
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
+        }
+
+        .dt-length select,
+        label {
+            margin-top: 6px;
         }
 
         .statusSwitch {
@@ -108,16 +116,16 @@
             padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
             --_p: 100%;
             --_i: 1;
-        }   
+        }
     </style>
 @endsection
 @section('content')
-    <div class="mt-5 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+    <div class="mt-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
         <h2 class="mb-3 me-auto">Vendor Profile</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-5">
+    <div class="justify-content-between align-items-center mb-3">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -135,9 +143,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 2px;">Apply</button>
+                                style="right:135px; bottom: 28px;">Apply</button>
                             <a href="{{ route('vendor-profile') }}" class="btn btn-primary position-absolute "
-                                style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
 
@@ -158,66 +166,69 @@
     </div>
     <div class="row">
         <div class="col-xl-12 card">
-            <div class="table-responsive">
-                <table class="table display mb-4 dataTablesCard order-table card-table text-black" id="example7">
-                    <thead>
-                        <tr>
-                            <th>S No.</th>
-                            <th>Prof Img</th>
-                            <th>CIN No</th>
-                            <th>Join Date</th>
-                            <th>Company</th>
-                            <th>Name</th>
-                            <th>Phone-Number</th>
-                            <th>Email</th>
-                            {{-- <th>Category</th>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table display mb-4 dataTablesCard order-table card-table text-black" id="example7">
+                        <thead>
+                            <tr>
+                                <th>S No.</th>
+                                <th>Prof Img</th>
+                                <th>CIN No</th>
+                                <th>Join Date</th>
+                                <th>Company</th>
+                                <th>Name</th>
+                                <th>Phone-Number</th>
+                                <th>Email</th>
+                                {{-- <th>Category</th>
                             <th>Pin Code</th>
                             <th>State</th>
                             <th>City</th>
                             <th>Address</th>
                             <th>Coordinates</th> --}}
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($vendors as $vendor)
-                            <tr data-vendor-id={{ $vendor->id }}>
-                                <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                <td style="text-align: center;"><a href="{{ $vendor->photo }}" target="_blank"
-                                        rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                            src="{{ $vendor->photo }}" alt></a></td>
-                                <td style="text-align: center;">{{ $vendor->cin_no }}</td>
-                                <td style="text-align: center;" class="wspace-no">{{ $vendor->created_at->format('d/m/y') }}
-                                </td>
-                                <td style="text-align: center;">{{ $vendor->company_name }}</td>
-                                <td style="text-align: center;">{{ $vendor->name }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $vendor->phone_number }}</td>
-                                <td style="text-align: center;" class="text-ov">{{ $vendor->email }}</td>
-                                {{-- <td class="text-ov">{{$vendor->category}}</td>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($vendors as $vendor)
+                                <tr data-vendor-id={{ $vendor->id }}>
+                                    <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                    <td style="text-align: center;"><a href="{{ $vendor->photo }}" target="_blank"
+                                            rel="noopener noreferrer"><img class="rounded-circle" width="35"
+                                                src="{{ $vendor->photo }}" alt></a></td>
+                                    <td style="text-align: center;">{{ $vendor->cin_no }}</td>
+                                    <td style="text-align: center;" class="wspace-no">
+                                        {{ $vendor->created_at->format('d/m/y') }}
+                                    </td>
+                                    <td style="text-align: center;">{{ $vendor->company_name }}</td>
+                                    <td style="text-align: center;">{{ $vendor->name }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $vendor->phone_number }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $vendor->email }}</td>
+                                    {{-- <td class="text-ov">{{$vendor->category}}</td>
                             <td class="text-ov">{{$vendor->pincode}}</td>
                             <td class="text-ov">{{$vendor->city}}</td>
                             <td class="text-ov">{{$vendor->state}}</td>
                             <td class="text-ov">{{$vendor->address}}</td>
                             <td class="text-ov">{{$vendor->coordinates}}</td> --}}
-                                <td>
-                                    <div class="d-flex">
-                                        <div class="eyeViewMore"><i
-                                                style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
-                                                class="fas fa-eye"></i></div>
-                                        <a style="padding-right: 10px;margin-top:7px;cursor: pointer;"
-                                            href="{{ route('image-verification', encrypt($vendor->id)) }}">KYC</a>
-                                        <input class="statusSwitch" {{ $vendor->status === 'active' ? 'checked' : '' }}
-                                            type="checkbox">
-                                        {{-- <input type="checkbox" class="statusSwitch"
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="eyeViewMore"><i
+                                                    style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
+                                                    class="fas fa-eye"></i></div>
+                                            <a style="padding-right: 10px;margin-top:7px;cursor: pointer;"
+                                                href="{{ route('image-verification', encrypt($vendor->id)) }}">KYC</a>
+                                            <input class="statusSwitch" style="transform: translateY(0px);" {{ $vendor->status === 'active' ? 'checked' : '' }}
+                                                type="checkbox">
+                                            {{-- <input type="checkbox" class="statusSwitch"
                                             {{ $vendor->status === 'active' ? 'checked' : '' }} data-toggle="switchbutton"
                                             data-onlabel="Active" data-offlabel="Block" data-onstyle="success"
                                             data-offstyle="danger"> --}}
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -248,24 +259,19 @@
 @section('script')
     <script>
         $(document).ready(function() {
-                $('#example7').DataTable({
-                    dom: 'Bfrtip', // Add buttons to the DOM
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
-                    ],
-                    searching: true,
-                    paging: true,
-                    select: true,
-                    info: true,
-                    lengthChange: true,
-                    language: {
-                        "lengthMenu": "<span class='menu-spacing'>_MENU_</span> Per Page",
-                        paginate: {
-                            previous: '<i class="fas fa-angle-double-left"></i>',
-                            next: '<i class="fas fa-angle-double-right"></i>'
-                        }
+            $('#example7').DataTable({
+                dom: '<"top"Blf>rtp<"bottom"i><"clear">', // Structure the DOM elements with div wrappers
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print' // Define which buttons to display
+                ],
+                language: {
+                    paginate: {
+                        next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                        previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
-                });
+                },
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+            });
             $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');
                 var customerId = currentRow.data('vendor-id');

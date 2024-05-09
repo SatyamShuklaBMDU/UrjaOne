@@ -9,7 +9,7 @@ class VendorComplaintController extends Controller
 {
     public function index()
     {
-        $vendorComplaints = VendorComplaint::all();
+        $vendorComplaints = VendorComplaint::latest()->get();
         return view('dashboard.Complaints.VendorComplaint', compact('vendorComplaints'));
     }
     public function replyToComplaint(Request $request)

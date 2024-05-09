@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::latest()->get();
         return view('Users.user_profile',compact('customers'));
     }
     public function filterdata(Request $request)

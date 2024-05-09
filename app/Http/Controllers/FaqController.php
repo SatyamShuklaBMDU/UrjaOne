@@ -9,7 +9,7 @@ class FaqController extends Controller
 {
     public function index()
     {
-        $faqs = Faq::all();
+        $faqs = Faq::latest()->get();
         return view('dashboard.faq', compact('faqs'));
     }
     public function store(Request $request)
