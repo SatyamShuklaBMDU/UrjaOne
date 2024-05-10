@@ -41,10 +41,10 @@
     </style>
 @endsection
 @section('content')
-    <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">All Blog</h2>
+    <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <h2 class="mb-2 me-auto">All Blog</h2>
     </div>
-    <div class="justify-content-between align-items-center mb-3">
+    <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -72,7 +72,8 @@
             </div>
             <div class="col-md-1">
                 <a href="{{ route('add-blog-page') }}" class="btn btn-primary mb-2 btn-rounded"
-                    style="transform: translateY(-28px); margin-left:25rem !important;"><span class="text-white fw-bold"> +</span></a>
+                    style="transform: translateY(-28px); margin-left:25rem !important;"><span class="text-white fw-bold">
+                        +</span></a>
             </div>
         </div>
     </div>
@@ -109,7 +110,12 @@
                                         <td><a href="{{ $blog->image }}" target="_blank" rel="noopener noreferrer"><img
                                                     class="rounded-circle" width="35"
                                                     src="{{ asset($blog->image) }}"alt=""></a></td>
-                                        <td><a href="javascript:void(0);"><strong>{!! $blog->description !!}</strong></a></td>
+                                        <td>
+                                            <a href="#" data-bs-toggle="tooltip"
+                                                title="{{ strip_tags($blog->description) }}" data-placement="top">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 50) }}
+                                            </a>
+                                        </td>
                                         <td><a href="javascript:void(0);"><strong>{{ $blog->status }}</strong></a></td>
                                         <td class="text-dark fw-bold"><i class="fa fa-eye text-success fw-bold"></i>
                                             {{ $blog->views }}</td>
@@ -167,7 +173,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="ckeditor" class="form-label text-dark fw-bold h5">Blog Description</label>
-                            <textarea name="description" class="form-control border-dark" id="blogDescription" rows="3"
+                            <textarea name="description" class="form-control border-dark" id="blogDescriptionEditor" rows="3"
                                 placeholder="Enter Blog Description"></textarea>
                         </div>
                         <div class="mb-3">
@@ -190,7 +196,7 @@
 @section('script')
     <script>
         $('.editModal').on('shown.bs.modal', function() {
-            CKEDITOR.replace('blogDescription');
+            $('#blogDescriptionEditor').summernote(); // Initialize Summernote for blog description
         });
     </script>
     <script>
@@ -203,17 +209,8 @@
             document.getElementById('blogTitle').value = blogTitle;
             document.getElementById('blogCategory').value = blogCategory;
             document.getElementById('blogId').value = blogId;
-            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.blogDescription) {
-                CKEDITOR.instances.blogDescription.setData(blogDescription);
-            } else {
-                CKEDITOR.replace('blogDescription', {
-                    on: {
-                        instanceReady: function(evt) {
-                            CKEDITOR.instances.blogDescription.setData(blogDescription);
-                        }
-                    }
-                });
-            }
+
+            $('#blogDescriptionEditor').summernote('code', blogDescription); // Populate Summernote editor
             document.getElementById('blogStatus').value = blogStatus;
         }
     </script>

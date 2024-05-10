@@ -60,25 +60,39 @@
     </style>
 @endsection
 @section('content')
-    <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">All Roles</h2>
+    <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <h2 class="mb-2 me-auto">All Roles</h2>
     </div>
-    <div class="justify-content-between align-items-center mb-4">
+    <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <input type="date" id="startDate" class="form-control input-primary-active shadow-sm border-dark">
-                        <input type="date" id="endDate"
-                            class="form-control input-primary-active shadow-sm border-dark">
-                        <button class="btn btn-primary position-absolute btn-rounded" onclick="filterByDate()"
-                            style="right:135px;bottom: 28px;">Apply</button>
+                        <form action="{{ route('filter-role') }}" method="post">
+                            @csrf
+                            <div>
+                                <input type="date" name="startDate" id="startDate"
+                                    class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $start ?? '' }}">
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" id="endDate"
+                                    class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $end ?? '' }}">
+                            </div>
+                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
+                                style="right:135px; bottom: 28px;">Apply</button>
+                            <a href="{{ route('all-role') }}"
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                    class="fas fa-sync"></i></a>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('add-role') }}" class="btn btn-primary mb-2 btn-rounded"><span
-                        class="text-white fw-bold"> +</span></a>
+                <a href="{{ route('add-role') }}" class="btn btn-primary mb-2 btn-rounded"
+                    style="margin-left: 27rem;margin-top:-2rem;"><span class="text-white fw-bold">
+                        +</span></a>
             </div>
         </div>
     </div>
@@ -118,11 +132,12 @@
                                         <td>{{ $permissionsFormatted }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-primary shadow btn-xs sharp me-1 edit-role"
-                                                    data-bs-toggle="modal" data-bs-target="#basicModal"
-                                                    data-id="{{ $role->id }}"><i class="fas fa-pencil-alt"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp"><i
-                                                        class="fa fa-trash"></i></a>
+                                                <a href="{{ route('roles.edit', encrypt($role->id)) }}"
+                                                    class="btn btn-primary shadow btn-xs sharp me-1"><i
+                                                        class="fas fa-pencil-alt"></i></a>
+                                                <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
+                                                    data-role-id="{{ $role->id }}"><i
+                                                        class="fa fa-trash "></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -131,121 +146,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="editRoleModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title h2">Edit Admin</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form class="" action="{{ route('update-roles') }}" method="POST">
-                    <div class="modal-body">
-                        @csrf
-                        <input type="hidden" id="edit_role_id" name="role_id">
-                        <div class="mb-3">
-                            <label for="role" class="form-label text-dark fw-bold h5">Role</label>
-                            <input type="text" name="role" class="form-control border-dark" id="edit_role_name"
-                                placeholder="Enter Role">
-                            <small class="text-primary h6">(e.g., Manager)</small>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-dark fw-bold h4">Assign Modules</label><br>
-                            <!-- Your checkboxes for module assignment here -->
-                            <div class="form-check d-flex">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="all"
-                                    name="permissions[]" id="selectAllModules">
-                                <label class="form-check-label text-dark fw-bold h6" for="selectAllModules">
-                                    All
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Profile"
-                                    name="permissions[]" id="profile">
-                                <label class="form-check-label text-dark fw-bold h6" for="profile">
-                                    Profile
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Enquiry"
-                                    name="permissions[]" id="enquiry">
-                                <label class="form-check-label text-dark fw-bold h6" for="enquiry">
-                                    Enquiry
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Quotation"
-                                    name="permissions[]" id="quotations">
-                                <label class="form-check-label text-dark fw-bold h6" for="quotations">
-                                    Quotations
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Feedback"
-                                    name="permissions[]" id="feedback">
-                                <label class="form-check-label text-dark fw-bold h6" for="feedback">
-                                    Feedback
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Complaints"
-                                    name="permissions[]" id="complaints">
-                                <label class="form-check-label text-dark fw-bold h6" for="complaints">
-                                    Complaints
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label text-dark fw-bold h6" for="faqs">
-                                    FAQs
-                                </label>
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Faqs"
-                                    name="permissions[]" id="faqs">
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox"
-                                    value="Notification" name="permissions[]" id="notification">
-                                <label class="form-check-label text-dark fw-bold h6" for="notification">
-                                    Notification
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Blogs"
-                                    name="permissions[]" id="blogs">
-                                <label class="form-check-label text-dark fw-bold h6" for="blogs">
-                                    Blogs
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Banner"
-                                    name="permissions[]" id="bannerManage">
-                                <label class="form-check-label text-dark fw-bold h6" for="bannerManage">
-                                    Banner Manage
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Plans"
-                                    name="permissions[]" id="plans">
-                                <label class="form-check-label text-dark fw-bold h6" for="plans">
-                                    Subscription Plans
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value="Payment"
-                                    name="permissions[]" id="paymentHistory">
-                                <label class="form-check-label text-dark fw-bold h6" for="paymentHistory">
-                                    Payment History
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -298,5 +198,64 @@
         @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.deleteBtn').forEach(function(deleteButton) {
+                deleteButton.addEventListener('click', function() {
+                    var roleId = this.dataset.roleId;
+                    swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will not be able to recover this Role!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            deleteFAQ(roleId);
+                        }
+                    });
+                });
+            });
+        });
+
+        function deleteFAQ(roleId) {
+            var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            var url = "{{ route('role-delete', ':roleId') }}".replace(':roleId', roleId);
+            fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete Role');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    swal.fire({
+                        title: 'Deleted!',
+                        text: 'The Role has been deleted.',
+                        icon: 'success',
+                        timer: 2000
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to delete Role.',
+                        icon: 'error'
+                    });
+                });
+        }
     </script>
 @endsection

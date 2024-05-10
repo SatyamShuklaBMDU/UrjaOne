@@ -1,8 +1,8 @@
 @extends('include.master')
 @section('content')
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-md-4 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-            <h2 class="mb-3 me-auto">Add Blog</h2>
+            <h2 class="mb-2 me-auto">Add Blog</h2>
 
         </div>
         <div class="col-md-5"></div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="blogImage" class="form-label text-dark fw-bold h5">Blog Discription</label>
-                        <textarea id="ckeditor" name="description"></textarea>
+                        <textarea id="summernote" name="description"></textarea>
                         <small class="text-primary h6">(max 500 characters)</small>
                     </div>
                     <div class="mb-3">
@@ -65,7 +65,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            CKEDITOR.replace('ckeditor');
+            $('#summernote').summernote();
         });
     </script>
 @endsection

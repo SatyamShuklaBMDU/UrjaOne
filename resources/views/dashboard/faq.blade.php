@@ -91,8 +91,8 @@
         </style>
     @endsection
     @section('content')
-        <div class="mt-3 mb-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-            <h2 class="mb-3 me-auto">All FAQs</h2>
+        <div class="mt-2 mb-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+            <h2 class="mb-2 me-auto">All FAQs</h2>
         </div>
         <div class="justify-content-between align-items-center">
             <div class="row">

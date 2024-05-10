@@ -111,6 +111,7 @@ class VendorController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
         }
+        // dd($request->all());
         $images = $request->file('images');
         $titles = $request->titles;
         $numbers = $request->numbers;

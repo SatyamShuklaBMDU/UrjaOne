@@ -105,24 +105,37 @@
     </style>
 @endsection
 @section('content')
-    <div class="mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">All Admin</h2>
+    <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <h2 class="mb-2 me-auto">All Admin</h2>
     </div>
-    <div class="justify-content-between align-items-center mb-4">
+    <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <input type="date" id="startDate" class="form-control input-primary-active shadow-sm border-dark">
-                        <input type="date" id="endDate"
-                            class="form-control input-primary-active shadow-sm border-dark">
-                        <button class="btn btn-primary position-absolute btn-rounded" onclick="filterByDate()"
-                            style="right:135px;bottom: 28px;">Apply</button>
+                        <form action="{{ route('filter-admin') }}" method="post">
+                            @csrf
+                            <div>
+                                <input type="date" name="startDate" id="startDate"
+                                    class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $start ?? '' }}">
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" id="endDate"
+                                    class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $end ?? '' }}">
+                            </div>
+                            <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
+                                style="right:135px; bottom: 28px;">Apply</button>
+                            <a href="{{ route('admin-page') }}"
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                    class="fas fa-sync"></i></a>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('add-admin') }}" class="btn btn-primary mb-2 btn-rounded"><span
+                <a href="{{ route('add-admin') }}" class="btn btn-primary mb-2 btn-rounded" style="margin-left: 27rem;margin-top:-2rem;"><span
                         class="text-white fw-bold"> +</span></a>
             </div>
         </div>
@@ -140,31 +153,42 @@
                                     <th style="text-align: center;">Name</th>
                                     <th style="text-align: center;">Email</th>
                                     <th style="text-align: center;">Roles</th>
-                                    {{-- <th style="text-align: center;">Status</th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td style="text-align: center;">
                                             {{ $user->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $user->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
-                                        <td>{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td><a href="javascript:void(0);"><strong>{{$user->roles->role}}</strong></a></td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>
+                                            <select class="form-select ChangeRole" data-user-id="{{ $user->id }}"
+                                                aria-label="Default select example">
+                                                <option selected>Choose Role</option>
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}"
+                                                        {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->role }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
                                         {{-- <td>
                                             <input class="statusSwitch" {{ $user-}} style="transform: translateY(0px);" type="checkbox">
                                         </td> --}}
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"
-                                                    data-bs-toggle="modal" data-bs-target="#basicModal"><i
-                                                        class="fas fa-pencil-alt"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp"><i
-                                                        class="fa fa-trash"></i></a>
+                                                <a href="#"
+                                                    class="btn btn-primary shadow btn-xs sharp me-1 edit-admin"
+                                                    data-bs-toggle="modal" data-bs-target="#basicModal"
+                                                    data-id="{{ $user->id }}"><i class="fas fa-pencil-alt"></i></a>
+                                                <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
+                                                    data-user-id="{{ $user->id }}"><i
+                                                        class="fa fa-trash "></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -177,54 +201,47 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="basicModal">
+    <div class="modal fade" id="editAdminModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title h2">Edit Admin</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <form class="">
+                <form action="{{ route('update-admins') }}" method="POST">
+                    <div class="modal-body">
+                        @csrf
+                        <input type="hidden" name="id" value="" id="admin_id">
                         <div class="mb-3">
                             <label for="name" class="form-label text-dark fw-bold h5">Name</label>
-                            <input type="text" class="form-control border-dark" id="name" placeholder="Enter Name">
+                            <input type="text" class="form-control border-dark" id="name" name="name"
+                                placeholder="Enter Name">
                             <small class="text-primary h6">(e.g., John Doe)</small>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label text-dark fw-bold h5">Email</label>
-                            <input type="email" class="form-control border-dark" id="email" placeholder="Enter Email">
+                            <input type="email" class="form-control border-dark" id="email" name="email"
+                                placeholder="Enter Email">
                             <small class="text-primary h6">(e.g., example@example.com)</small>
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label text-dark fw-bold h5">Role</label>
-                            <input type="text" class="form-control border-dark" id="roles" placeholder="Enter Role">
-                            <small class="text-primary h6">(e.g., admin, user, dashboard)</small>
+                            <label for="number" class="form-label text-dark fw-bold h5">Phone Number</label>
+                            <input type="number" class="form-control border-dark" id="number" name="number"
+                                placeholder="Enter Phone Number">
+                            <small class="text-primary h6">(e.g., example@example.com)</small>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label text-dark fw-bold h5">Create Password</label>
-                            <input type="password" class="form-control border-dark" id="password"
+                            <input type="password" class="form-control border-dark" id="password" name="password"
                                 placeholder="Create Password">
                             <small class="text-primary h6">(minimum 8 characters)</small>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label text-dark fw-bold h4">Assign Modules</label><br>
-                            <!-- Your checkboxes for module assignment here -->
-                            <div class="form-check-inline">
-                                <input class="form-check-input border-primary fw-bold" type="checkbox" value=""
-                                    id="enquiry">
-                                <label class="form-check-label text-dark fw-bold h6" for="enquiry">
-                                    Enquiry
-                                </label>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -246,5 +263,132 @@
                 lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.ChangeRole').forEach(select => {
+                select.addEventListener('change', function() {
+                    const userId = this.dataset.userId;
+                    const roleId = this.value;
+                    fetch('{{ url('change-role') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure CSRF token is correctly passed
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                user_id: userId,
+                                role_id: roleId
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Updated!',
+                                text: 'User role has been updated successfully.'
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!'
+                            });
+                        });
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.edit-admin').click(function() {
+                var admin_id = $(this).data('id');
+                var url = '{{ route('admins.edit', ':id') }}';
+                url = url.replace(':id', admin_id);
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#admin_id').val(response.id);
+                        $('#name').val(response.name);
+                        $('#email').val(response.email);
+                        $('#number').val(response.phone_number);
+                        $('#editAdminModal').modal('show');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.deleteBtn').forEach(function(deleteButton) {
+                deleteButton.addEventListener('click', function() {
+                    var userId = this.dataset.userId;
+                    swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will not be able to recover this User!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            deleteFAQ(userId);
+                        }
+                    });
+                });
+            });
+        });
+
+        function deleteFAQ(userId) {
+            var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            var url = "{{ route('user-delete', ':userId') }}".replace(':userId', userId);
+            fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete FAQ');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    swal.fire({
+                        title: 'Deleted!',
+                        text: 'The User has been deleted.',
+                        icon: 'success',
+                        timer: 2000
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to delete FAQ.',
+                        icon: 'error'
+                    });
+                });
+        }
     </script>
 @endsection

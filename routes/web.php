@@ -6,7 +6,9 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CustomerComplaintController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerFeedbackController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -32,10 +34,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -116,14 +115,27 @@ Route::middleware('auth')->group(function () {
     Route::get('add-admin', [AdminController::class, 'Addindex'])->name('add-admin');
     Route::post('/admins', [AdminController::class, 'store'])->name('admins.store');
     Route::get('/admins/{id}/edit', [AdminController::class, 'edit'])->name('admins.edit');
-    Route::patch('/admins/{id}', [AdminController::class, 'update'])->name('admins.update');
+    Route::post('update-admins', [AdminController::class, 'update'])->name('update-admins');
+    Route::post('/change-role', [AdminController::class, 'updateUserRole']);
+    Route::post('filter-admin', [AdminController::class, 'filterdata'])->name('filter-admin');
+    Route::delete('/user/delete/{id}', [AdminController::class, 'delete'])->name('user-delete');
 
     // Role Route
     Route::get('all-role', [RoleController::class, 'index'])->name('all-role');
     Route::get('add-role', [RoleController::class, 'addRole'])->name('add-role');
     Route::post('store-role', [RoleController::class, 'store'])->name('store-role');
-    Route::post('update-role', [RoleController::class, 'update'])->name('update-roles');
+    Route::post('update-role/{id}', [RoleController::class, 'update'])->name('update-roles');
+    Route::post('filter-role', [RoleController::class, 'filterdata'])->name('filter-role');
     Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::delete('/role/delete/{id}', [RoleController::class, 'delete'])->name('role-delete');
+
+    // Notification Route
+    Route::get('show-notification', [NotificationController::class, 'index'])->name('show-notification');
+    Route::post('/notifications', [NotificationController::class, 'store'])->name('notifications.store');
+    Route::post('/notifications-update', [NotificationController::class, 'update'])->name('notifications.update');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.destroy');
+    Route::get('/notification/{id}/edit', [NotificationController::class, 'edit'])->name('notifications.edit');
+    Route::post('filter-notification', [NotificationController::class, 'filterdata'])->name('filter-notification');
 });
 Route::get('clear', function () {
     Artisan::call('optimize:clear');

@@ -120,12 +120,12 @@
     </style>
 @endsection
 @section('content')
-    <div class="mt-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-3 me-auto">Vendor Profile</h2>
+    <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
+        <h2 class="mb-2 me-auto">Vendor Profile</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-3">
+    <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">

@@ -15,7 +15,7 @@ class VendorFeedbackController extends Controller
         try {
             $validate = Validator::make($request->all(), [
                 'message' => 'required|string',
-                'image' => 'required|mimes:jpg,jpeg,png',
+                'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
             if ($validate->fails()) {
                 return response()->json([
@@ -32,7 +32,7 @@ class VendorFeedbackController extends Controller
             $data = VendorFeedback::create([
                 'message' => $request->message,
                 'vendor_id' => Auth::id(),
-                'image' => $photoRelativePath,
+                'image' => $photoRelativePath??'',
             ]);
             return response()->json([
                 'status' => true,

@@ -11,7 +11,7 @@
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div class="menu">
                                 <span class="font-w500 fs-16 d-block mb-2">Total Users</span>
-                                <h2>459</h2>
+                                <h2>{{$user}}</h2>
                             </div>
                             <div class="d-inline-block position-relative donut-chart-sale">
                                 <span class="donut1"
@@ -54,7 +54,7 @@
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div class="menu">
                                 <span class="font-w500 fs-16 d-block mb-2">Total Complaints</span>
-                                <h2>247</h2>
+                                <h2>{{$complaint}}</h2>
                             </div>
                             <div class="d-inline-block position-relative donut-chart-sale">
                                 <span class="donut1"
@@ -75,7 +75,7 @@
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div class="menu">
                                 <span class="font-w500 fs-16 d-block mb-2">Total Feedback</span>
-                                <h2>872</h2>
+                                <h2>{{$feedback}}</h2>
                             </div>
                             <div class="d-inline-block position-relative donut-chart-sale">
                                 <span class="donut1"

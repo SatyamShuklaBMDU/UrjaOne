@@ -15,7 +15,7 @@ class CustomerComplaintController extends Controller
         try {
             $validator = FacadesValidator::make($request->all(), [
                 'message' => 'required|string',
-                'image' => 'required|mimes:jpg,jpeg,png',
+                'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
             if ($validator->fails()) {
                 return response()->json(['status' => false, $validator->errors()]);
@@ -28,7 +28,7 @@ class CustomerComplaintController extends Controller
             $data = UserComplaint::create([
                 'message' => $request->message,
                 'customer_id' => Auth::id(),
-                'image' => $photoRelativePath,
+                'image' => $photoRelativePath??'',
             ]);
             return response()->json([
                 'status' => true,

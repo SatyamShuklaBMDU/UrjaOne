@@ -1,5 +1,5 @@
 <div class="nav-header">
-    <a href="index.php" class="brand-logo">
+    <a href="{{Route('dashboard')}}" class="brand-logo">
         <!-- <img class="logo-abbr" src="images/logo-full.png"> -->
         <img class="brand-title" src="{{asset('images/Final_UrjaOne_Logo.png')}}">
     </a>
@@ -14,16 +14,9 @@
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
-                    <div class="nav-item">
-                        <div class="input-group search-area">
-                            <input type="text" class="form-control" placeholder="Search here">
-                            <span class="input-group-text"><a href="javascript:void(0)">
-                                    <i class="flaticon-381-search-2"></i></a></span>
-                        </div>
-                    </div>
                 </div>
                 <ul class="navbar-nav header-right">
-                    <li class="nav-item dropdown notification_dropdown">
+                    {{-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link  ai-icon" href="javascript:void(0);" role="button"
                             data-bs-toggle="dropdown">
                             <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
@@ -110,7 +103,7 @@
                             <a class="all-notification" href="javascript:void(0);">See all
                                 notifications <i class="ti-arrow-end"></i></a>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown  header-profile">
                         <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="{{ asset('images/avatar/profile-1.jpg') }}" width="56" alt />
