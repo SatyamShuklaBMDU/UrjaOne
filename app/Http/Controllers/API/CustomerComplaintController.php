@@ -18,18 +18,26 @@ class CustomerComplaintController extends Controller
                 'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
             if ($validator->fails()) {
-                return response()->json(['status' => false, $validator->errors()]);
+                $response = ['status' => false];
+                foreach ($validator->errors()->toArray() as $field => $messages) {
+                    $response[$field] = $messages[0];
+                }
+                return response()->json($response);
             }
+
+            $photoRelativePath = '';
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $photoFileName = uniqid() . '.' . $request->image->extension();
                 $photoPath = $request->file('image')->move(public_path('Complaint/customer/'), $photoFileName);
                 $photoRelativePath = 'Complaint/customer/' . $photoFileName;
             }
+
             $data = UserComplaint::create([
                 'message' => $request->message,
                 'customer_id' => Auth::id(),
-                'image' => $photoRelativePath??'',
+                'image' => $photoRelativePath,
             ]);
+
             return response()->json([
                 'status' => true,
                 'code' => 200,

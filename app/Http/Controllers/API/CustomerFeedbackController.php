@@ -13,16 +13,16 @@ class CustomerFeedbackController extends Controller
     public function store(Request $request)
     {
         try {
-            $validate = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'message' => 'required|string',
                 'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
-            if ($validate->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'code' => 400,
-                    'errors' => $validate->messages(),
-                ]);
+            if ($validator->fails()) {
+                $response = ['status' => false];
+                foreach ($validator->errors()->toArray() as $field => $messages) {
+                    $response[$field] = $messages[0];
+                }
+                return response()->json($response);
             }
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $photoFileName = uniqid() . '.' . $request->image->extension();
@@ -32,7 +32,7 @@ class CustomerFeedbackController extends Controller
             $data = CustomerFeedback::create([
                 'message' => $request->message,
                 'customer_id' => Auth::id(),
-                'image' => $photoRelativePath??'',
+                'image' => $photoRelativePath ?? '',
             ]);
             return response()->json([
                 'status' => true,

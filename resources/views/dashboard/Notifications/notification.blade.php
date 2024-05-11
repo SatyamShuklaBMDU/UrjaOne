@@ -143,7 +143,7 @@
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Sr NO.</th>
-                                    <th style="text-align: center;">Created Date, <br> Time</th>
+                                    <th style="text-align: center;">Created <br> Date, Time</th>
                                     <th style="text-align: center;">Title</th>
                                     <th style="text-align: center;">Messgae </th>
                                     <th style="text-align: center;">Image</th>
@@ -160,12 +160,10 @@
                                             {{ $notification->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
                                         <td style="text-align: center;">{{ $notification->title }}</td>
-                                        <td style="text-align: center;"><a
-                                                href="javascript:void(0);"><strong>{{ $notification->description }}</strong></a>
-                                        </td>
-                                        <td style="text-align: center;"><a href="{{ $notification->image }}"
+                                        <td style="text-align: center;">{{ $notification->description }}</td>
+                                        <td style="text-align: center;"><a href="{{ asset($notification->image) }}"
                                                 target="_blank" rel="noopener noreferrer"><img class="rounded-circle"
-                                                    width="35" src="{{ $notification->image }}" alt=""></a>
+                                                    width="35" src="{{ asset($notification->image) }}" alt=""></a>
                                         </td>
                                         <td style="text-align: center;">{{ $notification->for }}</td>
                                         <td style="text-align: center;">
@@ -203,7 +201,12 @@
                             <label for="for" class="form-label text-dark fw-bold h5">Select Options</label>
                             <div class="form-check">
                                 <input class="form-check-input" style="transform: translateY(0px);" type="radio"
-                                    name="for" id="userOption" value="user" checked>
+                                    name="for" id="bothOption" value="both">
+                                <label class="form-check-label" for="bothOption">Both</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" style="transform: translateY(0px);" type="radio"
+                                    name="for" id="userOption" value="user">
                                 <label class="form-check-label" for="userOption">User</label>
                             </div>
                             <div class="form-check">
@@ -253,6 +256,11 @@
                         <input type="hidden" name="id" id="notifyId">
                         <div class="mb-3">
                             <label for="notificationType" class="form-label text-dark fw-bold h5">Select Options</label>
+                            <div class="form-check">
+                                <input class="form-check-input" style="transform: translateY(0px);" type="radio"
+                                    name="for" id="bothOption" value="both" data-for="both">
+                                <label class="form-check-label" for="bothOption">Both</label>
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" style="transform: translateY(0px);" type="radio"
                                     name="for" id="userOption" value="user" data-for="user">

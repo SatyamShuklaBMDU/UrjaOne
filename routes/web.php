@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerComplaintController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerFeedbackController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
@@ -136,6 +137,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.destroy');
     Route::get('/notification/{id}/edit', [NotificationController::class, 'edit'])->name('notifications.edit');
     Route::post('filter-notification', [NotificationController::class, 'filterdata'])->name('filter-notification');
+
+    // Enquiry Route
+    Route::get('get-enquiry-page',[EnquiryController::class,'index'])->name('get-enquiry-page');
+    Route::get('/enquiry-details/{id}', [EnquiryController::class,'getEnquiryDetails']);
+    Route::post('filter-enquiry', [EnquiryController::class, 'filterdata'])->name('filter-enquiry');
 });
 Route::get('clear', function () {
     Artisan::call('optimize:clear');

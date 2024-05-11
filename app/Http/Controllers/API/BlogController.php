@@ -18,7 +18,7 @@ class BlogController extends Controller
             if ($blog->image !== null) {
                 $blog->image = $baseUrl . $blog->image;
             }
-            $blog->description = strip_tags($blog->description);
+            $blog->description = $blog->description;
         }
         return response()->json(['status' => true, 'Blogs' => $blogs]);
     }

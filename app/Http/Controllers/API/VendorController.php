@@ -55,7 +55,7 @@ class VendorController extends Controller
 
             // Generate API token
             $token = $user->createToken('AuthToken')->plainTextToken;
-            return response()->json(['status' => true, 'Message' => 'Login Successful', 'token' => $token], 200);
+            return response()->json(['status' => true, 'message' => 'Login Successful', 'token' => $token], 200);
         } else {
             return response()->json(['status' => false, 'message' => 'Unauthorized'], 401);
         }

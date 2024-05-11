@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('category');
             $table->string('image')->nullable();
-            $table->text('description');
+            $table->longText('description');
             $table->string('status')->default('Draft');
             $table->bigInteger('views')->default(0);
             $table->bigInteger('likes')->default(0);

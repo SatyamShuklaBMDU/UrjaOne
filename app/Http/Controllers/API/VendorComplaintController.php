@@ -18,7 +18,11 @@ class VendorComplaintController extends Controller
                 'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
             if ($validator->fails()) {
-                return response()->json(['status' => false, $validator->errors()]);
+                $response = ['status' => false];
+                foreach ($validator->errors()->toArray() as $field => $messages) {
+                    $response[$field] = $messages[0];
+                }
+                return response()->json($response);
             }
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $photoFileName = uniqid() . '.' . $request->image->extension();
@@ -28,7 +32,7 @@ class VendorComplaintController extends Controller
             $data = VendorComplaint::create([
                 'message' => $request->message,
                 'vendor_id' => Auth::id(),
-                'image' => $photoRelativePath??'',
+                'image' => $photoRelativePath ?? '',
             ]);
             return response()->json([
                 'status' => true,

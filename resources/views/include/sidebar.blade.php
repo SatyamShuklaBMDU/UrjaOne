@@ -28,19 +28,19 @@
                 <!-- Enquiry menu -->
                 @if (in_array('Enquiry', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
                     <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                            <i class="flaticon-086-star"></i>
+							<i class="fa-regular fa-circle-question"></i>
                             <span class="nav-text">Enquiry </span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">User</a></li>
-                            <li><a href="#">Vendor</a></li>
+                            <li><a href="{{route('get-enquiry-page')}}">User</a></li>
+                            {{-- <li><a href="#">Vendor</a></li> --}}
                         </ul>
                     </li>
                 @endif
                 <!-- Quotations menu -->
                 @if (in_array('Quotation', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
                     <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                            <i class="flaticon-045-heart"></i>
+							<i class="fa-solid fa-file-circle-check"></i>
                             <span class="nav-text">Quotations</span>
                         </a>
                         <ul aria-expanded="false">
@@ -52,7 +52,7 @@
                 <!-- Feedback menu -->
                 @if (in_array('Feedback', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
                     <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                            <i class="flaticon-072-printer"></i>
+						<i class="fa-solid fa-message"></i>
                             <span class="nav-text">Feedback </span>
                         </a>
                         <ul aria-expanded="false">
@@ -107,7 +107,7 @@
                 @if (in_array('Banner', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
                     <!-- next start -->
                     <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                            <i class="fa-solid fa-sheet-plastic fa-lg" style="color: #969ba0;"></i>
+						<i class="fa-solid fa-image"></i>
                             <span class="nav-text">Banner Manage</span>
                         </a>
                         <ul aria-expanded="false">
@@ -138,8 +138,8 @@
                 <!-- next start -->
                 @if (auth()->user()->role_id == $SuperRole->id)
                 <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                        <i class="fa-solid fa-credit-card fa-lg" style="color: #969ba0;"></i>
-                        <span class="nav-text">Manage Roles</span>
+                    <i class="fa-solid fa-users"></i>
+                    <span class="nav-text">Manage Roles</span>
                     </a>
                     <ul aria-expanded="false">
                         <li><a href="{{ route('all-role') }}">All Roles</a></li>
@@ -149,8 +149,8 @@
                 @endif
                 @if (auth()->user()->role_id == $SuperRole->id)
                 <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                        <i class="fa-solid fa-credit-card fa-lg" style="color: #969ba0;"></i>
-                        <span class="nav-text">Manage Admin</span>
+                    <i class="fa-solid fa-users"></i>
+                    <span class="nav-text">Manage Admin</span>
                     </a>
                     <ul aria-expanded="false">
                         <li><a href="{{ route('admin-page') }}">All Admin</a></li>

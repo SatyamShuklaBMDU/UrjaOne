@@ -5,7 +5,9 @@ use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\CustomerComplaintController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\CustomerFeedbackController;
+use App\Http\Controllers\API\EnquiryController;
 use App\Http\Controllers\API\faqController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\VendorBannerController;
 use App\Http\Controllers\API\VendorComplaintController;
 use App\Http\Controllers\API\VendorController;
@@ -65,4 +67,13 @@ Route::post('blogs/{id}/likes', [BlogController::class, 'incrementLikes']);
 Route::get('get-banners', [BannerController::class,'index']);
 Route::get('get-vendor-banners', [VendorBannerController::class,'index']);
 Route::get('get-about-banners', [BannerController::class,'Aboutindex']);
-Route::get('get-about-banners', [VendorBannerController::class,'Aboutindex']);
+Route::get('get-vendor-about-banners', [VendorBannerController::class,'Aboutindex']);
+
+// Notifications API
+Route::get('get-user-notifications', [NotificationController::class,'userfetch']);
+Route::get('get-vendor-notifications', [NotificationController::class,'vendorfetch']);
+
+// Enquiry API
+Route::post('store-enquiry',[EnquiryController::class,'store'])->middleware('auth:sanctum');
+Route::get('get-enquiry-all',[EnquiryController::class,'index'])->middleware('auth:sanctum');
+Route::get('get-enquiry/{id}',[EnquiryController::class,'fetchdetails'])->middleware('auth:sanctum');

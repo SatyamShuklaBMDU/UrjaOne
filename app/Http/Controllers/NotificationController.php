@@ -13,6 +13,7 @@ class NotificationController extends Controller
         $notifications = Notification::latest()->get();
         return view('dashboard.Notifications.notification', compact('notifications'));
     }
+    
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -79,6 +80,7 @@ class NotificationController extends Controller
         $notify->delete();
         return response()->json(['success' => true]);
     }
+
     public function filterdata(Request $request)
     {
         $request->validate([
@@ -90,5 +92,4 @@ class NotificationController extends Controller
         $notifications = Notification::whereBetween('created_at', [$startDate, $endDate])->get();
         return view('dashboard.Notifications.notification', ['notifications' => $notifications, 'start' => $startDate, 'end' => $endDate,]);
     }
-
 }
