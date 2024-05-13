@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Vendor;
 use App\Models\VendorRelatedImage;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,10 @@ class VendorController extends Controller
             'company_name' => $request->company_name,
             'password' => Hash::make('123456'),
             'cin_no' => $cin_no,
+        ]);
+        $wallet = Wallet::create([
+            'vendor_id' => $vendor->id,
+            'balance' => 0,
         ]);
         return response()->json(['status' => true, 'message' => 'Vendor registered successfully', 'vendor' => $vendor], 201);
     }

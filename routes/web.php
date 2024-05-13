@@ -10,12 +10,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorComplaintController;
 use App\Http\Controllers\VendorConrtoller;
 use App\Http\Controllers\VendorFeedbackController;
+use App\Http\Controllers\WalletController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -142,6 +144,18 @@ Route::middleware('auth')->group(function () {
     Route::get('get-enquiry-page',[EnquiryController::class,'index'])->name('get-enquiry-page');
     Route::get('/enquiry-details/{id}', [EnquiryController::class,'getEnquiryDetails']);
     Route::post('filter-enquiry', [EnquiryController::class, 'filterdata'])->name('filter-enquiry');
+
+    // Plans Route
+    Route::get('plans-page', [PlanController::class, 'index'])->name('plans-page');
+    Route::get('add-plans-page',[PlanController::class,'addplans'])->name('add-plans');
+    Route::post('store-plans',[PlanController::class,'store'])->name('store-plans');
+    Route::post('/update-plan-status', [PlanController::class, 'statuschange'])->name('update-plan-status');
+    Route::post('update-plans',[PlanController::class,'update'])->name('update-plans');
+    Route::delete('/plan/delete/{id}', [PlanController::class, 'delete'])->name('plan-delete');
+
+    // Wallet Route
+    Route::get('get-wallet',[WalletController::class,'index'])->name('get-wallet');
+    Route::post('filter-wallet', [WalletController::class, 'filterdata'])->name('filter-wallet');
 });
 Route::get('clear', function () {
     Artisan::call('optimize:clear');

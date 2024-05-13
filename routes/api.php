@@ -8,10 +8,12 @@ use App\Http\Controllers\API\CustomerFeedbackController;
 use App\Http\Controllers\API\EnquiryController;
 use App\Http\Controllers\API\faqController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\VendorBannerController;
 use App\Http\Controllers\API\VendorComplaintController;
 use App\Http\Controllers\API\VendorController;
 use App\Http\Controllers\API\VendorFeedbackController;
+use App\Http\Controllers\API\WalletControlller;
 use App\Http\Controllers\VendorConrtoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -77,3 +79,10 @@ Route::get('get-vendor-notifications', [NotificationController::class,'vendorfet
 Route::post('store-enquiry',[EnquiryController::class,'store'])->middleware('auth:sanctum');
 Route::get('get-enquiry-all',[EnquiryController::class,'index'])->middleware('auth:sanctum');
 Route::get('get-enquiry/{id}',[EnquiryController::class,'fetchdetails'])->middleware('auth:sanctum');
+
+// Wallet API
+Route::post('credit-wallet',[WalletControlller::class,'credit'])->middleware('auth:sanctum');
+Route::post('debit-wallet',[WalletControlller::class,'debit'])->middleware('auth:sanctum');
+
+// Plans API
+Route::get('get-plans',[PlanController::class,'index']);
