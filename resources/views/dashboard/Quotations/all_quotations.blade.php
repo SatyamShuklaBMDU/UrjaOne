@@ -36,6 +36,11 @@
             margin-left: 50rem !important;
         }
 
+        .dt-search label,
+        input {
+            transform: translateY(-30px);
+        }
+
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -48,27 +53,69 @@
             border-radius: 1.125rem !important;
         }
 
-        div.dt-container .dt-length {
-            display: none !important;
+        .dt-length select,
+        label {
+            margin-top: 6px;
         }
 
-        #userTable_length {
-            margin-top: 10px;
+        .statusSwitch {
+            --s: 20px;
+            /* adjust this to control the size*/
+
+            height: calc(var(--s) + var(--s)/5);
+            width: auto;
+            /* some browsers need this */
+            aspect-ratio: 2.25;
+            border-radius: var(--s);
+            margin: calc(var(--s)/2);
+            display: grid;
+            cursor: pointer;
+            background-color: #ff7a7a;
+            box-sizing: content-box;
+            overflow: hidden;
+            transition: .3s .1s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .statusSwitch:before {
+            content: "";
+            padding: calc(var(--s)/10);
+            --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+            background:
+                var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                #fff;
+            mix-blend-mode: darken;
+            filter: blur(calc(var(--s)/12)) contrast(11);
+            transition: .4s, background-position .4s .1s,
+                padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+        }
+
+        .statusSwitch:checked {
+            background-color: #85ff7a;
+        }
+
+        .statusSwitch:checked:before {
+            padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+            --_p: 100%;
+            --_i: 1;
         }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Enquiry</h2>
+        <h2 class="mb-2 me-auto">All Quotations</h2>
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-3">
+    <div class="justify-content-between align-items-center mb-1">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
-                    <div id="datePickerContainer">
+                    {{-- <div id="datePickerContainer">
                         <form action="{{ route('filter-enquiry') }}" method="post">
                             @csrf
                             <div>
@@ -82,13 +129,22 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('get-enquiry-page') }}" class="btn btn-primary position-absolute "
-                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                                type="submit" style="right:135px; bottom: 28px;">Apply</button>
+                            <a href="{{ route('get-quotation') }}" class="btn btn-primary position-absolute "
+                                onclick="clearFilter()" style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
                         </form>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
+            {{-- <div class="col-md-5 d-flex justify-content-end">
+                <div class="enquiry-search mb-sm-0 mb-3">
+                    <div class="input-group search-area">
+                        <input type="text" class="form-control" placeholder="Search here......">
+                        <span class="input-group-text"><a href="javascript:void(0)"><i
+                                    class="flaticon-381-search-2"></i></a></span>
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </div>
     <div class="row">
@@ -100,57 +156,43 @@
                             <tr>
                                 <th style="text-align: center;">S No.</th>
                                 <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Lead No</th>
+                                <th style="text-align: center;">Quotation No.</th>
                                 <th style="text-align: center;">CIN No</th>
                                 <th style="text-align: center;">Name</th>
-                                <th style="text-align: center;">State</th>
-                                <th style="text-align: center;">City</th>
                                 <th style="text-align: center;">Phone-Number</th>
-                                <th style="text-align: center;">Category</th>
-                                <th style="text-align: center;">Load <strong>(KW)</strong></th>
-                                <th style="text-align: center;">Quotations</th>
+                                <th style="text-align: center;">Price Per <strong>(KW)</strong></th>
+                                <th style="text-align: center;">Panel Warranty</th>
+                                <th style="text-align: center;">Inverter Warranty</th>
                                 <th style="text-align: center;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($enquiries as $enquiry)
-                                <tr data-enquiry-id="{{ $enquiry->id }}">
+                            @foreach ($quoatations as $enquiry)
+                                <tr data-quotation-id="{{ $enquiry->id }}">
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
                                     <td style="text-align: center;" class="wspace-no">
                                         {{ $enquiry->created_at->format('d/m/y') }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->lead_no }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->cin_no }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->name }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->state ?? '--' }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->city ?? '--' }}</td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->Customer->phone_number }}
+                                    <td style="text-align: center;">{{ $enquiry->quotation_no }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->vendor->cin_no }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->vendor->name }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->vendor->phone_number }}
                                     </td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->category }}</td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->plant_load }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->total_quotation ?? '--' }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->price_per_kw }}</td>
+                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->panel_warranty }}</td>
+                                    <td style="text-align: center;"><a href="">{{ $enquiry->inverter_warranty }}</a>
+                                    </td>
                                     <td style="text-align: center;">
                                         <div class="d-flex">
-                                            <div class="view-more-btn"><i
+                                            {{-- <div class="view-more-btn"><i
                                                     style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
                                                     class="fas fa-eye"
-                                                    onclick="fetchEnquiryDetails({{ $enquiry->id }})"></i></div>
+                                                    onclick="fetchEnquiryDetails({{ $enquiry->id }})"></i></div> --}}
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="dataTables_length" id="userTable_length">
-                        <label for="userTable_length">Show
-                            <select name="userTable_length" aria-controls="userTable" class="form-select form-select-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            entries
-                        </label>
-                    </div>
                 </div>
             </div>
             {{-- {{ $enquirys->links() }} --}}
@@ -194,11 +236,7 @@
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
                 },
-                lengthMenu: false, // Optional: specify the page length options
-            });
-            $('#userTable_length select').change(function() {
-                var length = $(this).val();
-                $('#userTable').DataTable().page.len(length).draw();
+                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
             });
         });
     </script>

@@ -48,6 +48,51 @@
             border-radius: 1.125rem !important;
         }
 
+      .statusSwitch {
+            --s: 20px;
+            /* adjust this to control the size*/
+
+            height: calc(var(--s) + var(--s)/5);
+            width: auto;
+            /* some browsers need this */
+            aspect-ratio: 2.25;
+            border-radius: var(--s);
+            margin: calc(var(--s)/2);
+            display: grid;
+            cursor: pointer;
+            background-color: #ff7a7a;
+            box-sizing: content-box;
+            overflow: hidden;
+            transition: .3s .1s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .statusSwitch:before {
+            content: "";
+            padding: calc(var(--s)/10);
+            --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+            background:
+                var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                #fff;
+            mix-blend-mode: darken;
+            filter: blur(calc(var(--s)/12)) contrast(11);
+            transition: .4s, background-position .4s .1s,
+                padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+        }
+
+        .statusSwitch:checked {
+            background-color: #85ff7a;
+        }
+
+        .statusSwitch:checked:before {
+            padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+            --_p: 100%;
+            --_i: 1;
+        }
+
         div.dt-container .dt-length {
             display: none !important;
         }
@@ -60,16 +105,15 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Enquiry</h2>
-
+        <h2 class="mb-2 me-auto">All Enquiries History</h2>
     </div>
 
-    <div class="justify-content-between align-items-center mb-3">
+    <div class="justify-content-between align-items-center mb-1">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-enquiry') }}" method="post">
+                        <form action="{{ route('filter-enquiry-history') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -83,12 +127,21 @@
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
                                 type="submit" style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('get-enquiry-page') }}" class="btn btn-primary position-absolute "
+                            <a href="{{ route('get-enquiry-history') }}" class="btn btn-primary position-absolute "
                                 onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
             </div>
+            {{-- <div class="col-md-5 d-flex justify-content-end">
+                <div class="enquiry-search mb-sm-0 mb-3">
+                    <div class="input-group search-area">
+                        <input type="text" class="form-control" placeholder="Search here......">
+                        <span class="input-group-text"><a href="javascript:void(0)"><i
+                                    class="flaticon-381-search-2"></i></a></span>
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </div>
     <div class="row">
@@ -103,11 +156,10 @@
                                 <th style="text-align: center;">Lead No</th>
                                 <th style="text-align: center;">CIN No</th>
                                 <th style="text-align: center;">Name</th>
-                                <th style="text-align: center;">State</th>
-                                <th style="text-align: center;">City</th>
                                 <th style="text-align: center;">Phone-Number</th>
                                 <th style="text-align: center;">Category</th>
                                 <th style="text-align: center;">Load <strong>(KW)</strong></th>
+                                <th style="text-align: center;">Final/Draft</th>
                                 <th style="text-align: center;">Quotations</th>
                                 <th style="text-align: center;">Action</th>
                             </tr>
@@ -121,12 +173,13 @@
                                     <td style="text-align: center;">{{ $enquiry->lead_no }}</td>
                                     <td style="text-align: center;">{{ $enquiry->Customer->cin_no }}</td>
                                     <td style="text-align: center;">{{ $enquiry->Customer->name }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->state ?? '--' }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->city ?? '--' }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->Customer->phone_number }}
                                     </td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->category }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->plant_load }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->status == 'draft' ? 'Draft' : 'Final' }}
+                                    </td>
+
                                     <td style="text-align: center;">{{ $enquiry->total_quotation ?? '--' }}</td>
                                     <td style="text-align: center;">
                                         <div class="d-flex">

@@ -50,12 +50,6 @@
         .dt-search label {
             margin-left: 50rem !important;
         }
-
-        .dt-search label,
-        input {
-            transform: translateY(-30px);
-        }
-
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -68,9 +62,12 @@
             border-radius: 1.125rem !important;
         }
 
-        .dt-length select,
-        label {
-            margin-top: 6px;
+        div.dt-container .dt-length {
+            display: none !important;
+        }
+
+        #userTable_length {
+            margin-top: 10px;
         }
 
         .statusSwitch {
@@ -125,7 +122,7 @@
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-2">
+    <div class="justify-content-between align-items-center mb-3">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -143,9 +140,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 28px;">Apply</button>
+                                style="right:135px; bottom: 2px;">Apply</button>
                             <a href="{{ route('vendor-profile') }}" class="btn btn-primary position-absolute "
-                                style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
+                                style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
 
@@ -216,8 +213,8 @@
                                                     class="fas fa-eye"></i></div>
                                             <a style="padding-right: 10px;margin-top:7px;cursor: pointer;"
                                                 href="{{ route('image-verification', encrypt($vendor->id)) }}">KYC</a>
-                                            <input class="statusSwitch" style="transform: translateY(0px);" {{ $vendor->status === 'active' ? 'checked' : '' }}
-                                                type="checkbox">
+                                            <input class="statusSwitch" style="transform: translateY(0px);"
+                                                {{ $vendor->status === 'active' ? 'checked' : '' }} type="checkbox">
                                             {{-- <input type="checkbox" class="statusSwitch"
                                             {{ $vendor->status === 'active' ? 'checked' : '' }} data-toggle="switchbutton"
                                             data-onlabel="Active" data-offlabel="Block" data-onstyle="success"
@@ -228,6 +225,17 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="dataTables_length" id="example7_length">
+                        <label for="example7_length">Show
+                            <select name="example7_length" aria-controls="example7" class="form-select form-select-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            entries
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,7 +278,11 @@
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
                 },
-                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+                // lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+            });
+            $('#example7_length select').change(function() {
+                var length = $(this).val();
+                $('#example7').DataTable().page.len(length).draw();
             });
             $('.eyeViewMore').on('click', function() {
                 var currentRow = $(this).closest('tr');

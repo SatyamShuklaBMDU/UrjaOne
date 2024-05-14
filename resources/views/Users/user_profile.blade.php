@@ -23,7 +23,7 @@
             color: #ffffff;
             /* Change to the desired color */
         }
-        
+
         div.dt-container .dt-length,
         div.dt-container .dt-search,
         div.dt-container .dt-info,
@@ -36,10 +36,10 @@
             margin-left: 50rem !important;
         }
 
-        .dt-search label,
+        /* .dt-search label,
         input {
             transform: translateY(-30px);
-        }
+        } */
 
         .dt-paging.paging_full_numbers {
             float: right;
@@ -51,11 +51,6 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
-        }
-
-        .dt-length select,
-        label {
-            margin-top: 6px;
         }
 
         .statusSwitch {
@@ -102,6 +97,12 @@
             --_p: 100%;
             --_i: 1;
         }
+        div.dt-container .dt-length{
+            display: none !important;
+        }
+        #userTable_length{
+            margin-top: 10px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 @endsection
@@ -111,7 +112,7 @@
 
     </div>
 
-    <div class="justify-content-between align-items-center mb-1">
+    <div class="justify-content-between align-items-center mb-4">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
@@ -129,9 +130,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
-                                type="submit" style="right:135px; bottom: 28px;">Apply</button>
+                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
                             <a href="{{ route('user-profile') }}" class="btn btn-primary position-absolute "
-                                onclick="clearFilter()" style="right:46px; bottom: 28px;"><i class="fas fa-sync"></i></a>
+                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
@@ -207,6 +208,17 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="dataTables_length" id="userTable_length">
+                        <label for="userTable_length">Show
+                            <select name="userTable_length" aria-controls="userTable" class="form-select form-select-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            entries
+                        </label>
+                    </div>
                 </div>
             </div>
             {{-- {{ $customers->links() }} --}}
@@ -250,7 +262,11 @@
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
                 },
-                lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+                lengthMenu: false,
+            });
+            $('#userTable_length select').change(function() {
+                var length = $(this).val();
+                $('#userTable').DataTable().page.len(length).draw();
             });
         });
     </script>

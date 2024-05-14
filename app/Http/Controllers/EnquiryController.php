@@ -14,6 +14,11 @@ class EnquiryController extends Controller
         return view('dashboard.Enquiry.enquiry', compact('enquiries'));
     }
 
+    public function draftIndex()
+    {
+        $enquiries = Enquiry::latest()->get();
+        return view('dashboard.History.enquiry_history', compact('enquiries'));
+    }
     public function getEnquiryDetails($id)
     {
         $enquiry = Enquiry::findOrFail($id);
@@ -43,7 +48,18 @@ class EnquiryController extends Controller
         ]);
         $startDate = $request->startDate;
         $endDate = $request->endDate;
-        $enquiries = Enquiry::whereBetween('created_at', [$startDate, $endDate])->get();
+        $enquiries = Enquiry::where('status', 'submit')->whereBetween('created_at', [$startDate, $endDate])->get();
         return view('dashboard.Enquiry.enquiry', ['enquiries' => $enquiries, 'start' => $startDate, 'end' => $endDate]);
+    }
+    public function filterenquiryHistory(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $enquiries = Enquiry::whereBetween('created_at', [$startDate, $endDate])->get();
+        return view('dashboard.History.enquiry_history', ['enquiries' => $enquiries, 'start' => $startDate, 'end' => $endDate]);
     }
 }

@@ -36,11 +36,6 @@
             margin-left: 50rem !important;
         }
 
-        .dt-search label,
-        input {
-            transform: translateY(-30px);
-        }
-
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -51,11 +46,6 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
-        }
-
-        .dt-length select,
-        label {
-            margin-top: 6px;
         }
 
         .statusSwitch {
@@ -102,6 +92,14 @@
             --_p: 100%;
             --_i: 1;
         }
+
+        div.dt-container .dt-length {
+            display: none !important;
+        }
+
+        #userTable_length {
+            margin-top: 10px;
+        }
     </style>
 @endsection
 @section('content')
@@ -126,9 +124,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 28px;">Apply</button>
+                                style="right:135px; bottom: 2px;">Apply</button>
                             <a href="{{ route('get-wallet') }}"
-                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
                     </div>
@@ -146,7 +144,7 @@
                                 <tr>
                                     <th style="text-align: center;">Sr NO.</th>
                                     <th style="text-align: center;">Created Date, <br> Time</th>
-                                    <th style="text-align: center;">Updated Date, <br> Time</th>
+                                    {{-- <th style="text-align: center;">Updated Date, <br> Time</th> --}}
                                     <th style="text-align: center;">CIN No.</th>
                                     <th style="text-align: center;">Name</th>
                                     <th style="text-align: center;">Phone No.</th>
@@ -165,10 +163,10 @@
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
-                                        <td style="text-align: center;">
+                                        {{-- <td style="text-align: center;">
                                             {{ $plan->updated_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $plan->updated_at->timezone('Asia/Kolkata')->format('h:i A') }}
-                                        </td>
+                                        </td> --}}
                                         <td><a
                                                 href="javascript:void(0);"><strong>{{ $plan->userdetails->cin_no }}</strong></a>
                                         </td>
@@ -199,6 +197,17 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="dataTables_length" id="example3_length">
+                            <label for="example3_length">Show
+                                <select name="example3_length" aria-controls="example3" class="form-select form-select-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,7 +310,11 @@
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
                 },
-                lengthMenu: [10, 25, 50, 100],
+                lengthMenu: false,
+            });
+            $('#example3_length select').change(function() {
+                var length = $(this).val();
+                $('#example3').DataTable().page.len(length).draw();
             });
         });
     </script>

@@ -17,11 +17,6 @@
             border-radius: 1.125rem !important;
         }
 
-        .dt-search label,
-        input {
-            transform: translateY(-30px);
-        }
-
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -34,9 +29,12 @@
             border-radius: 1.125rem !important;
         }
 
-        .dt-length select,
-        label {
-            margin-top: 6px;
+        div.dt-container .dt-length {
+            display: none !important;
+        }
+
+        #userTable_length {
+            margin-top: 10px;
         }
     </style>
 @endsection
@@ -62,9 +60,9 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 28px;">Apply</button>
+                                style="right:135px; bottom: 2px;">Apply</button>
                             <a href="{{ route('get-blog-page') }}"
-                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
                     </div>
@@ -72,7 +70,7 @@
             </div>
             <div class="col-md-1">
                 <a href="{{ route('add-blog-page') }}" class="btn btn-primary mb-2 btn-rounded"
-                    style="transform: translateY(-28px); margin-left:25rem !important;"><span class="text-white fw-bold">
+                    style=" margin-left:25rem !important;"><span class="text-white fw-bold">
                         +</span></a>
             </div>
         </div>
@@ -139,6 +137,17 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="dataTables_length" id="example3_length">
+                            <label for="example3_length">Show
+                                <select name="example3_length" aria-controls="example3" class="form-select form-select-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -228,6 +237,10 @@
                     }
                 },
                 lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+            });
+            $('#example3_length select').change(function() {
+                var length = $(this).val();
+                $('#example3').DataTable().page.len(length).draw();
             });
         });
     </script>

@@ -36,11 +36,6 @@
             margin-left: 50rem !important;
         }
 
-        .dt-search label,
-        input {
-            transform: translateY(-30px);
-        }
-
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -51,11 +46,6 @@
             padding: .7rem !important;
             color: #fff !important;
             border-radius: 1.125rem !important;
-        }
-
-        .dt-length select,
-        label {
-            margin-top: 6px;
         }
 
         .statusSwitch {
@@ -102,6 +92,14 @@
             --_p: 100%;
             --_i: 1;
         }
+
+        div.dt-container .dt-length {
+            display: none !important;
+        }
+
+        #userTable_length {
+            margin-top: 10px;
+        }
     </style>
 @endsection
 @section('content')
@@ -126,17 +124,17 @@
                                     value="{{ $end ?? '' }}">
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                style="right:135px; bottom: 28px;">Apply</button>
+                                style="right:135px; bottom: 2px;">Apply</button>
                             <a href="{{ route('all-role') }}"
-                                class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('add-role') }}" class="btn btn-primary mb-2 btn-rounded"
-                    style="margin-left: 27rem;margin-top:-2rem;"><span class="text-white fw-bold">
+                <a href="{{ route('add-plans') }}" class="btn btn-primary mb-2 btn-rounded"
+                    style="margin-left: 27rem;"><span class="text-white fw-bold">
                         +</span></a>
             </div>
         </div>
@@ -205,6 +203,17 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="dataTables_length" id="example3_length">
+                            <label for="example3_length">Show
+                                <select name="example3_length" aria-controls="example3" class="form-select form-select-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -314,7 +323,11 @@
                         previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                     }
                 },
-                lengthMenu: [10, 25, 50, 100],
+                lengthMenu: false,
+            });
+            $('#example3_length select').change(function() {
+                var length = $(this).val();
+                $('#example3').DataTable().page.len(length).draw();
             });
         });
     </script>

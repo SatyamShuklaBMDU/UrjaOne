@@ -60,7 +60,7 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Enquiry</h2>
+        <h2 class="mb-2 me-auto">Quotation Counting</h2>
 
     </div>
 
@@ -69,7 +69,7 @@
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-enquiry') }}" method="post">
+                        <form action="{{ route('filter-quotation') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -83,12 +83,21 @@
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
                                 type="submit" style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('get-enquiry-page') }}" class="btn btn-primary position-absolute "
+                            <a href="{{ route('get-quotation') }}" class="btn btn-primary position-absolute "
                                 onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
                     </div>
                 </div>
             </div>
+            {{-- <div class="col-md-5 d-flex justify-content-end">
+                <div class="enquiry-search mb-sm-0 mb-3">
+                    <div class="input-group search-area">
+                        <input type="text" class="form-control" placeholder="Search here......">
+                        <span class="input-group-text"><a href="javascript:void(0)"><i
+                                    class="flaticon-381-search-2"></i></a></span>
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </div>
     <div class="row">
@@ -103,8 +112,6 @@
                                 <th style="text-align: center;">Lead No</th>
                                 <th style="text-align: center;">CIN No</th>
                                 <th style="text-align: center;">Name</th>
-                                <th style="text-align: center;">State</th>
-                                <th style="text-align: center;">City</th>
                                 <th style="text-align: center;">Phone-Number</th>
                                 <th style="text-align: center;">Category</th>
                                 <th style="text-align: center;">Load <strong>(KW)</strong></th>
@@ -121,13 +128,13 @@
                                     <td style="text-align: center;">{{ $enquiry->lead_no }}</td>
                                     <td style="text-align: center;">{{ $enquiry->Customer->cin_no }}</td>
                                     <td style="text-align: center;">{{ $enquiry->Customer->name }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->state ?? '--' }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->Customer->city ?? '--' }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->Customer->phone_number }}
                                     </td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->category }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->plant_load }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->total_quotation ?? '--' }}</td>
+                                    <td style="text-align: center;"><a
+                                            href="{{ route('get-detail-quotation', encrypt($enquiry->lead_no)) }}">{{ $enquiry->total_quotation ?? '--' }}</a>
+                                    </td>
                                     <td style="text-align: center;">
                                         <div class="d-flex">
                                             <div class="view-more-btn"><i

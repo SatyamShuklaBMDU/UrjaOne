@@ -24,26 +24,17 @@
                 margin-left: 50rem !important;
             }
 
-            .dt-search label,input {
-            transform: translateY(-30px);
-        }
+            .dt-paging.paging_full_numbers {
+                float: right;
+                margin-top: 5px;
+            }
 
-        .dt-paging.paging_full_numbers {
-            float: right;
-            margin-top: 5px;    
-        }
-
-        .dt-button {
-            background: #FD683E !important;
-            padding: .7rem !important;
-            color: #fff !important;
-            border-radius: 1.125rem !important;
-        }
-
-        .dt-length select,label{
-            margin-top: 6px;
-        }
-
+            .dt-button {
+                background: #FD683E !important;
+                padding: .7rem !important;
+                color: #fff !important;
+                border-radius: 1.125rem !important;
+            }
             .statusSwitch {
                 --s: 20px;
                 /* adjust this to control the size*/
@@ -88,13 +79,19 @@
                 --_p: 100%;
                 --_i: 1;
             }
+            div.dt-container .dt-length{
+            display: none !important;
+        }
+        #userTable_length{
+            margin-top: 10px;
+        }
         </style>
     @endsection
     @section('content')
         <div class="mt-2 mb-3 mb-sm-4 d-flex flex-wrap align-items-center text-head">
             <h2 class="mb-2 me-auto">All FAQs</h2>
         </div>
-        <div class="justify-content-between align-items-center">
+        <div class="justify-content-between align-items-center mb-3">
             <div class="row">
                 <div class="col-md-7">
                     <div class=" align-items-center">
@@ -112,9 +109,9 @@
                                         value="{{ $end ?? '' }}">
                                 </div>
                                 <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
-                                    style="right:135px; bottom: 28px;">Apply</button>
+                                    style="right:135px; bottom: 2px;">Apply</button>
                                 <a href="{{ route('faq-index') }}"
-                                    class="btn btn-primary position-absolute "style="right:46px; bottom: 28px;"><i
+                                    class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                         class="fas fa-sync"></i></a>
                             </form>
                         </div>
@@ -123,7 +120,7 @@
                 <div class="col-md-1">
                     <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="modal"
                         data-bs-target="#basicModal2"
-                        style="transform: translateY(-28px); margin-left:25rem !important;width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
+                        style="margin-left:25rem !important;width: 40px;height: 40px;text-align: center;font-size: 23px;box-shadow: 2px 10px 9px 0px #00000063 !important;line-height:normal;">+</a>
                 </div>
             </div>
         </div>
@@ -155,7 +152,8 @@
                                             <td>{{ $faq->title }}</td>
                                             <td>{{ $faq->description }}</td>
                                             <td>
-                                                <input style="transform: translateY(0px);" class="statusSwitch" {{ $faq->status == '1' ? 'checked' : '' }}
+                                                <input style="transform: translateY(0px);" class="statusSwitch"
+                                                    {{ $faq->status == '1' ? 'checked' : '' }}
                                                     data-faq-id="{{ $faq->id }}" type="checkbox">
                                             </td>
                                             <td>
@@ -173,6 +171,18 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="dataTables_length" id="example3_length">
+                                <label for="example3_length">Show
+                                    <select name="example3_length" aria-controls="example3"
+                                        class="form-select form-select-sm">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    entries
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,8 +266,12 @@
                             previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
                         }
                     },
-                    lengthMenu: [10, 25, 50, 100], // Optional: specify the page length options
+                    lengthMenu: false, // Optional: specify the page length options
                 });
+                $('#example3_length select').change(function() {
+                var length = $(this).val();
+                $('#example3').DataTable().page.len(length).draw();
+            });
             });
             document.getElementById("saveFAQBtn").addEventListener("click", function() {
                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

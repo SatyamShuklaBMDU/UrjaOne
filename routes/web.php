@@ -12,6 +12,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorComplaintController;
@@ -156,6 +157,15 @@ Route::middleware('auth')->group(function () {
     // Wallet Route
     Route::get('get-wallet',[WalletController::class,'index'])->name('get-wallet');
     Route::post('filter-wallet', [WalletController::class, 'filterdata'])->name('filter-wallet');
+
+    // Enquiry History Route
+    Route::get('get-enquiry-history',[EnquiryController::class,'draftIndex'])->name('get-enquiry-history');
+    Route::post('filter-enquiry-history', [EnquiryController::class, 'filterenquiryHistory'])->name('filter-enquiry-history');
+
+    // Quotation Route
+    Route::get('get-quotation',[QuotationController::class,'index'])->name('get-quotation');
+    Route::get('get-detail-quotation/{leadid}',[QuotationController::class,'getQuotations'])->name('get-detail-quotation');
+    Route::post('filter-quotation', [QuotationController::class, 'filterdata'])->name('filter-quotation');
 });
 Route::get('clear', function () {
     Artisan::call('optimize:clear');
