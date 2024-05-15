@@ -38,6 +38,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -159,19 +160,24 @@ Route::middleware('auth')->group(function () {
     Route::post('filter-wallet', [WalletController::class, 'filterdata'])->name('filter-wallet');
 
     // Enquiry History Route
-    Route::get('get-enquiry-history',[EnquiryController::class,'draftIndex'])->name('get-enquiry-history');
-    Route::post('filter-enquiry-history', [EnquiryController::class, 'filterenquiryHistory'])->name('filter-enquiry-history');
+    Route::get('get-enquiry-history',[EnquiryController::class,'totalhistory'])->name('get-enquiry-history');
+    Route::post('filter-enquiry-history', [EnquiryController::class, 'totalhistoryfilter'])->name('filter-enquiry-history');
+    Route::get('get-details-enquiry-history/{id}',[EnquiryController::class,'detailHistory'])->name('get-details-enquiry-history');
 
     // Quotation Route
     Route::get('get-quotation',[QuotationController::class,'index'])->name('get-quotation');
     Route::get('get-detail-quotation/{leadid}',[QuotationController::class,'getQuotations'])->name('get-detail-quotation');
     Route::post('filter-quotation', [QuotationController::class, 'filterdata'])->name('filter-quotation');
+    Route::get('/quotation-details/{id}', [QuotationController::class,'getDetails']);
+
 });
 Route::get('clear', function () {
+    Artisan::call('optimize');
     Artisan::call('optimize:clear');
     Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    Artisan::call('config:cache');
     Artisan::call('view:clear');
-    Artisan::call('optimize');
     echo "DONE";
 });
 require __DIR__ . '/auth.php';

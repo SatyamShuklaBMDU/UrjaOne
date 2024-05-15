@@ -48,7 +48,7 @@
             border-radius: 1.125rem !important;
         }
 
-      .statusSwitch {
+        .statusSwitch {
             --s: 20px;
             /* adjust this to control the size*/
 
@@ -105,14 +105,14 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Enquiries History</h2>
+        <h2 class="mb-2 me-auto">Detailed Enquiry History</h2>
     </div>
 
     <div class="justify-content-between align-items-center mb-1">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
-                    <div id="datePickerContainer">
+                    {{-- <div id="datePickerContainer">
                         <form action="{{ route('filter-enquiry-history') }}" method="post">
                             @csrf
                             <div>
@@ -130,7 +130,7 @@
                             <a href="{{ route('get-enquiry-history') }}" class="btn btn-primary position-absolute "
                                 onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
                         </form>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             {{-- <div class="col-md-5 d-flex justify-content-end">

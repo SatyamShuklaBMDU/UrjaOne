@@ -14,10 +14,79 @@ class EnquiryController extends Controller
         return view('dashboard.Enquiry.enquiry', compact('enquiries'));
     }
 
-    public function draftIndex()
+    public function totalhistory()
     {
-        $enquiries = Enquiry::latest()->get();
+        $uniqueCustomerIds = Enquiry::select('customer_id')->distinct()->latest()->pluck('customer_id');
+        $enquiries = [];
+        foreach ($uniqueCustomerIds as $customerId) {
+            $finalEnquiriesCount = Enquiry::where('customer_id', $customerId)
+                ->where('status', 'submit')
+                ->count();
+            $draftEnquiriesCount = Enquiry::where('customer_id', $customerId)
+                ->where('status', 'draft')
+                ->count();
+            $totalQuotationSum = Enquiry::where('customer_id', $customerId)
+                ->sum('total_quotation');
+            $customerData = Enquiry::where('customer_id', $customerId)->first(); // Assuming you want to retrieve other user data as well
+            $customerData->final_enquiries_count = $finalEnquiriesCount;
+            $customerData->draft_enquiries_count = $draftEnquiriesCount;
+            $customerData->total_quotation_sum = $totalQuotationSum;
+            $enquiries[] = $customerData;
+        }
+        return view('dashboard.History.main_enquiry', compact('enquiries'));
+    }
+
+    public function detailHistory($id)
+    {
+        $Did = decrypt($id);
+        $enquiries = Enquiry::where('customer_id', $Did)->latest()->get();
         return view('dashboard.History.enquiry_history', compact('enquiries'));
+    }
+
+    public function totalhistoryfilter(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $uniqueCustomerIds = Enquiry::select('customer_id')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->distinct()
+            ->latest()
+            ->pluck('customer_id');
+
+        $enquiries = [];
+        foreach ($uniqueCustomerIds as $customerId) {
+            $finalEnquiriesCount = Enquiry::where('customer_id', $customerId)
+                ->where('status', 'submit')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->count();
+
+            $draftEnquiriesCount = Enquiry::where('customer_id', $customerId)
+                ->where('status', 'draft')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->count();
+
+            $totalQuotationSum = Enquiry::where('customer_id', $customerId)
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->sum('total_quotation');
+
+            $customerData = Enquiry::where('customer_id', $customerId)
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->first(); // Assuming you want to retrieve other user data as well
+
+            if ($customerData) {
+                $customerData->final_enquiries_count = $finalEnquiriesCount;
+                $customerData->draft_enquiries_count = $draftEnquiriesCount;
+                $customerData->total_quotation_sum = $totalQuotationSum;
+
+                $enquiries[] = $customerData;
+            }
+        }
+        return view('dashboard.History.main_enquiry', compact('enquiries', 'startDate', 'endDate'));
+
     }
     public function getEnquiryDetails($id)
     {

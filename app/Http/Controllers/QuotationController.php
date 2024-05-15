@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Enquiry;
 use App\Models\Quotations;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class QuotationController extends Controller
 {
@@ -18,7 +19,13 @@ class QuotationController extends Controller
     {
         $Did = decrypt($leadid);
         $quoatations = Quotations::where('lead_no', $Did)->latest()->get();
-        return view('dashboard.Quotations.all_quotations', compact('quoatations'));
+        return view('dashboard.Quotations.all_quotations', compact('quoatations','Did'));
+    }
+
+    public function getDetails($id)
+    {
+        $enquiry = Quotations::findOrFail($id);
+        return Response::json($enquiry);
     }
 
     public function filterdata(Request $request)

@@ -176,7 +176,7 @@
                                 <tr data-customer-id="{{ $customer->id }}">
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
                                     <td style="text-align: center;"><a href="{{ asset($customer->photo) }}" target="_blank"
-                                            rel="noopener noreferrer"><img class="rounded-circle" width="35"
+                                            rel="noopener noreferrer"><img class="rounded-circle" width="35" height="25"
                                                 src="{{ asset($customer->photo) }}" alt="No"></a></td>
                                     <td style="text-align: center;">{{ $customer->cin_no }}</td>
                                     <td style="text-align: center;" class="wspace-no">

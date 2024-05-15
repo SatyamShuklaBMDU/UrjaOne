@@ -35,6 +35,7 @@
         .dt-search label {
             margin-left: 50rem !important;
         }
+
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -47,10 +48,56 @@
             border-radius: 1.125rem !important;
         }
 
-        div.dt-container .dt-length{
+        .statusSwitch {
+            --s: 20px;
+            /* adjust this to control the size*/
+
+            height: calc(var(--s) + var(--s)/5);
+            width: auto;
+            /* some browsers need this */
+            aspect-ratio: 2.25;
+            border-radius: var(--s);
+            margin: calc(var(--s)/2);
+            display: grid;
+            cursor: pointer;
+            background-color: #ff7a7a;
+            box-sizing: content-box;
+            overflow: hidden;
+            transition: .3s .1s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .statusSwitch:before {
+            content: "";
+            padding: calc(var(--s)/10);
+            --_g: radial-gradient(circle closest-side at calc(100% - var(--s)/2) 50%, #000 96%, #0000);
+            background:
+                var(--_g) 0 /var(--_p, var(--s)) 100% no-repeat content-box,
+                var(--_g) var(--_p, 0)/var(--s) 100% no-repeat content-box,
+                #fff;
+            mix-blend-mode: darken;
+            filter: blur(calc(var(--s)/12)) contrast(11);
+            transition: .4s, background-position .4s .1s,
+                padding cubic-bezier(0, calc(var(--_i, -1)*200), 1, calc(var(--_i, -1)*200)) .25s .1s;
+        }
+
+        .statusSwitch:checked {
+            background-color: #85ff7a;
+        }
+
+        .statusSwitch:checked:before {
+            padding: calc(var(--s)/10 + .05px) calc(var(--s)/10);
+            --_p: 100%;
+            --_i: 1;
+        }
+
+        div.dt-container .dt-length {
             display: none !important;
         }
-        #userTable_length{
+
+        #userTable_length {
             margin-top: 10px;
         }
     </style>
@@ -58,15 +105,31 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Quotations</h2>
+        <h2 class="mb-2 me-auto">All Enquiry History</h2>
     </div>
 
-    <div class="justify-content-between align-items-center mb-1">
+    <div class="justify-content-between align-items-center mb-4">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <p style="font-size: 20px;color: black;">Lead No:<strong>{{ $Did }}</strong></p>
+                        <form action="{{ route('filter-enquiry-history') }}" method="post">
+                            @csrf
+                            <div>
+                                <input type="date" name="startDate" id="startDate"
+                                    class="form-control @error('startDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $startDate ?? '' }}">
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" id="endDate"
+                                    class="form-control @error('endDate') is-invalid @enderror input-primary-active shadow-sm"
+                                    value="{{ $endDate ?? '' }}">
+                            </div>
+                            <button class="btn btn-primary position-absolute btn-style-apply" onclick="filterByDate()"
+                                type="submit" style="right:135px; bottom: 2px;">Apply</button>
+                            <a href="{{ route('get-enquiry-history') }}" class="btn btn-primary position-absolute "
+                                onclick="clearFilter()" style="right:46px; bottom: 2px;"><i class="fas fa-sync"></i></a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -90,40 +153,32 @@
                             <tr>
                                 <th style="text-align: center;">S No.</th>
                                 <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Quotation No.</th>
                                 <th style="text-align: center;">CIN No</th>
                                 <th style="text-align: center;">Name</th>
                                 <th style="text-align: center;">Phone-Number</th>
-                                <th style="text-align: center;">Price Per <strong>(KW)</strong></th>
-                                <th style="text-align: center;">Panel Warranty</th>
-                                <th style="text-align: center;">Inverter Warranty</th>
-                                <th style="text-align: center;">Details</th>
+                                <th style="text-align: center;">State</th>
+                                <th style="text-align: center;">City</th>
+                                <th style="text-align: center;">Final</th>
+                                <th style="text-align: center;">Draft</th>
+                                <th style="text-align: center;">Quotations</th>
+                                <th style="text-align: center;">Views</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($quoatations as $enquiry)
-                                <tr data-quotation-id="{{ $enquiry->id }}">
+                            @foreach ($enquiries as $enquiry)
+                                <tr>
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center;" class="wspace-no">
-                                        {{ $enquiry->created_at->format('d/m/y') }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->quotation_no }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->vendor->cin_no }}</td>
-                                    <td style="text-align: center;">{{ $enquiry->vendor->name }}</td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->vendor->phone_number }}
-                                    </td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->price_per_kw }}</td>
-                                    <td style="text-align: center;" class="text-ov">{{ $enquiry->panel_warranty }}</td>
-                                    <td style="text-align: center;"><a>{{ $enquiry->inverter_warranty }}</a>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <div class="d-flex">
-                                            <div class="view-more-btn"><a class="btn btn-primary"
-                                                    style="padding: 0.375rem 0.75rem;border-radius: 0.75rem;font-size: 0.875rem;"
-                                                    onclick="fetchEnquiryDetails({{ $enquiry->id }})"
-                                                    role="button">View</a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td style="text-align: center;">{{ $enquiry->created_at->format('d/m/y') }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->Customer->cin_no }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->Customer->name }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->Customer->phone_number }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->Customer->state??'--' }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->Customer->city??'--' }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->final_enquiries_count }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->draft_enquiries_count }}</td>
+                                    <td style="text-align: center;">{{ $enquiry->total_quotation_sum }}</td>
+                                    <td style="text-align: center;"><a class="btn btn-primary" href="{{route('get-details-enquiry-history',encrypt($enquiry->customer_id))}}" style="padding: 0.375rem 0.75rem;border-radius: 0.75rem;font-size: 0.875rem;"
+                                            role="button">View</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -153,12 +208,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><b>AC Cable Brand:</b> <span id="ac_cable_brand"></span></p>
-                    <p><b>DC Cable Brand:</b> <span id="dc_cable_brand"></span></p>
-                    <p><b>Earthing:</b> <span id="earthing"></span></p>
-                    <p><b>MMS Structure:</b> <span id="mms_structure"></span></p>
-                    <p><b>Metering Support:</b> <span id="metering_support"></span></p>
-                    <p><b>Subsidy Support:</b> <span id="subsidy_support"></span></p>
+                    <p><b>Subsidy:</b> <span id="enquiry-subsidy"></span></p>
+                    <p><b>Finance:</b> <span id="enquiry-finance"></span></p>
+                    <p><b>Structure Type:</b> <span id="enquiry-structure-type"></span></p>
+                    <p><b>Solar Panel Type:</b> <span id="enquiry-solar-panel"></span></p>
+                    <p><b>Panel Brands:</b> <span id="enquiry-panel-brands"></span></p>
+                    <p><b>Inverter Brands:</b> <span id="enquiry-brands"></span></p>
+                    <p><b>Book Time:</b> <span id="enquiry-time"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -192,15 +248,16 @@
     <script>
         function fetchEnquiryDetails(enquiryId) {
             $.ajax({
-                url: '{{ url('/quotation-details/') }}' + '/' + enquiryId,
+                url: '{{ url('/enquiry-details/') }}' + '/' + enquiryId,
                 type: 'GET',
                 success: function(response) {
-                    $('#subsidy_support').text(response.subsidy_support === '1' ? 'Yes' : 'No');
-                    $('#metering_support').text(response.metering_support === '1' ? 'Yes' : 'No');
-                    $('#ac_cable_brand').text(response.ac_cable_brand);
-                    $('#dc_cable_brand').text(response.dc_cable_brand);
-                    $('#earthing').text(response.earthing);
-                    $('#mms_structure').text(response.mms_structure);
+                    $('#enquiry-subsidy').text(response.subsidy === '1' ? 'Yes' : 'No');
+                    $('#enquiry-finance').text(response.finance === '1' ? 'Yes' : 'No');
+                    $('#enquiry-structure-type').text(response.structure_type);
+                    $('#enquiry-solar-panel').text(response.solar_panel);
+                    $('#enquiry-panel-brands').text(response.panel_brands);
+                    $('#enquiry-brands').text(response.brands);
+                    $('#enquiry-time').text(response.time);
                     $('#enquiryDetailsModal').modal('show');
                 },
                 error: function(xhr, status, error) {

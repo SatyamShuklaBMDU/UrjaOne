@@ -63,7 +63,7 @@ class CustomerController extends Controller
             'pincode' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
-            'coordinates' => 'nullable|numeric|between:-9999999.9999999,9999999.9999999',
+            'coordinates' => 'nullable|string',
             'category' => 'nullable|in:residential,commercial,industrial,agricultural',
             'photo' => 'nullable|image|max:2048',
         ]);

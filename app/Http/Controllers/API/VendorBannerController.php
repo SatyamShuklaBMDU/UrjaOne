@@ -11,6 +11,10 @@ class VendorBannerController extends Controller
     public function index()
     {
         $banner = VendorBanner::where('for', 'Home')->get();
+        $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
+            $banner->each(function ($item) use ($baseUrl) {
+                $item->banner = $baseUrl . $item->banner;
+            });
         if ($banner->isEmpty()) {
             return response()->json([
                 'status' => false,
@@ -25,6 +29,10 @@ class VendorBannerController extends Controller
     public function Aboutindex()
     {
         $banner = VendorBanner::where('for', 'About')->get();
+        $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
+            $banner->each(function ($item) use ($baseUrl) {
+                $item->banner = $baseUrl . $item->banner;
+            });
         if ($banner->isEmpty()) {
             return response()->json([
                 'status' => false,

@@ -10,12 +10,16 @@ class BannerController extends Controller
 {
     public function index()
     {
-        return view('dashboard.Banners.main_banner');
+        $homebanners = Banner::where('for','Home')->latest()->get();
+        $aboutbanners = Banner::where('for','About')->latest()->get();
+        return view('dashboard.Banners.main_banner',compact('aboutbanners','homebanners'));
     }
 
     public function VendorIndex()
     {
-        return view('dashboard.Banners.vendor_main_banner');
+        $homebanners = VendorBanner::where('for','Home')->latest()->get();
+        $aboutbanners = VendorBanner::where('for','About')->latest()->get();
+        return view('dashboard.Banners.vendor_main_banner',compact('aboutbanners','homebanners'));
     }
 
     public function UserBanner($name)

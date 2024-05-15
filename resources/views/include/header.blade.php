@@ -106,7 +106,7 @@
                     </li> --}}
                     <li class="nav-item dropdown  header-profile">
                         <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ asset('images/avatar/profile-1.jpg') }}" width="56" alt />
+                            <img src="{{ asset('images/favicon.png') }}" width="56" alt />
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a href="{{route('get-logout')}}" class="dropdown-item ai-icon">

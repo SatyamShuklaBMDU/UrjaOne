@@ -55,6 +55,15 @@
         #userTable_length {
             margin-top: 10px;
         }
+
+        a.getHover{
+            color: blue !important;
+            font-size: 15px;
+        }
+        a.getHover:hover{
+            color: #FD683E !important;
+            border-bottom: 2px solid #FD683E;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css">
 @endsection
@@ -89,15 +98,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-5 d-flex justify-content-end">
-                <div class="enquiry-search mb-sm-0 mb-3">
-                    <div class="input-group search-area">
-                        <input type="text" class="form-control" placeholder="Search here......">
-                        <span class="input-group-text"><a href="javascript:void(0)"><i
-                                    class="flaticon-381-search-2"></i></a></span>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </div>
     <div class="row">
@@ -116,7 +116,7 @@
                                 <th style="text-align: center;">Category</th>
                                 <th style="text-align: center;">Load <strong>(KW)</strong></th>
                                 <th style="text-align: center;">Quotations</th>
-                                <th style="text-align: center;">Action</th>
+                                <th style="text-align: center;">Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,15 +132,13 @@
                                     </td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->category }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $enquiry->plant_load }}</td>
-                                    <td style="text-align: center;"><a
+                                    <td style="text-align: center;"><a class="getHover"
                                             href="{{ route('get-detail-quotation', encrypt($enquiry->lead_no)) }}">{{ $enquiry->total_quotation ?? '--' }}</a>
                                     </td>
                                     <td style="text-align: center;">
                                         <div class="d-flex">
-                                            <div class="view-more-btn"><i
-                                                    style="color:blue;padding-right: 10px;margin-top:10px;cursor: pointer;"
-                                                    class="fas fa-eye"
-                                                    onclick="fetchEnquiryDetails({{ $enquiry->id }})"></i></div>
+                                            <div class="view-more-btn"><a class="btn btn-primary" style="padding: 0.375rem 0.75rem;border-radius: 0.75rem;font-size: 0.875rem;" onclick="fetchEnquiryDetails({{ $enquiry->id }})" role="button" >View</a>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

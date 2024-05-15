@@ -30,15 +30,11 @@
                 @endif
                 <!-- Enquiry menu -->
                 @if (in_array('Enquiry', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
-                    <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                            <i class="fa-regular fa-circle-question"></i>
-                            <span class="nav-text">Enquiry </span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{ route('get-enquiry-page') }}">User</a></li>
-                            {{-- <li><a href="#">Vendor</a></li> --}}
-                        </ul>
-                    </li>
+                    <li><a class="ai-icon" href="{{ route('get-enquiry-page') }}" aria-expanded="false">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span class="nav-text">User Enquiry</span>
+                    </a>
+                </li>
                 @endif
                 <!-- Quotations menu -->
                 @if (in_array('Quotation', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
