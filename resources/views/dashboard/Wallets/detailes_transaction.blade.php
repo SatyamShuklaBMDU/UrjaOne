@@ -104,7 +104,7 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">Wallet Statement</h2>
+        <h2 class="mb-2 me-auto">Wallet Transactions</h2>
     </div>
     <div class="justify-content-between align-items-center mb-2">
         <div class="row">
@@ -144,55 +144,36 @@
                                 <tr>
                                     <th style="text-align: center;">Sr NO.</th>
                                     <th style="text-align: center;">Created Date, <br> Time</th>
-                                    {{-- <th style="text-align: center;">Updated Date, <br> Time</th> --}}
                                     <th style="text-align: center;">CIN No.</th>
                                     <th style="text-align: center;">Name</th>
                                     <th style="text-align: center;">Phone No.</th>
-                                    <th style="text-align: center;">Last Amount</th>
-                                    <th style="text-align: center;">Added Amount</th>
+                                    {{-- <th style="text-align: center;">Amount Type</th> --}}
+                                    <th style="text-align: center;">Lead No.</th>
+                                    <th style="text-align: center;">Lead Category</th>
+                                    {{-- <th style="text-align: center;">Last Amount</th> --}}
+                                    <th style="text-align: center;">Spend Amount</th>
                                     <th style="text-align: center;">Final Amount</th>
                                     {{-- <th style="text-align: center;">Status</th>
                                     <th>Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($wallets as $plan)
+                                @foreach ($walletHistory as $plan)
                                     <tr data-plan-id="{{ $plan->id }}">
                                         <td>{{ $loop->iteration }}</td>
                                         <td style="text-align: center;">
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
-                                        {{-- <td style="text-align: center;">
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('h:i A') }}
-                                        </td> --}}
-                                        <td><a
-                                                href="javascript:void(0);"><strong>{{ $plan->userdetails->cin_no }}</strong></a>
-                                        </td>
+                                        <td><a href="javascript:void(0);"><strong>{{ $plan->userdetails->cin_no }}</strong></a></td>
                                         <td style="text-align: center;">{{ $plan->userdetails->name }}</td>
                                         <td style="text-align: center;">{{ $plan->userdetails->phone_number }}</td>
-                                        <td style="text-align: center;">{{ $plan->last_amount }}</td>
-                                        <td style="text-align: center;">{{ $plan->amount }}</td>
+                                        {{-- <td style="text-align: center;">{{ ucfirst($plan->type) }}</td> --}}
+                                        <td style="text-align: center;">R12545</td>
+                                        <td style="text-align: center;">Residential</td>
+                                        {{-- <td style="text-align: center;">600</td> --}}
+                                        <td style="text-align: center;">150</td>
                                         <td style="text-align: center;">{{ $plan->Walletdetails->balance }}</td>
-                                        {{-- <td style="text-align: center;">
-                                            <input class="statusSwitch" style="transform: translateY(0px);"
-                                                {{ $plan->status == '1' ? 'checked' : '' }} type="checkbox">
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <div class="d-flex">
-                                                <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
-                                                    data-bs-toggle="modal" data-bs-target="#basicModal"
-                                                    data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
-                                                    data-type="{{ $plan->type }}" data-category="{{ $plan->category }}"
-                                                    data-price="{{ $plan->price }}" data-duration="{{ $plan->duration }}"
-                                                    data-description="{{ $plan->description }}" onclick="editBlog(this)">
-                                                    <i class="fas fa-pencil-alt"></i></a>
-                                                <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
-                                                    data-plan-id="{{ $plan->id }}"><i
-                                                        class="fa fa-trash "></i></button>
-                                            </div>
-                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

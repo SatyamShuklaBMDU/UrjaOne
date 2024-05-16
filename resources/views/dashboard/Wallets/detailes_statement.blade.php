@@ -156,7 +156,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($wallets as $plan)
+                                @foreach ($walletHistory as $plan)
                                     <tr data-plan-id="{{ $plan->id }}">
                                         <td>{{ $loop->iteration }}</td>
                                         <td style="text-align: center;">
@@ -174,26 +174,7 @@
                                         <td style="text-align: center;">{{ $plan->userdetails->phone_number }}</td>
                                         <td style="text-align: center;">{{ $plan->last_amount }}</td>
                                         <td style="text-align: center;">{{ $plan->amount }}</td>
-                                        <td style="text-align: center;">{{ $plan->Walletdetails->balance }}</td>
-                                        {{-- <td style="text-align: center;">
-                                            <input class="statusSwitch" style="transform: translateY(0px);"
-                                                {{ $plan->status == '1' ? 'checked' : '' }} type="checkbox">
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <div class="d-flex">
-                                                <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
-                                                    data-bs-toggle="modal" data-bs-target="#basicModal"
-                                                    data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
-                                                    data-type="{{ $plan->type }}" data-category="{{ $plan->category }}"
-                                                    data-price="{{ $plan->price }}" data-duration="{{ $plan->duration }}"
-                                                    data-description="{{ $plan->description }}" onclick="editBlog(this)">
-                                                    <i class="fas fa-pencil-alt"></i></a>
-                                                <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
-                                                    data-plan-id="{{ $plan->id }}"><i
-                                                        class="fa fa-trash "></i></button>
-                                            </div>
-                                        </td> --}}
-                                    </tr>
+                                        <td style="text-align: center;">{{ $plan->Walletdetails->balance }}</td>                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

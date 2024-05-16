@@ -104,14 +104,14 @@
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">Wallet Statement</h2>
+        <h2 class="mb-2 me-auto">Payment History</h2>
     </div>
     <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-wallet') }}" method="post">
+                        <form action="{{ route('filter-subscription') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -125,7 +125,7 @@
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
                                 style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('get-wallet') }}"
+                            <a href="{{ route('get-payment-history') }}"
                                 class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
@@ -143,56 +143,42 @@
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Sr NO.</th>
-                                    <th style="text-align: center;">Created Date, <br> Time</th>
-                                    {{-- <th style="text-align: center;">Updated Date, <br> Time</th> --}}
+                                    <th style="text-align: center;">Created Date</th>
                                     <th style="text-align: center;">CIN No.</th>
                                     <th style="text-align: center;">Name</th>
                                     <th style="text-align: center;">Phone No.</th>
-                                    <th style="text-align: center;">Last Amount</th>
-                                    <th style="text-align: center;">Added Amount</th>
-                                    <th style="text-align: center;">Final Amount</th>
-                                    {{-- <th style="text-align: center;">Status</th>
-                                    <th>Action</th> --}}
+                                    <th style="text-align: center;">Plan Name</th>
+                                    <th style="text-align: center;">Plan Type</th>
+                                    <th style="text-align: center;">Plan Category</th>
+                                    <th style="text-align: center;">Plan Details</th>
+                                    <th style="text-align: center;">Plan Amount</th>
+                                    <th style="text-align: center;">Expiration Date</th>
+                                    <th style="text-align: center;">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($wallets as $plan)
-                                    <tr data-plan-id="{{ $plan->id }}">
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td style="text-align: center;">
-                                            {{ $plan->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                            {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
+                                @foreach ($paymentHistory as $payment)
+                                    <tr data-payment-id="{{ $payment->id }}">
+                                        <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                        <td style="text-align: center;">{{ $payment->created_at->format('d/m/y') }}</td>
+                                        <td style="text-align: center;"><a
+                                                href="javascript:void(0);"><strong>{{ $payment->Vendor->cin_no }}</strong></a>
                                         </td>
-                                        {{-- <td style="text-align: center;">
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('h:i A') }}
-                                        </td> --}}
-                                        <td><a
-                                                href="javascript:void(0);"><strong>{{ $plan->userdetails->cin_no }}</strong></a>
+                                        <td style="text-align: center;">{{ $payment->Vendor->name }}</td>
+                                        <td style="text-align: center;">{{ $payment->Vendor->phone_number }}</td>
+                                        <td style="text-align: center;">{{ $payment->plan_name }}</td>
+                                        <td style="text-align: center;">{{ $payment->plan_type }}</td>
+                                        <td style="text-align: center;">{{ $payment->plan_category }}</td>
+                                        <td style="text-align: center;"><a href="#" data-bs-toggle="tooltip"
+                                                title="{{ strip_tags($payment->plan_details) }}" data-placement="top">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($payment->plan_details), 10) }}
+                                            </a></td>
+                                        <td style="text-align: center;">{{ $payment->plan_amount }}</td>
+                                        <td style="text-align: center;">{{ $payment->expiration_date->format('d/m/y') }}
                                         </td>
-                                        <td style="text-align: center;">{{ $plan->userdetails->name }}</td>
-                                        <td style="text-align: center;">{{ $plan->userdetails->phone_number }}</td>
-                                        <td style="text-align: center;">{{ $plan->last_amount }}</td>
-                                        <td style="text-align: center;">{{ $plan->amount }}</td>
-                                        <td style="text-align: center;">{{ $plan->Walletdetails->balance }}</td>
-                                        {{-- <td style="text-align: center;">
-                                            <input class="statusSwitch" style="transform: translateY(0px);"
-                                                {{ $plan->status == '1' ? 'checked' : '' }} type="checkbox">
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <div class="d-flex">
-                                                <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
-                                                    data-bs-toggle="modal" data-bs-target="#basicModal"
-                                                    data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
-                                                    data-type="{{ $plan->type }}" data-category="{{ $plan->category }}"
-                                                    data-price="{{ $plan->price }}" data-duration="{{ $plan->duration }}"
-                                                    data-description="{{ $plan->description }}" onclick="editBlog(this)">
-                                                    <i class="fas fa-pencil-alt"></i></a>
-                                                <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
-                                                    data-plan-id="{{ $plan->id }}"><i
-                                                        class="fa fa-trash "></i></button>
-                                            </div>
-                                        </td> --}}
+                                        <td style="text-align: center;"><input class="statusSwitch"
+                                                style="transform: translateY(0px);"
+                                                {{ $payment->status == '1' ? 'checked' : '' }} type="checkbox"></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -237,8 +223,39 @@
         });
     </script>
     <script>
-        @if (session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
+        $('.statusSwitch').on('change', function() {
+            var isChecked = $(this).prop('checked');
+            var status = isChecked ? '1' : '0';
+            var currentRow = $(this).closest('tr');
+            var planId = currentRow.data('payment-id');
+            $.ajax({
+                url: '{{ route('update-subscription-status') }}',
+                method: 'POST',
+                data: {
+                    status: status,
+                    paymentID: planId,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Status updated successfully.');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Status updated successfully!',
+                    });
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating status:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'An error occurred while updating the status!',
+                    });
+                }
+            });
+        });
     </script>
 @endsection

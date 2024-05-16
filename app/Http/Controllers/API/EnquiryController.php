@@ -16,8 +16,8 @@ class EnquiryController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => 'required|in:residential,commercial,industrial,agricultural',
             'plant_load' => 'required|integer',
-            'subsidy' => 'nullable|boolean',
-            'finance' => 'nullable|boolean',
+            'subsidy' => 'nullable|string|in:true,false',
+            'finance' => 'nullable|string|in:true,false',
             'structure_type' => 'nullable|string',
             'panel_type' => 'nullable|string',
             'panel_brand' => 'nullable|string',
@@ -43,8 +43,8 @@ class EnquiryController extends Controller
         $enquiry->lead_no = $uniqueLeadNo;
         $enquiry->category = $request->category;
         $enquiry->plant_load = $request->plant_load;
-        $enquiry->subsidy = $request->subsidy ?? false;
-        $enquiry->finance = $request->finance ?? false;
+        $enquiry->subsidy = $request->subsidy === "true" ? true : false;
+        $enquiry->finance = $request->finance === "true" ? true :  false;
         $enquiry->structure_type = json_encode($structureTypeArray);
         $enquiry->solar_panel_type = json_encode($solarPanelArray);
         $enquiry->panel_brands = json_encode($panelbrandArray);
@@ -66,8 +66,8 @@ class EnquiryController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => 'required|in:residential,commercial,industrial,agricultural',
             'plant_load' => 'required|integer',
-            'subsidy' => 'nullable|boolean',
-            'finance' => 'nullable|boolean',
+            'subsidy' => 'nullable|string|in:true,false',
+            'finance' => 'nullable|string|in:true,false',
             'structure_type' => 'nullable|string',
             'panel_type' => 'nullable|string',
             'panel_brand' => 'nullable|string',
@@ -93,8 +93,8 @@ class EnquiryController extends Controller
         $enquiry->lead_no = $uniqueLeadNo;
         $enquiry->category = $request->category;
         $enquiry->plant_load = $request->plant_load;
-        $enquiry->subsidy = $request->subsidy ?? false;
-        $enquiry->finance = $request->finance ?? false;
+        $enquiry->subsidy = $request->subsidy === "true" ? true : false;
+        $enquiry->finance = $request->finance === "true" ? true :  false;
         $enquiry->structure_type = json_encode($structureTypeArray);
         $enquiry->solar_panel_type = json_encode($solarPanelArray);
         $enquiry->panel_brands = json_encode($panelbrandArray);

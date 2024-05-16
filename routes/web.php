@@ -14,6 +14,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorComplaintController;
 use App\Http\Controllers\VendorConrtoller;
@@ -157,6 +158,9 @@ Route::middleware('auth')->group(function () {
 
     // Wallet Route
     Route::get('get-wallet',[WalletController::class,'index'])->name('get-wallet');
+    Route::get('wallet-history',[WalletController::class,'wallethistory'])->name('wallet-history');
+    Route::get('detailed-wallet-statement/{id}',[WalletController::class,'Detailedwalletstatement'])->name('detailed-wallet-statement');
+    Route::get('detailed-wallet-transaction/{id}',[WalletController::class,'Detailedwallettransaction'])->name('detailed-wallet-transaction');
     Route::post('filter-wallet', [WalletController::class, 'filterdata'])->name('filter-wallet');
 
     // Enquiry History Route
@@ -170,6 +174,10 @@ Route::middleware('auth')->group(function () {
     Route::post('filter-quotation', [QuotationController::class, 'filterdata'])->name('filter-quotation');
     Route::get('/quotation-details/{id}', [QuotationController::class,'getDetails']);
 
+    // Payment History
+    Route::get('get-payment-history',[SubscriptionController::class,'index'])->name('get-payment-history');
+    Route::post('/update-subscription-status', [SubscriptionController::class, 'statuschange'])->name('update-subscription-status');
+    Route::post('filter-subscription', [SubscriptionController::class, 'filterdata'])->name('filter-subscription');
 });
 Route::get('clear', function () {
     Artisan::call('optimize');

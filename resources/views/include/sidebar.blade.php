@@ -147,14 +147,17 @@
                             <span class="nav-text">Wallet</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{ route('get-wallet') }}">All Transactions</a></li>
+                            <li><a href="{{ route('get-wallet') }}">All Statement</a></li>
+                        </ul>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('wallet-history') }}">Wallet History</a></li>
                         </ul>
                     </li>
                     <!-- next end -->
                 @endif
                 @if (in_array('Payment', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
                     <!-- next start -->
-                    <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <li><a class="ai-icon" href="{{route('get-payment-history')}}" aria-expanded="false">
                             <i class="fa-solid fa-credit-card fa-lg" style="color: #969ba0;"></i>
                             <span class="nav-text">Payment History</span>
                         </a>

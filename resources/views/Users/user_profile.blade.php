@@ -175,9 +175,9 @@
                             @foreach ($customers as $customer)
                                 <tr data-customer-id="{{ $customer->id }}">
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center;"><a href="{{ asset($customer->photo) }}" target="_blank"
+                                    <td style="text-align: center;"><a href="{{ isset($customer->photo)?asset($customer->photo):asset('images/profile/User Image.png') }}" target="_blank"
                                             rel="noopener noreferrer"><img class="rounded-circle" width="35" height="25"
-                                                src="{{ asset($customer->photo) }}" alt="No"></a></td>
+                                                src="{{ isset($customer->photo)?asset($customer->photo):asset('images/profile/User Image.png') }}" alt="No"></a></td>
                                     <td style="text-align: center;">{{ $customer->cin_no }}</td>
                                     <td style="text-align: center;" class="wspace-no">
                                         {{ $customer->created_at->format('d/m/y') }}</td>
@@ -208,16 +208,15 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="dataTables_length" id="userTable_length">
-                        <label for="userTable_length">Show
-                            <select name="userTable_length" aria-controls="userTable" class="form-select form-select-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            entries
-                        </label>
+                    <div class="dataTables_length" id="userTable_length" style="display: flex; align-items: center;">
+                        <label for="userTable_length" style="margin-right: 10px;">Show</label>
+                        <select name="userTable_length" aria-controls="userTable" class="form-select form-select-sm" style="width: 9%;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <label for="userTable_length" style="margin-left: 10px;">entries</label>
                     </div>
                 </div>
             </div>

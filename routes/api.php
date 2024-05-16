@@ -10,6 +10,7 @@ use App\Http\Controllers\API\faqController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\QuotationController;
+use App\Http\Controllers\API\SubscriptionController;
 use App\Http\Controllers\API\VendorBannerController;
 use App\Http\Controllers\API\VendorComplaintController;
 use App\Http\Controllers\API\VendorController;
@@ -93,3 +94,6 @@ Route::get('get-plans',[PlanController::class,'index']);
 
 // Quotation API
 Route::post('store-quotation',[QuotationController::class,'store'])->middleware('auth:sanctum');
+
+// Subscription Plan API
+Route::post('/perform-subscription',[SubscriptionController::class,'store'])->middleware('auth:sanctum');

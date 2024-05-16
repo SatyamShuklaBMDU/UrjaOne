@@ -50,6 +50,7 @@
         .dt-search label {
             margin-left: 50rem !important;
         }
+
         .dt-paging.paging_full_numbers {
             float: right;
             margin-top: 5px;
@@ -189,9 +190,12 @@
                             @foreach ($vendors as $vendor)
                                 <tr data-vendor-id={{ $vendor->id }}>
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center;"><a href="{{ $vendor->photo }}" target="_blank"
-                                            rel="noopener noreferrer"><img class="rounded-circle" width="35"
-                                                src="{{ $vendor->photo }}" alt></a></td>
+                                    <td style="text-align: center;"><a
+                                            href="{{ isset($vendor->photo) ? asset($vendor->photo) : asset('images/profile/Vendor Image.png') }}"
+                                            target="_blank" rel="noopener noreferrer"><img class="rounded-circle"
+                                                width="35"
+                                                src="{{ isset($vendor->photo) ? asset($vendor->photo) : asset('images/profile/Vendor Image.png') }}"
+                                                alt></a></td>
                                     <td style="text-align: center;">{{ $vendor->cin_no }}</td>
                                     <td style="text-align: center;" class="wspace-no">
                                         {{ $vendor->created_at->format('d/m/y') }}
@@ -200,12 +204,6 @@
                                     <td style="text-align: center;">{{ $vendor->name }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $vendor->phone_number }}</td>
                                     <td style="text-align: center;" class="text-ov">{{ $vendor->email }}</td>
-                                    {{-- <td class="text-ov">{{$vendor->category}}</td>
-                            <td class="text-ov">{{$vendor->pincode}}</td>
-                            <td class="text-ov">{{$vendor->city}}</td>
-                            <td class="text-ov">{{$vendor->state}}</td>
-                            <td class="text-ov">{{$vendor->address}}</td>
-                            <td class="text-ov">{{$vendor->coordinates}}</td> --}}
                                     <td>
                                         <div class="d-flex">
                                             <div class="eyeViewMore"><i
@@ -225,16 +223,16 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="dataTables_length" id="example7_length">
-                        <label for="example7_length">Show
-                            <select name="example7_length" aria-controls="example7" class="form-select form-select-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            entries
-                        </label>
+                    <div class="dataTables_length" id="example7_length" style="display: flex; align-items: center;">
+                        <label for="userTable_length" style="margin-right: 10px;">Show</label>
+                        <select name="userTable_length" aria-controls="userTable" class="form-select form-select-sm"
+                            style="width: 9%; margin-right: 10px;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <label for="userTable_length">entries</label>
                     </div>
                 </div>
             </div>
