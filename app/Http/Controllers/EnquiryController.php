@@ -16,7 +16,7 @@ class EnquiryController extends Controller
 
     public function totalhistory()
     {
-        $uniqueCustomerIds = Enquiry::select('customer_id')->distinct()->latest()->pluck('customer_id');
+        $uniqueCustomerIds = Enquiry::select('customer_id')->distinct()->pluck('customer_id');
         $enquiries = [];
         foreach ($uniqueCustomerIds as $customerId) {
             $finalEnquiriesCount = Enquiry::where('customer_id', $customerId)
@@ -54,7 +54,6 @@ class EnquiryController extends Controller
         $uniqueCustomerIds = Enquiry::select('customer_id')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->distinct()
-            ->latest()
             ->pluck('customer_id');
 
         $enquiries = [];

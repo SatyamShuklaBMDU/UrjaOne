@@ -80,7 +80,8 @@ class VendorController extends Controller
             'company_name' => 'nullable|string',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
-            'coordinates' => 'nullable|numeric|between:-9999999.9999999,9999999.9999999',
+            'latitude' => 'nullable|string',
+            'longitude' => 'nullable|string',
             'category' => 'nullable|in:residential,commercial,industrial,agricultural',
             'photo' => 'nullable|image|max:2048',
         ]);

@@ -252,7 +252,8 @@
                     <p><b>Pincode:</b> <span id="customer-pincode"></span></p>
                     <p><b>City:</b> <span id="customer-city"></span></p>
                     <p><b>State:</b> <span id="customer-state"></span></p>
-                    <p><b>Coordinates:</b> <span id="customer-coordinates"></span></p>
+                    <p><b>Longitude:</b> <span id="customer-longitude"></span></p>
+                    <p><b>Latitude:</b> <span id="customer-latitude"></span></p>
                     <p><b>Category:</b> <span id="customer-category"></span></p>
                 </div>
                 <div class="modal-footer">
@@ -297,9 +298,9 @@
                         $('#customer-pincode').text(data.pincode || 'Not Available');
                         $('#customer-city').text(data.city || 'Not Available');
                         $('#customer-state').text(data.state || 'Not Available');
-                        $('#customer-coordinates').text(data.coordinates || 'Not Available');
+                        $('#customer-latitude').text(data.latitude || 'Not Available');
+                        $('#customer-longitude').text(data.longitude || 'Not Available');
                         $('#customer-category').text(data.category || 'Not Available');
-                        // Show the modal
                         $('#customerDetailsModal').modal('show');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

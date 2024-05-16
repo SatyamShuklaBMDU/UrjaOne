@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('pincode')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
-            $table->double('coordinates',10,7)->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->enum('category', ['residential', 'commercial', 'industrial', 'agricultural'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

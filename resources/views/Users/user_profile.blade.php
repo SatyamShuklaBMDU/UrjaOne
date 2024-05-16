@@ -237,7 +237,8 @@
                     <p><b>Pincode:</b> <span id="customer-pincode"></span></p>
                     <p><b>City:</b> <span id="customer-city"></span></p>
                     <p><b>State:</b> <span id="customer-state"></span></p>
-                    <p><b>Coordinates:</b> <span id="customer-coordinates"></span></p>
+                    <p><b>Longitude:</b> <span id="customer-longitude"></span></p>
+                    <p><b>Latitude:</b> <span id="customer-latitude"></span></p>
                     <p><b>Category:</b> <span id="customer-category"></span></p>
                 </div>
                 <div class="modal-footer">
@@ -294,8 +295,10 @@
                                 'Not Available';
                             document.getElementById('customer-state').textContent = data
                                 .state || 'Not Available';
-                            document.getElementById('customer-coordinates').textContent = data
-                                .coordinates || 'Not Available';
+                            document.getElementById('customer-longitude').textContent = data
+                                .longitude || 'Not Available';
+                            document.getElementById('customer-latitude').textContent = data
+                                .latitude || 'Not Available';
                             document.getElementById('customer-category').textContent = data
                                 .category || 'Not Available';
                             // Show the modal
