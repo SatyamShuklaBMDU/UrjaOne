@@ -19,9 +19,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorComplaintController;
 use App\Http\Controllers\VendorConrtoller;
 use App\Http\Controllers\VendorFeedbackController;
+use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WalletController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +38,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
+    Hash::make('12345678');
     return view('auth.login');
 });
 
@@ -178,6 +181,9 @@ Route::middleware('auth')->group(function () {
     Route::get('get-payment-history',[SubscriptionController::class,'index'])->name('get-payment-history');
     Route::post('/update-subscription-status', [SubscriptionController::class, 'statuschange'])->name('update-subscription-status');
     Route::post('filter-subscription', [SubscriptionController::class, 'filterdata'])->name('filter-subscription');
+
+    // Ask to visit Route
+    Route::get('ask-to-vist',[VisitController::class,'index'])->name('ask-to-visit');
 });
 Route::get('clear', function () {
     Artisan::call('optimize');

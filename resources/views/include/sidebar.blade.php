@@ -163,6 +163,14 @@
                         </a>
                     </li>
                 @endif
+                @if (in_array('Payment', $permissions) || in_array('All', $permissions) || auth()->user()->role_id == $SuperRole->id)
+                    <!-- next start -->
+                    <li><a class="ai-icon" href="{{route('ask-to-visit')}}" aria-expanded="false">
+                            <i class="fa-solid fa-credit-card fa-lg" style="color: #969ba0;"></i>
+                            <span class="nav-text">Ask to visit</span>
+                        </a>
+                    </li>
+                @endif
                 <!-- next end -->
                 <!-- next start -->
                 @if (auth()->user()->role_id == $SuperRole->id)
