@@ -108,14 +108,22 @@ class VendorController extends Controller
     }
     public function uploadImages(Request $request)
     {
+        // dd($request->all());
         $user = Auth::id();
         $validator = Validator::make($request->all(), [
+            'images' => 'required|array',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'titles' => 'required|array',
             'titles.*' => 'required|string',
+            'numbers' => 'required|array|unique:vendor_related_images,number',
             'numbers.*' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
+            $response = ['status' => false];
+            foreach ($validator->errors()->toArray() as $field => $messages) {
+                $response[$field] = $messages[0];
+            }
+            return response()->json($response);
         }
         // dd($request->all());
         $images = $request->file('images');

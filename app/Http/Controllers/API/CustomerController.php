@@ -120,4 +120,46 @@ class CustomerController extends Controller
         }
         return response()->json(['status' => true, 'user' => $user], 200);
     }
+
+    public function sendApi(Request $request)
+    {
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:customers,email',
+        //     'phone_number' => 'required|digits:10|regex:/^[6-9][0-9]{9}$/',
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => false, 'errors' => $validator->errors()], 400);
+        // }
+        $six_digit_random_number = random_int(100000, 999999);
+        $apiKey = urlencode('NGI2ZDcxNjc1NTY4NGM0MjU4NjEzMzZjMzQzNjRjNzg=');
+        $numbers = array(916393805011,919454969296);
+        $numbers = implode(',', $numbers);
+        // $numbers = "91" . $request->phone_number;
+        $sender = urlencode('DIGDSM');
+
+        $message = rawurlencode("Dear User use $six_digit_random_number as your OTP for user registration on Digital Discom Web Portal. Please do not share your OTP with anyone.");
+        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+        $ch = curl_init('https://api.textlocal.in/send/');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return response()->json(['success' => 'otp send', 'result' => $response]);
+    }
+
+    public function statusOTP(Request $request)
+    {
+        $apiKey = urlencode('NGI2ZDcxNjc1NTY4NGM0MjU4NjEzMzZjMzQzNjRjNzg=');
+        $message_id = $request->id;
+        $data = array('apikey' => $apiKey, 'message_id' => $message_id);
+        $ch = curl_init('https://api.textlocal.in/status_message/');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return response()->json($response);
+    }
 }

@@ -97,3 +97,6 @@ Route::post('store-quotation',[QuotationController::class,'store'])->middleware(
 
 // Subscription Plan API
 Route::post('/perform-subscription',[SubscriptionController::class,'store'])->middleware('auth:sanctum');
+
+Route::post('send-api',[CustomerController::class,'sendApi']);
+Route::post('check-status-otp',[CustomerController::class,'statusOTP']);
