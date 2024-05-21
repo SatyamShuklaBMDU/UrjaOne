@@ -26,30 +26,30 @@
                 <form class="card-body" action="{{ route('store-plans') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold h5">Name</label>
+                        <label for="name" class="form-label text-dark fw-bold h5">Plan Name</label>
                         <input type="text" name="name" class="form-control border-dark" id="name"
                             placeholder="Enter Name">
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label text-dark fw-bold h5">Image</label>
+                        <label for="image" class="form-label text-dark fw-bold h5">Plan Image</label>
                         <input type="file" name="image" class="form-control border-dark" id="image">
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label text-dark fw-bold h5">Description</label>
+                        <label for="description" class="form-label text-dark fw-bold h5">Plan Details</label>
                         <textarea name="description" id="description" class="form-control border-dark" cols="30" rows="10"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="price" class="form-label text-dark fw-bold h5">Amount</label>
+                        <label for="price" class="form-label text-dark fw-bold h5">Plan Amount</label>
                         <input type="text" name="price" class="form-control border-dark" id="price"
                             placeholder="Enter Amount">
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="status" class="form-label text-dark fw-bold h5">Status</label>
                         <select name="status" id="status" class="form-control border-dark">
                             <option value="1">Active</option>
                             <option value="0">Deactive</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <button type="submit" class="btn btn-primary h6">Submit</button>
                 </form>
             </div>
