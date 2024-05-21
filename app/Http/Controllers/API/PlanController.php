@@ -9,12 +9,11 @@ class PlanController extends Controller
 {
     public function index()
     {
-        $plans = Plans::all();
-        foreach ($plans as $plan) {
-            $discountPercentage = $plan->discount;
-            $discountedPrice = $plan->price * (1 - $discountPercentage / 100);
-            $plan->price = $discountedPrice;
-        }
+        $plans = Plans::where('status',true)->get();
+        $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
+        $plans->each(function ($item) use ($baseUrl) {
+            $item->image = $baseUrl . $item->image;
+        });
         return response()->json(['status' => true, 'message' => 'fetch Succesfully', 'plans' => $plans]);
     }
 }

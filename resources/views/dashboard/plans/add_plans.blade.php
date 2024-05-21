@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
-                <form class="card-body" action="{{ route('store-plans') }}" method="post">
+                <form class="card-body" action="{{ route('store-plans') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label text-dark fw-bold h5">Name</label>
@@ -31,18 +31,12 @@
                             placeholder="Enter Name">
                     </div>
                     <div class="mb-3">
-                        <label for="type" class="form-label text-dark fw-bold h5">Type</label>
-                        <input type="text" name="type" class="form-control border-dark" id="type"
-                            placeholder="Enter Type">
+                        <label for="image" class="form-label text-dark fw-bold h5">Image</label>
+                        <input type="file" name="image" class="form-control border-dark" id="image">
                     </div>
                     <div class="mb-3">
-                        <label for="category" class="form-label text-dark fw-bold h5">Category</label>
-                        <select name="category" class="form-control border-dark" id="category">
-                            <option value="residential">Residential</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="industrial">Industrial</option>
-                            <option value="agricultural">Agricultural</option>
-                        </select>
+                        <label for="description" class="form-label text-dark fw-bold h5">Description</label>
+                        <textarea name="description" id="description" class="form-control border-dark" cols="30" rows="10"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label text-dark fw-bold h5">Amount</label>
@@ -50,21 +44,10 @@
                             placeholder="Enter Amount">
                     </div>
                     <div class="mb-3">
-                        <label for="discount" class="form-label text-dark fw-bold h5">Discount</label>
-                        <input type="text" name="discount" class="form-control border-dark" id="discount"
-                            placeholder="Enter Discount">
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label text-dark fw-bold h5">Description</label>
-                        <textarea name="description" id="description" class="form-control border-dark" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="valid_upto" class="form-label text-dark fw-bold h5">Valid Upto</label>
-                        <select name="duration" class="form-control border-dark" id="valid_upto">
-                            <option value="1 Months">1 Months</option>
-                            <option value="3 Months">3 Months</option>
-                            <option value="6 Months">6 Months</option>
-                            <option value="1 Year">1 Year</option>
+                        <label for="status" class="form-label text-dark fw-bold h5">Status</label>
+                        <select name="status" id="status" class="form-control border-dark">
+                            <option value="1">Active</option>
+                            <option value="0">Deactive</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary h6">Submit</button>

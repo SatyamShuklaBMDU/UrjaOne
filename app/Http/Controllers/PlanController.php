@@ -22,16 +22,24 @@ class PlanController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'category' => 'required|in:residential,commercial,industrial,agricultural',
+            'image' => 'required|image',
             'price' => 'required|string',
-            'duration' => 'required|string',
             'status' => 'nullable|boolean',
             'description' => 'required',
-            'discount' => 'nullable|integer|min:0|max:100',
         ]);
-
-        $plan = Plans::create($validatedData);
+        // dd($request->all());
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imageFileName = uniqid() . '.' . $request->image->extension();
+            $imagePath = $request->file('image')->move(public_path('PlanImage/'), $imageFileName);
+            $imageRelativePath = 'PlanImage/' . $imageFileName;
+        }
+        $plan = Plans::create([
+            'name' => $request->name,
+            'image' => $imageRelativePath,
+            'price' => $request->price,
+            'status' => $request->status,
+            'description' => $request->description,
+        ]);
         return redirect()->route('plans-page')->with('success', 'Plan created successfully!');
     }
     public function statuschange(Request $request)
@@ -49,14 +57,22 @@ class PlanController extends Controller
 
     public function update(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image',
+            'price' => 'required|string',
+            'description' => 'required',
+        ]);
         $plans = Plans::find($request->planId);
         $plans->name = $request->name;
-        $plans->type = $request->type;
-        $plans->category = $request->category;
         $plans->price = $request->price;
-        $plans->duration = $request->duration;
         $plans->description = $request->description;
-        $plans->discount = $request->discount;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imageFileName = uniqid() . '.' . $request->image->extension();
+            $imagePath = $request->file('image')->move(public_path('PlanImage/'), $imageFileName);
+            $imageRelativePath = 'PlanImage/' . $imageFileName;
+            $plans->image = $imageRelativePath;
+        }
         $plans->save();
         return redirect()->route('plans-page')->with('success', 'Plan updated successfully!');
     }

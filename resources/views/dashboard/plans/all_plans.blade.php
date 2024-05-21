@@ -149,13 +149,10 @@
                                 <tr>
                                     <th style="text-align: center;">Sr NO.</th>
                                     <th style="text-align: center;">Created Date, <br> Time</th>
-                                    <th style="text-align: center;">Updated Date, <br> Time</th>
                                     <th style="text-align: center;">Plan Name</th>
-                                    <th style="text-align: center;">Plan Type</th>
-                                    <th style="text-align: center;">Plan Category</th>
-                                    <th style="text-align: center;">Plan Amount</th>
-                                    <th style="text-align: center;">Plan Discount</th>
+                                    <th style="text-align: center;">Plan Image</th>
                                     <th style="text-align: center;">Plan Details</th>
+                                    <th style="text-align: center;">Plan Amount</th>
                                     <th style="text-align: center;">Valid Upto</th>
                                     <th style="text-align: center;">Status</th>
                                     <th>Action</th>
@@ -169,16 +166,10 @@
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
-                                        <td style="text-align: center;">
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('d F Y') }}<br>
-                                            {{ $plan->updated_at->timezone('Asia/Kolkata')->format('h:i A') }}
-                                        </td>
                                         <td><a href="javascript:void(0);"><strong>{{ $plan->name }}</strong></a></td>
-                                        <td style="text-align: center;">{{ $plan->type }}</td>
-                                        <td style="text-align: center;">{{ $plan->category }}</td>
-                                        <td style="text-align: center;">{{ $plan->price }}</td>
-                                        <td style="text-align: center;">{{ $plan->discount ?? '--' }}</td>
+                                        <td style="text-align: center;"><a href="{{asset($plan->image)}}" target="_blank" rel="noopener noreferrer"><img style="height: 100px; width: 100px;" src="{{asset($plan->image)}}" class="img-thumbnail" alt="..."></a></td>
                                         <td style="text-align: center;">{!! $plan->description !!}</td>
+                                        <td style="text-align: center;">{{ $plan->price }}</td>
                                         <td style="text-align: center;">{{ $plan->duration }}</td>
                                         <td style="text-align: center;">
                                             <input class="statusSwitch" style="transform: translateY(0px);"
@@ -189,10 +180,8 @@
                                                 <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
                                                     data-bs-toggle="modal" data-bs-target="#basicModal"
                                                     data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
-                                                    data-type="{{ $plan->type }}" data-category="{{ $plan->category }}"
-                                                    data-price="{{ $plan->price }}" data-duration="{{ $plan->duration }}"
-                                                    data-description="{{ $plan->description }}"
-                                                    data-discount="{{ $plan->discount }}" onclick="editBlog(this)">
+                                                    data-price="{{ $plan->price }}"
+                                                    data-description="{{ $plan->description }}" onclick="editBlog(this)">
                                                     <i class="fas fa-pencil-alt"></i></a>
                                                 <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
                                                     data-plan-id="{{ $plan->id }}"><i
@@ -237,18 +226,8 @@
                                 placeholder="Enter Name">
                         </div>
                         <div class="mb-3">
-                            <label for="type" class="form-label text-dark fw-bold h5">Type</label>
-                            <input type="text" name="type" class="form-control border-dark" id="type"
-                                placeholder="Enter Type">
-                        </div>
-                        <div class="mb-3">
-                            <label for="category" class="form-label text-dark fw-bold h5">Category</label>
-                            <select name="category" class="form-control border-dark" id="category">
-                                <option value="residential">Residential</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="industrial">Industrial</option>
-                                <option value="agricultural">Agricultural</option>
-                            </select>
+                            <label for="image" class="form-label text-dark fw-bold h5">image</label>
+                            <input type="file" name="image" class="form-control border-dark" id="image">
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label text-dark fw-bold h5">Amount</label>
@@ -256,23 +235,9 @@
                                 placeholder="Enter Amount">
                         </div>
                         <div class="mb-3">
-                            <label for="discount" class="form-label text-dark fw-bold h5">Discount</label>
-                            <input type="text" name="discount" class="form-control border-dark" id="discount"
-                                placeholder="Enter Discount">
-                        </div>
-                        <div class="mb-3">
                             <label for="description" class="form-label text-dark fw-bold h5">Description</label>
                             <textarea name="description" id="plandescriptionEditor" class="form-control border-dark" cols="30"
                                 rows="10"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valid_upto" class="form-label text-dark fw-bold h5">Valid Upto</label>
-                            <select name="duration" class="form-control border-dark" id="valid_upto">
-                                <option value="1 Months">1 Months</option>
-                                <option value="3 Months">3 Months</option>
-                                <option value="6 Months">6 Months</option>
-                                <option value="1 Year">1 Year</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -294,20 +259,12 @@
         function editBlog(element) {
             var planId = element.getAttribute('data-id');
             var planname = element.getAttribute('data-name');
-            var plantype = element.getAttribute('data-type');
             var planprice = element.getAttribute('data-price');
-            var plandiscount = element.getAttribute('data-discount');
-            var planCategory = element.getAttribute('data-category');
             var planDescription = element.getAttribute('data-description');
-            var planduration = element.getAttribute('data-duration');
             document.getElementById('name').value = planname;
-            document.getElementById('type').value = plantype;
             document.getElementById('price').value = planprice;
-            document.getElementById('discount').value = plandiscount;
-            document.getElementById('category').value = planCategory;
             document.getElementById('planId').value = planId;
             $('#plandescriptionEditor').summernote('code', planDescription);
-            document.getElementById('valid_upto').value = planduration;
         }
     </script>
     <script>
@@ -328,30 +285,6 @@
             $('#example3_length select').change(function() {
                 var length = $(this).val();
                 $('#example3').DataTable().page.len(length).draw();
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.edit-role').click(function() {
-                var role_id = $(this).data('id');
-                var url = '{{ route('roles.edit', ':id') }}';
-                url = url.replace(':id', role_id);
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(response) {
-                        $('#edit_role_id').val(response.id);
-                        $('#edit_role_name').val(response.role);
-                        $('input[name="permissions[]"]').prop('checked', false);
-                        var permissions = JSON.parse(response.permission);
-                        permissions.forEach(function(permission) {
-                            $('input[value="' + permission + '"]').prop('checked',
-                                true);
-                        });
-                        $('#editRoleModal').modal('show');
-                    }
-                });
             });
         });
     </script>

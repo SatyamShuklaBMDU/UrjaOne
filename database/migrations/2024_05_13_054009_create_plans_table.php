@@ -14,12 +14,10 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type');
-            $table->enum('category', ['residential', 'commercial', 'industrial', 'agricultural'])->nullable();
+            $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->string('price');
-            $table->string('duration');
-            $table->integer('discount')->nullable();
+            $table->string('duration')->default('3 Months');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
