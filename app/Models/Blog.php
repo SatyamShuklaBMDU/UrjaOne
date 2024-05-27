@@ -11,4 +11,9 @@ class Blog extends Model
     protected $fillable = [
         'title', 'category', 'image', 'description', 'status', 'views', 'likes'
     ];
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }

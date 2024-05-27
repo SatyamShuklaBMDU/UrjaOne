@@ -112,7 +112,7 @@ class VendorController extends Controller
         $user = Auth::id();
         $validator = Validator::make($request->all(), [
             'images' => 'required|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'images.*' => 'image|max:2048',
             'titles' => 'required|array',
             'titles.*' => 'required|string',
             'numbers' => 'required|array|unique:vendor_related_images,number',
@@ -125,7 +125,6 @@ class VendorController extends Controller
             }
             return response()->json($response);
         }
-        // dd($request->all());
         $images = $request->file('images');
         $titles = $request->titles;
         $numbers = $request->numbers;

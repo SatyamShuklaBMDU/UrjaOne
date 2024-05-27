@@ -12,4 +12,9 @@ class Customer extends Model implements AuthenticatableContract
 {
     use HasFactory, Authenticatable, HasApiTokens;
     protected $guarded=[];
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }

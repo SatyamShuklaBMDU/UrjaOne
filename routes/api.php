@@ -64,8 +64,8 @@ Route::get('get-blogs', [BlogController::class, 'index'])->middleware('auth:sanc
 // Route::get('get-blogs', [BlogController::class, 'index']);
 
 // Route for Blogs Like and Views
-Route::post('blogs/{id}/views', [BlogController::class, 'incrementViews']);
-Route::post('blogs/{id}/likes', [BlogController::class, 'incrementLikes']);
+Route::post('blogs/{id}/views', [BlogController::class, 'incrementViews'])->middleware('auth:sanctum');
+Route::post('blogs/{id}/likes', [BlogController::class, 'toggleLike'])->middleware('auth:sanctum');
 
 // Banner APi
 Route::get('get-banners', [BannerController::class,'index']);

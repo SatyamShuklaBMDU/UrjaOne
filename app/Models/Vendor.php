@@ -22,4 +22,9 @@ class Vendor extends Model implements AuthenticatableContract
         return $this->hasOne(Wallet::class);
     }
 
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
 }
