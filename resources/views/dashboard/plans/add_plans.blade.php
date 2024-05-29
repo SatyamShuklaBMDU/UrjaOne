@@ -12,7 +12,7 @@
     </div>
     <!-- row -->
     @if ($errors->any())
-        <div>
+        <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -29,6 +29,31 @@
                         <label for="name" class="form-label text-dark fw-bold h5">Plan Name</label>
                         <input type="text" name="name" class="form-control border-dark" id="name"
                             placeholder="Enter Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="kilowatt" class="form-label text-dark fw-bold h5">Plan Load
+                            <strong>(KW)</strong></label>
+                        <input type="number" name="load" class="form-control border-dark" id="kilowatt"
+                            placeholder="Enter Plan Load">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Area" class="form-label text-dark fw-bold h5">Plan Area</label>
+                        <div class="row mx-3">
+                            <div class="col-md-6 mt-1" style="border-right:1px solid black;"><input type="checkbox"
+                                    value="vendor_state" id="state" name="area">&emsp;<label for="state"
+                                    class="fw-bold">Vendor State</label></div>
+                            <div class="col-md-6 mt-1"><input type="checkbox" value="pan_india" id="pan"
+                                    name="area">&emsp;<label for="pan" class="fw-bold">Pan India</label></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label text-dark fw-bold h5">Plan Category</label>
+                        <select name="category[]" id="category" class="form-control border-dark" multiple>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="industrial">Industrial</option>
+                            <option value="agricultural">Agricultural</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label text-dark fw-bold h5">Plan Image</label>
@@ -58,13 +83,53 @@
 @endsection
 @section('script')
     <script>
+        $(document).ready(function() {
+            $('#category').select2();
+        });
+    </script>
+    <script>
         @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
     </script>
     <script>
         $(document).ready(function() {
-            $('#description').summernote();
+            CKEDITOR.replace('description', {
+                toolbar: [{
+                        name: 'basicstyles',
+                        items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript',
+                            '-', 'RemoveFormat'
+                        ]
+                    },
+                    {
+                        name: 'paragraph',
+                        items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+                            'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                            'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'
+                        ]
+                    },
+                    {
+                        name: 'links',
+                        items: ['Link', 'Unlink', 'Anchor']
+                    },
+                    {
+                        name: 'styles',
+                        items: ['Styles', 'Format', 'Font', 'FontSize']
+                    },
+                    {
+                        name: 'colors',
+                        items: ['TextColor', 'BGColor']
+                    },
+                    {
+                        name: 'tools',
+                        items: ['Maximize', 'ShowBlocks']
+                    },
+                    {
+                        name: 'document',
+                        items: ['Source']
+                    }
+                ]
+            });
         });
     </script>
 @endsection

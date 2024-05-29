@@ -24,6 +24,9 @@ class PlanController extends Controller
             'name' => 'required|string|max:255',
             'image' => 'required|image',
             'price' => 'required|string',
+            'load' => 'required|integer',
+            'area' => 'required|string',
+            'category' => 'required',
             'status' => 'nullable|boolean',
             'description' => 'required',
         ]);
@@ -37,8 +40,11 @@ class PlanController extends Controller
             'name' => $request->name,
             'image' => $imageRelativePath,
             'price' => $request->price,
-            'status' => $request->status,
+            'status' => $request->status??true,
             'description' => $request->description,
+            'load' => $request->load,
+            'category' => json_encode($request->category),
+            'area' => $request->area,
         ]);
         return redirect()->route('plans-page')->with('success', 'Plan created successfully!');
     }

@@ -22,7 +22,6 @@ class BlogController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:20',
-            'category' => 'required|string',
             'description' => 'required',
             'image' => 'nullable|image|mimes:jpg,png,gif|max:2048', // 2MB Max
             'status' => 'required|in:draft,published',
@@ -44,7 +43,6 @@ class BlogController extends Controller
         // dd($request->all());
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
         ]);

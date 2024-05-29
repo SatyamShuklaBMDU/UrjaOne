@@ -86,7 +86,7 @@
                                     <th> Sr NO.</th>
                                     <th>Created Date, Time</th>
                                     <th>Blog Title</th>
-                                    <th>Blog Category</th>
+                                    {{-- <th>Blog Category</th> --}}
                                     <th>Blog Image</th>
                                     <th>Blog Discription</th>
                                     <th>Status</th>
@@ -104,8 +104,8 @@
                                             {{ $blog->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
                                         <td>{{ $blog->title }}</td>
-                                        <td>{{ $blog->category }}</td>
-                                        <td><a href="{{ $blog->image }}" target="_blank" rel="noopener noreferrer"><img
+                                        {{-- <td>{{ $blog->category }}</td> --}}
+                                        <td><a href="{{ asset($blog->image) }}" target="_blank" rel="noopener noreferrer"><img
                                                     class="rounded-circle" width="35"
                                                     src="{{ asset($blog->image) }}"alt=""></a></td>
                                         <td>
@@ -124,7 +124,6 @@
                                                 <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
                                                     data-bs-toggle="modal" data-bs-target="#basicModal"
                                                     data-id="{{ $blog->id }}" data-title="{{ $blog->title }}"
-                                                    data-category="{{ $blog->category }}"
                                                     data-description="{{ $blog->description }}"
                                                     data-status="{{ $blog->status }}" onclick="editBlog(this)"> <i
                                                         class="fas fa-pencil-alt"></i></a>
@@ -171,11 +170,11 @@
                             <input type="text" name="title" class="form-control border-dark" id="blogTitle"
                                 placeholder="Enter Blog Title">
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="blogCategory" class="form-label text-dark fw-bold h5">Blog Category</label>
                             <input type="text" name="category" class="form-control border-dark" id="blogCategory"
                                 placeholder="Enter Blog Category">
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <label for="blogImage" class="form-label text-dark fw-bold h5">Blog Image</label>
                             <input type="file" name="image" class="form-control border-dark" id="blogImage">
@@ -212,11 +211,9 @@
         function editBlog(element) {
             var blogId = element.getAttribute('data-id');
             var blogTitle = element.getAttribute('data-title');
-            var blogCategory = element.getAttribute('data-category');
             var blogDescription = element.getAttribute('data-description');
             var blogStatus = element.getAttribute('data-status');
             document.getElementById('blogTitle').value = blogTitle;
-            document.getElementById('blogCategory').value = blogCategory;
             document.getElementById('blogId').value = blogId;
 
             $('#blogDescriptionEditor').summernote('code', blogDescription); // Populate Summernote editor

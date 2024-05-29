@@ -33,12 +33,6 @@
                             placeholder="Enter Blog Title">
                         <small class="text-primary h6">(max 20 characters)</small>
                     </div>
-                    <div class="mb-3">
-                        <label for="blogCategory" class="form-label text-dark fw-bold h5">Blog Category</label>
-                        <input type="text" name="category" class="form-control border-dark" id="blogCategory"
-                            placeholder="Enter Blog Category">
-                        <small class="text-primary h6">(e.g., Technology, Lifestyle)</small>
-                    </div>
                     <div class="">
                         <label for="blogImage" class="form-label text-dark fw-bold h5">Blog Image</label>
                         <input type="file" name="image" class="form-control border-dark" id="blogImage">
