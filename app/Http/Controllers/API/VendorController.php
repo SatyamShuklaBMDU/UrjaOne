@@ -108,15 +108,12 @@ class VendorController extends Controller
     }
     public function uploadImages(Request $request)
     {
-        // dd($request->all());
         $user = Auth::id();
         $validator = Validator::make($request->all(), [
             'images' => 'required|array',
             'images.*' => 'image|max:2048',
-            'titles' => 'required|array',
-            'titles.*' => 'required|string',
-            'numbers' => 'required|array|unique:vendor_related_images,number',
-            'numbers.*' => 'required|string',
+            'titles' => 'required|string',
+            'numbers' => 'required|string',
         ]);
         if ($validator->fails()) {
             $response = ['status' => false];
@@ -125,24 +122,37 @@ class VendorController extends Controller
             }
             return response()->json($response);
         }
-        $images = $request->file('images');
-        $titles = $request->titles;
-        $numbers = $request->numbers;
-        foreach ($images as $index => $image) {
-            $title = $titles[$index];
-            $number = $numbers[$index];
-            $photoFileName = uniqid() . '.' . $image->extension();
-            $photoPath = $image->move(public_path('vendor/kyc_images'), $photoFileName);
-            $photoRelativePath = 'vendor/kyc_images/' . $photoFileName;
-            VendorRelatedImage::create([
-                'vendor_id' => $user,
-                'title' => $title,
-                'image' => $photoRelativePath,
-                'number' => $number,
-            ]);
+
+        try {
+            $images = $request->file('images');
+            $titles = explode(',', $request->titles);
+            $numbers = explode(',', $request->numbers);
+            if (count($images) !== count($titles) || count($images) !== count($numbers)) {
+                throw new \Exception("The number of images, titles, and numbers must match.");
+            }
+            foreach ($images as $index => $image) {
+                $title = trim($titles[$index]);
+                $number = trim($numbers[$index]);
+                $existingImage = VendorRelatedImage::where('number', $number)->first();
+                if ($existingImage) {
+                    throw new \Exception("The number '{$number}' has already been taken.");
+                }
+                $photoFileName = uniqid() . '.' . $image->extension();
+                $photoPath = $image->move(public_path('vendor/kyc_images'), $photoFileName);
+                $photoRelativePath = 'vendor/kyc_images/' . $photoFileName;
+                VendorRelatedImage::create([
+                    'vendor_id' => $user,
+                    'title' => $title,
+                    'image' => $photoRelativePath,
+                    'number' => $number,
+                ]);
+            }
+            return response()->json(['status' => true, 'message' => 'Images uploaded successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
-        return response()->json(['status' => true, 'message' => 'Images uploaded successfully'], 200);
     }
+
     public function profile(Request $request)
     {
         $user = $request->user();

@@ -23,6 +23,7 @@ class EnquiryController extends Controller
             'panel_brand' => 'nullable|string',
             'inverter_brand' => 'nullable|string',
             'book_plant_time' => 'nullable|string',
+            'additional_details' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -32,11 +33,6 @@ class EnquiryController extends Controller
             }
             return response()->json($response);
         }
-        $structureTypeArray = explode(',', $request->structure_type);
-        $solarPanelArray = explode(',', $request->panel_type);
-        $panelbrandArray = explode(',', $request->panel_brand);
-        $inverterbrandArray = explode(',', $request->inverter_brand);
-        $bookplanttimeArray = explode(',', $request->book_plant_time);
         $uniqueLeadNo = $this->generateUniqueLeadNo($request->category);
         $enquiry = new Enquiry();
         $enquiry->customer_id = $loginid;
@@ -44,12 +40,13 @@ class EnquiryController extends Controller
         $enquiry->category = $request->category;
         $enquiry->plant_load = $request->plant_load;
         $enquiry->subsidy = $request->subsidy === "true" ? true : false;
-        $enquiry->finance = $request->finance === "true" ? true :  false;
-        $enquiry->structure_type = json_encode($structureTypeArray);
-        $enquiry->solar_panel_type = json_encode($solarPanelArray);
-        $enquiry->panel_brands = json_encode($panelbrandArray);
-        $enquiry->inverter_brands = json_encode($inverterbrandArray);
-        $enquiry->book_plant_time = json_encode($bookplanttimeArray);
+        $enquiry->finance = $request->finance === "true" ? true : false;
+        $enquiry->structure_type = $request->structure_type;
+        $enquiry->solar_panel_type = $request->panel_type;
+        $enquiry->panel_brands = $request->panel_brand;
+        $enquiry->inverter_brands = $request->inverter_brand;
+        $enquiry->book_plant_time = $request->book_plant_time;
+        $enquiry->additional_details = $request->additional_details;
         $enquiry->status = 'submit';
         $enquiry->save();
         return response()->json([
@@ -72,7 +69,8 @@ class EnquiryController extends Controller
             'panel_type' => 'nullable|string',
             'panel_brand' => 'nullable|string',
             'inverter_brand' => 'nullable|string',
-            'book_plant_time' => 'nullable|string',
+            'book_plan|t_time' => 'nullable|string',
+            'additional_details' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -94,12 +92,13 @@ class EnquiryController extends Controller
         $enquiry->category = $request->category;
         $enquiry->plant_load = $request->plant_load;
         $enquiry->subsidy = $request->subsidy === "true" ? true : false;
-        $enquiry->finance = $request->finance === "true" ? true :  false;
+        $enquiry->finance = $request->finance === "true" ? true : false;
         $enquiry->structure_type = json_encode($structureTypeArray);
         $enquiry->solar_panel_type = json_encode($solarPanelArray);
         $enquiry->panel_brands = json_encode($panelbrandArray);
         $enquiry->inverter_brands = json_encode($inverterbrandArray);
         $enquiry->book_plant_time = json_encode($bookplanttimeArray);
+        $enquiry->additional_details = $request->additional_details;
         $enquiry->status = 'draft';
         $enquiry->save();
         return response()->json([
@@ -205,6 +204,27 @@ class EnquiryController extends Controller
             'message' => 'Fetch Enquiry.',
             'data' => $enquiry,
         ]);
+    }
 
+    public function getEnquiryCategoryWise($category)
+    {
+        try {
+            $data = Enquiry::where('status', 'submit')->where('category', $category)->latest()->get();
+            $data->each(function ($item) {
+                $item->structure_type = $this->safeImplode(json_decode($item->structure_type));
+                $item->solar_panel_type = $this->safeImplode(json_decode($item->solar_panel_type));
+                $item->panel_brands = $this->safeImplode(json_decode($item->panel_brands));
+                $item->inverter_brands = $this->safeImplode(json_decode($item->inverter_brands));
+                $item->book_plant_time = $this->safeImplode(json_decode($item->book_plant_time));
+            });
+            return response()->json(['status' => true, 'data' => $data]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    private function safeImplode($data)
+    {
+        return is_array($data) ? implode(',', $data) : $data;
     }
 }
