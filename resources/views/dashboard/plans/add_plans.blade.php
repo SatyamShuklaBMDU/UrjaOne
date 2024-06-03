@@ -40,10 +40,10 @@
                         <label for="Area" class="form-label text-dark fw-bold h5">Plan Area</label>
                         <div class="row mx-3">
                             <div class="col-md-6 mt-1" style="border-right:1px solid black;"><input type="checkbox"
-                                    value="vendor_state" id="state" name="area">&emsp;<label for="state"
+                                    value="vendor_state" id="state" name="area[]">&emsp;<label for="state"
                                     class="fw-bold">Vendor State</label></div>
                             <div class="col-md-6 mt-1"><input type="checkbox" value="pan_india" id="pan"
-                                    name="area">&emsp;<label for="pan" class="fw-bold">Pan India</label></div>
+                                    name="area[]">&emsp;<label for="pan" class="fw-bold">Pan India</label></div>
                         </div>
                     </div>
                     <div class="mb-3">

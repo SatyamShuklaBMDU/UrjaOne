@@ -172,6 +172,7 @@
                     <p><b>Panel Brands:</b> <span id="enquiry-panel-brands"></span></p>
                     <p><b>Inverter Brands:</b> <span id="enquiry-brands"></span></p>
                     <p><b>Book Time:</b> <span id="enquiry-time"></span></p>
+                    <p><b>Additional Details:</b> <span id="additional-details"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -215,6 +216,7 @@
                     $('#enquiry-panel-brands').text(response.panel_brands);
                     $('#enquiry-brands').text(response.brands);
                     $('#enquiry-time').text(response.time);
+                    $('#additional-details').text(response.additional_details);
                     $('#enquiryDetailsModal').modal('show');
                 },
                 error: function(xhr, status, error) {

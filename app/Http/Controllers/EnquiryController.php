@@ -95,6 +95,7 @@ class EnquiryController extends Controller
         $panelBrands = json_decode($enquiry->panel_brands);
         $brands = json_decode($enquiry->inverter_brands);
         $time = json_decode($enquiry->book_plant_time);
+        $additional_details = $enquiry->additional_details;
         $data = [
             'subsidy' => $enquiry->subsidy,
             'finance' => $enquiry->finance,
@@ -103,6 +104,7 @@ class EnquiryController extends Controller
             'panel_brands' => $panelBrands,
             'brands' => $brands,
             'time' => $time,
+            'additional_details' => $additional_details,
         ];
 
         return Response::json($data);

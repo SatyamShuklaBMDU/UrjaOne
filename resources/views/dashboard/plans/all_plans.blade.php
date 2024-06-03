@@ -101,6 +101,7 @@
             margin-top: 10px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
@@ -167,7 +168,10 @@
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
                                         <td><a href="javascript:void(0);"><strong>{{ $plan->name }}</strong></a></td>
-                                        <td style="text-align: center;"><a href="{{asset($plan->image)}}" target="_blank" rel="noopener noreferrer"><img style="height: 100px; width: 100px;" src="{{asset($plan->image)}}" class="img-thumbnail" alt="..."></a></td>
+                                        <td style="text-align: center;"><a href="{{ asset($plan->image) }}" target="_blank"
+                                                rel="noopener noreferrer"><img style="height: 100px; width: 100px;"
+                                                    src="{{ asset($plan->image) }}" class="img-thumbnail"
+                                                    alt="..."></a></td>
                                         <td style="text-align: center;">{!! $plan->description !!}</td>
                                         <td style="text-align: center;">{{ $plan->price }}</td>
                                         <td style="text-align: center;">{{ $plan->duration }}</td>
@@ -181,7 +185,9 @@
                                                     data-bs-toggle="modal" data-bs-target="#basicModal"
                                                     data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
                                                     data-price="{{ $plan->price }}"
-                                                    data-description="{{ $plan->description }}" onclick="editBlog(this)">
+                                                    data-description="{{ $plan->description }}"
+                                                    data-category="{{ $plan->category }}" data-area="{{ $plan->area }}"
+                                                    data-load="{{ $plan->load }}" onclick="editBlog(this)">
                                                     <i class="fas fa-pencil-alt"></i></a>
                                                 <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
                                                     data-plan-id="{{ $plan->id }}"><i
@@ -226,6 +232,35 @@
                                 placeholder="Enter Name">
                         </div>
                         <div class="mb-3">
+                            <label for="kilowatt" class="form-label text-dark fw-bold h5">Plan Load
+                                <strong>(KW)</strong></label>
+                            <input type="number" name="load" class="form-control border-dark" id="kilowatt"
+                                placeholder="Enter Plan Load">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Area" class="form-label text-dark fw-bold h5">Plan Area</label>
+                            <div class="row mx-3">
+                                <div class="col-md-6 mt-1" style="border-right:1px solid black;">
+                                    <input type="checkbox" value="vendor_state" id="area_vendor_state"
+                                        name="area[]">&emsp;
+                                    <label for="area_vendor_state" class="fw-bold">Vendor State</label>
+                                </div>
+                                <div class="col-md-6 mt-1">
+                                    <input type="checkbox" value="pan_india" id="area_pan_india" name="area[]">&emsp;
+                                    <label for="area_pan_india" class="fw-bold">Pan India</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label text-dark fw-bold h5">Plan Category</label>
+                            <select name="category[]" id="category" class="form-control border-dark" multiple>
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="industrial">Industrial</option>
+                                <option value="agricultural">Agricultural</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="image" class="form-label text-dark fw-bold h5">image</label>
                             <input type="file" name="image" class="form-control border-dark" id="image">
                         </div>
@@ -250,22 +285,66 @@
     </div>
 @endsection
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script>
-        $('.editModal').on('shown.bs.modal', function() {
-            $('#plandescriptionEditor').summernote();
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = new Choices('#category', {
+                removeItemButton: true,
+                allowHTML: true
+            });
+            window.editBlog = function editBlog(button) {
+                var planId = button.getAttribute('data-id');
+                var planName = button.getAttribute('data-name');
+                var planPrice = button.getAttribute('data-price');
+                var planDescription = button.getAttribute('data-description') || ''; // Handle null
+                var planCategory = button.getAttribute('data-category') ? JSON.parse(button.getAttribute('data-category')) : [];
+                var planArea = button.getAttribute('data-area') ? JSON.parse(button.getAttribute('data-area')) : [];
+                var planLoad = button.getAttribute('data-load') || '';
+                var nameInput = document.getElementById('name');
+                var priceInput = document.getElementById('price');
+                var planIdInput = document.getElementById('planId');
+                var loadInput = document.getElementById('kilowatt');
+                var descriptionEditor = CKEDITOR.instances['plandescriptionEditor'];
+                if (planIdInput) planIdInput.value = planId;
+                if (nameInput) nameInput.value = planName;
+                if (priceInput) priceInput.value = planPrice;
+                if (loadInput) loadInput.value = planLoad;
+                if (descriptionEditor) {
+                    descriptionEditor.setData(planDescription);
+                } else {
+                    CKEDITOR.replace('plandescriptionEditor', {
+                        on: {
+                            instanceReady: function(evt) {
+                                evt.editor.setData(planDescription);
+                            }
+                        }
+                    });
+                }
+                categorySelect.removeActiveItems();
+                categorySelect.setChoiceByValue(planCategory);
+                var areaCheckboxes = document.querySelectorAll('[name="area[]"]');
+                if (areaCheckboxes) {
+                    areaCheckboxes.forEach(checkbox => checkbox.checked = false);
+                }
+                planArea.forEach(area => {
+                    let checkbox = document.getElementById('area_' + area);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+            CKEDITOR.replace('plandescriptionEditor');
+            document.querySelector('form').addEventListener('submit', function() {
+                for (var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            });
+            document.querySelectorAll('.editModal').forEach(button => {
+                button.addEventListener('click', function() {
+                    window.editBlog(button);
+                });
+            });
         });
-    </script>
-    <script>
-        function editBlog(element) {
-            var planId = element.getAttribute('data-id');
-            var planname = element.getAttribute('data-name');
-            var planprice = element.getAttribute('data-price');
-            var planDescription = element.getAttribute('data-description');
-            document.getElementById('name').value = planname;
-            document.getElementById('price').value = planprice;
-            document.getElementById('planId').value = planId;
-            $('#plandescriptionEditor').summernote('code', planDescription);
-        }
     </script>
     <script>
         $(document).ready(function() {

@@ -25,8 +25,8 @@ class PlanController extends Controller
             'image' => 'required|image',
             'price' => 'required|string',
             'load' => 'required|integer',
-            'area' => 'required|string',
-            'category' => 'required',
+            'area' => 'required|array',
+            'category' => 'required|array',
             'status' => 'nullable|boolean',
             'description' => 'required',
         ]);
@@ -44,7 +44,7 @@ class PlanController extends Controller
             'description' => $request->description,
             'load' => $request->load,
             'category' => json_encode($request->category),
-            'area' => $request->area,
+            'area' => json_encode($request->area),
         ]);
         return redirect()->route('plans-page')->with('success', 'Plan created successfully!');
     }
@@ -68,11 +68,18 @@ class PlanController extends Controller
             'image' => 'nullable|image',
             'price' => 'required|string',
             'description' => 'required',
+            'load' => 'required',
+            'area' => 'required',
+            'category' => 'required',
         ]);
+        // dd($request->all());
         $plans = Plans::find($request->planId);
         $plans->name = $request->name;
         $plans->price = $request->price;
         $plans->description = $request->description;
+        $plans->load = $request->load;
+        $plans->area = json_encode($request->area);
+        $plans->category = json_encode($request->category);
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imageFileName = uniqid() . '.' . $request->image->extension();
             $imagePath = $request->file('image')->move(public_path('PlanImage/'), $imageFileName);
