@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerFeedback;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomerFeedbackController extends Controller
 {
@@ -22,7 +23,7 @@ class CustomerFeedbackController extends Controller
         $feedback->reply_person_id = auth()->user()->id;
         $feedback->reply_datetime = now();
         $feedback->save();
-        return response()->json(['message' => 'Reply sent successfully'], 200);
+        return response()->json(['message' => 'Reply sent successfully'], Response::HTTP_CREATED);
     }
     public function filterdata(Request $request)
     {

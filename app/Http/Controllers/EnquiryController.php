@@ -27,7 +27,7 @@ class EnquiryController extends Controller
                 ->count();
             $totalQuotationSum = Enquiry::where('customer_id', $customerId)
                 ->sum('total_quotation');
-            $customerData = Enquiry::where('customer_id', $customerId)->first(); // Assuming you want to retrieve other user data as well
+            $customerData = Enquiry::where('customer_id', $customerId)->first(); 
             $customerData->final_enquiries_count = $finalEnquiriesCount;
             $customerData->draft_enquiries_count = $draftEnquiriesCount;
             $customerData->total_quotation_sum = $totalQuotationSum;
@@ -55,14 +55,12 @@ class EnquiryController extends Controller
             ->whereBetween('created_at', [$startDate, $endDate])
             ->distinct()
             ->pluck('customer_id');
-
         $enquiries = [];
         foreach ($uniqueCustomerIds as $customerId) {
             $finalEnquiriesCount = Enquiry::where('customer_id', $customerId)
                 ->where('status', 'submit')
                 ->whereBetween('created_at', [$startDate, $endDate])
                 ->count();
-
             $draftEnquiriesCount = Enquiry::where('customer_id', $customerId)
                 ->where('status', 'draft')
                 ->whereBetween('created_at', [$startDate, $endDate])
@@ -74,8 +72,7 @@ class EnquiryController extends Controller
 
             $customerData = Enquiry::where('customer_id', $customerId)
                 ->whereBetween('created_at', [$startDate, $endDate])
-                ->first(); // Assuming you want to retrieve other user data as well
-
+                ->first();
             if ($customerData) {
                 $customerData->final_enquiries_count = $finalEnquiriesCount;
                 $customerData->draft_enquiries_count = $draftEnquiriesCount;
