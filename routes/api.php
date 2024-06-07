@@ -44,7 +44,7 @@ Route::post('customer-feedback',[CustomerFeedbackController::class,'store'])->mi
 Route::get('fetch-customer-feedback',[CustomerFeedbackController::class,'fetch'])->middleware('auth:sanctum');
 Route::post('customer-complaint',[CustomerComplaintController::class,'store'])->middleware('auth:sanctum');
 Route::get('fetch-customer-complaint',[CustomerComplaintController::class,'fetch'])->middleware('auth:sanctum');
-Route::get('customer-profile',[CustomerController::class,'profile'])->middleware('auth:sanctum');
+Route::post('customer-profile',[CustomerController::class,'profile'])->middleware('auth:sanctum');
 
 // FAQ Api 
 Route::get('/faqs', [faqController::class,'index']);
@@ -52,7 +52,7 @@ Route::get('/faqs', [faqController::class,'index']);
 Route::post('vendor-signup',[VendorController::class,'register']);
 Route::post('vendor-login',[VendorController::class,'login']);
 Route::post('vendor-update',[VendorController::class,'update'])->middleware('auth:sanctum');
-Route::get('vendor-profile',[VendorController::class,'profile'])->middleware('auth:sanctum');
+Route::post('vendor-profile',[VendorController::class,'profile'])->middleware('auth:sanctum');
 Route::post('upload-kyc-images',[VendorController::class,'uploadImages'])->middleware('auth:sanctum');
 Route::post('vendor-feedback',[VendorFeedbackController::class,'store'])->middleware('auth:sanctum');
 Route::get('fetch-vendor-feedback',[VendorFeedbackController::class,'fetch'])->middleware('auth:sanctum');
@@ -81,7 +81,7 @@ Route::get('get-vendor-notifications', [NotificationController::class,'vendorfet
 // Enquiry API
 Route::post('store-enquiry',[EnquiryController::class,'store'])->middleware('auth:sanctum');
 Route::post('store-draft-enquiry',[EnquiryController::class,'storeDraft'])->middleware('auth:sanctum');
-Route::get('get-enquiry-all',[EnquiryController::class,'index'])->middleware('auth:sanctum');
+Route::post('get-enquiry-all',[EnquiryController::class,'index'])->middleware('auth:sanctum');
 Route::get('get-enquiry/{id}',[EnquiryController::class,'fetchdetails'])->middleware('auth:sanctum');
 Route::get('list-final-enquiry',[EnquiryController::class,'finalEnquiry'])->middleware('auth:sanctum');
 Route::get('get-final-enquiry/{id}',[EnquiryController::class,'finaldetails'])->middleware('auth:sanctum');

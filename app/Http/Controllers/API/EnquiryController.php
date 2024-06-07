@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Enquiry;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -118,7 +119,7 @@ class EnquiryController extends Controller
         return $number;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $loginid = Auth::id();
         $enquiry = Enquiry::where('customer_id', $loginid)->latest()->get();
@@ -134,7 +135,8 @@ class EnquiryController extends Controller
             $item->solar_panel_type = json_decode($item->solar_panel_type);
             $item->panel_brands = json_decode($item->panel_brands);
             $item->inverter_brands = json_decode($item->inverter_brands);
-            $item->book_plant_time = json_decode($item->book_plant_time);
+            $bookPlantTimeArray = json_decode($item->book_plant_time, true);
+            $item->book_plant_time = $bookPlantTimeArray? end($bookPlantTimeArray) : null;
         });
 
         return response()->json([
