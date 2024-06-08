@@ -25,6 +25,10 @@ class EnquiryController extends Controller
             'inverter_brand' => 'nullable|string',
             'book_plant_time' => 'nullable|string',
             'additional_details' => 'nullable|string',
+            'address' => 'required|string',
+            'pincode' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -48,6 +52,10 @@ class EnquiryController extends Controller
         $enquiry->inverter_brands = $request->inverter_brand;
         $enquiry->book_plant_time = $request->book_plant_time;
         $enquiry->additional_details = $request->additional_details;
+        $enquiry->address = $request->address;
+        $enquiry->pincode = $request->pincode;
+        $enquiry->city = $request->city;
+        $enquiry->state = $request->state;
         $enquiry->status = 'submit';
         $enquiry->save();
         return response()->json([
@@ -72,8 +80,11 @@ class EnquiryController extends Controller
             'inverter_brand' => 'nullable|string',
             'book_plan|t_time' => 'nullable|string',
             'additional_details' => 'nullable|string',
+            'address' => 'required|string',
+            'pincode' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
         ]);
-
         if ($validator->fails()) {
             $response = ['Status' => false];
             foreach ($validator->errors()->toArray() as $field => $messages) {
@@ -100,6 +111,10 @@ class EnquiryController extends Controller
         $enquiry->inverter_brands = json_encode($inverterbrandArray);
         $enquiry->book_plant_time = json_encode($bookplanttimeArray);
         $enquiry->additional_details = $request->additional_details;
+        $enquiry->address = $request->address;
+        $enquiry->pincode = $request->pincode;
+        $enquiry->city = $request->city;
+        $enquiry->state = $request->state;
         $enquiry->status = 'draft';
         $enquiry->save();
         return response()->json([
@@ -130,7 +145,7 @@ class EnquiryController extends Controller
             ]);
         }
         $enquiry->each(function ($item) {
-            // $item->customer_id = $item->Customer->name;
+                // $item->customer_id = $item->Customer->name;
             $item->structure_type = json_decode($item->structure_type);
             $item->solar_panel_type = json_decode($item->solar_panel_type);
             $item->panel_brands = json_decode($item->panel_brands);
