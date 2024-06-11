@@ -158,6 +158,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-plan-status', [PlanController::class, 'statuschange'])->name('update-plan-status');
     Route::post('update-plans',[PlanController::class,'update'])->name('update-plans');
     Route::delete('/plan/delete/{id}', [PlanController::class, 'delete'])->name('plan-delete');
+    Route::post('filter-plan', [PlanController::class, 'filterdata'])->name('filter-plan');
+
+    // Wallet Plan Route
+    Route::get('wallet-plans-page',[PlanController::class,'addWalletPlans'])->name('wallet-plans');
+    Route::get('all-wallet-plans-page',[PlanController::class,'allWalletPlans'])->name('all-wallet-plans');
+    Route::post('store-wallet-plan',[PlanController::class,'StoreWalletPlan'])->name('wallet-store');
+    Route::post('update-wallet-plans',[PlanController::class,'UpdateWalletPlan'])->name('wallet-update-plans');
+    Route::delete('wallet/plan/delete/{id}', [PlanController::class, 'Walletdelete'])->name('wallet-plan-delete');
+    Route::post('filter-wallet-plan', [PlanController::class, 'filterwalletdata'])->name('filter-wallet-plan');
 
     // Wallet Route
     Route::get('get-wallet',[WalletController::class,'index'])->name('get-wallet');

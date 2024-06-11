@@ -100,19 +100,23 @@
         #userTable_length {
             margin-top: 10px;
         }
+
+        .name_list {
+            border: 1px solid black;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 @endsection
 @section('content')
     <div class="mt-2 mb-sm-4 d-flex flex-wrap align-items-center text-head">
-        <h2 class="mb-2 me-auto">All Plans</h2>
+        <h2 class="mb-2 me-auto">All Wallet Plans</h2>
     </div>
     <div class="justify-content-between align-items-center mb-2">
         <div class="row">
             <div class="col-md-7">
                 <div class=" align-items-center">
                     <div id="datePickerContainer">
-                        <form action="{{ route('filter-plan') }}" method="post">
+                        <form action="{{ route('filter-wallet-plan') }}" method="post">
                             @csrf
                             <div>
                                 <input type="date" name="startDate" id="startDate"
@@ -126,7 +130,7 @@
                             </div>
                             <button class="btn btn-primary position-absolute btn-style-apply" type="submit"
                                 style="right:135px; bottom: 2px;">Apply</button>
-                            <a href="{{ route('plans-page') }}"
+                            <a href="{{ route('all-wallet-plans') }}"
                                 class="btn btn-primary position-absolute "style="right:46px; bottom: 2px;"><i
                                     class="fas fa-sync"></i></a>
                         </form>
@@ -134,7 +138,7 @@
                 </div>
             </div>
             <div class="col-md-1">
-                <a href="{{ route('add-plans') }}" class="btn btn-primary mb-2 btn-rounded"
+                <a href="{{ route('wallet-plans') }}" class="btn btn-primary mb-2 btn-rounded"
                     style="margin-left: 27rem;"><span class="text-white fw-bold">+</span></a>
             </div>
         </div>
@@ -152,9 +156,9 @@
                                     <th style="text-align: center;">Plan Name</th>
                                     <th style="text-align: center;">Plan Image</th>
                                     <th style="text-align: center;">Plan Details</th>
-                                    <th style="text-align: center;">Plan Amount</th>
-                                    <th style="text-align: center;">Valid Upto</th>
-                                    <th style="text-align: center;">Status</th>
+                                    {{-- <th style="text-align: center;">Plan Amount</th> --}}
+                                    {{-- <th style="text-align: center;">Valid Upto</th> --}}
+                                    {{-- <th style="text-align: center;">Status</th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -167,25 +171,25 @@
                                             {{ $plan->created_at->timezone('Asia/Kolkata')->format('h:i A') }}
                                         </td>
                                         <td><a href="javascript:void(0);"><strong>{{ $plan->name }}</strong></a></td>
-                                        <td style="text-align: center;"><a href="{{ asset($plan->image) }}" target="_blank"
-                                                rel="noopener noreferrer"><img style="height: 100px; width: 100px;"
-                                                    src="{{ asset($plan->image) }}" class="img-thumbnail"
+                                        <td style="text-align: center;"><a href="{{ asset($plan->plan_image) }}"
+                                                target="_blank" rel="noopener noreferrer"><img
+                                                    style="height: 100px; width: 100px;"
+                                                    src="{{ asset($plan->plan_image) }}" class="img-thumbnail"
                                                     alt="..."></a></td>
                                         <td style="text-align: center;">{!! $plan->description !!}</td>
-                                        <td style="text-align: center;">{{ $plan->price }}</td>
-                                        <td style="text-align: center;">{{ $plan->duration }}</td>
-                                        <td style="text-align: center;">
+                                        {{-- <td style="text-align: center;">{{ $plan->amount }}</td> --}}
+                                        {{-- <td style="text-align: center;">{{ $plan->duration }}</td> --}}
+                                        {{-- <td style="text-align: center;">
                                             <input class="statusSwitch" style="transform: translateY(0px);"
                                                 {{ $plan->status == '1' ? 'checked' : '' }} type="checkbox">
-                                        </td>
+                                        </td> --}}
                                         <td style="text-align: center;">
                                             <div class="d-flex">
                                                 <a class="btn btn-primary shadow btn-xs sharp me-1 editModal"
                                                     data-bs-toggle="modal" data-bs-target="#basicModal"
                                                     data-id="{{ $plan->id }}" data-name="{{ $plan->name }}"
-                                                    data-price="{{ $plan->price }}"
+                                                    data-price="{{ $plan->amount }}"
                                                     data-description="{{ $plan->description }}"
-                                                    data-category="{{ $plan->category }}" data-area="{{ $plan->area }}"
                                                     data-load="{{ $plan->load }}" onclick="editBlog(this)">
                                                     <i class="fas fa-pencil-alt"></i></a>
                                                 <button class="btn btn-danger shadow btn-xs sharp deleteBtn"
@@ -221,57 +225,35 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                     </button>
                 </div>
-                <form action="{{ route('update-plans') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('wallet-update-plans') }}" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
                         <input type="hidden" name="planId" id="planId" value="">
                         <div class="mb-3">
-                            <label for="name" class="form-label text-dark fw-bold h5">Name</label>
+                            <label for="name" class="form-label text-dark fw-bold h5">Plan Name</label>
                             <input type="text" name="name" class="form-control border-dark" id="name"
                                 placeholder="Enter Name">
                         </div>
                         <div class="mb-3">
-                            <label for="kilowatt" class="form-label text-dark fw-bold h5">Plan Load
-                                <strong>(KW)</strong></label>
-                            <input type="number" name="load" class="form-control border-dark" id="kilowatt"
-                                placeholder="Enter Plan Load">
+                            <label for="dynamic_field" class="form-label text-dark fw-bold h5">Load and Amount</label>
+                            <table class="table table-bordered table-hover" id="dynamic_field">
+                                <tr>
+                                    <td><input type="number" name="load[]" placeholder="Enter your Load"
+                                            class="form-control name_list border-dark" /></td>
+                                    <td><input type="number" name="amount[]" placeholder="Enter your Amount"
+                                            class="form-control name_email border-dark" /></td>
+                                    <td><button type="button" name="add" id="add" class="btn btn-primary">Add
+                                            More</button></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="mb-3">
-                            <label for="Area" class="form-label text-dark fw-bold h5">Plan Area</label>
-                            <div class="row mx-3">
-                                <div class="col-md-6 mt-1" style="border-right:1px solid black;">
-                                    <input type="checkbox" value="vendor_state" id="area_vendor_state"
-                                        name="area[]">&emsp;
-                                    <label for="area_vendor_state" class="fw-bold">Vendor State</label>
-                                </div>
-                                <div class="col-md-6 mt-1">
-                                    <input type="checkbox" value="pan_india" id="area_pan_india" name="area[]">&emsp;
-                                    <label for="area_pan_india" class="fw-bold">Pan India</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="category" class="form-label text-dark fw-bold h5">Plan Category</label>
-                            <select name="category[]" id="category" class="form-control border-dark" multiple>
-                                <option value="residential">Residential</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="industrial">Industrial</option>
-                                <option value="agricultural">Agricultural</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label text-dark fw-bold h5">image</label>
+                            <label for="image" class="form-label text-dark fw-bold h5">Plan Image</label>
                             <input type="file" name="image" class="form-control border-dark" id="image">
                         </div>
                         <div class="mb-3">
-                            <label for="price" class="form-label text-dark fw-bold h5">Amount</label>
-                            <input type="text" name="price" class="form-control border-dark" id="price"
-                                placeholder="Enter Amount">
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label text-dark fw-bold h5">Description</label>
-                            <textarea name="description" id="plandescriptionEditor" class="form-control border-dark" cols="30"
-                                rows="10"></textarea>
+                            <label for="description" class="form-label text-dark fw-bold h5">Plan Details</label>
+                            <textarea name="description" id="description" class="form-control border-dark" cols="30" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -284,34 +266,29 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const categorySelect = new Choices('#category', {
-                removeItemButton: true,
-                allowHTML: true
-            });
             window.editBlog = function editBlog(button) {
                 var planId = button.getAttribute('data-id');
                 var planName = button.getAttribute('data-name');
-                var planPrice = button.getAttribute('data-price');
-                var planDescription = button.getAttribute('data-description') || ''; // Handle null
-                var planCategory = button.getAttribute('data-category') ? JSON.parse(button.getAttribute('data-category')) : [];
-                var planArea = button.getAttribute('data-area') ? JSON.parse(button.getAttribute('data-area')) : [];
-                var planLoad = button.getAttribute('data-load') || '';
+                var planDescription = button.getAttribute('data-description') || '';
+                var planLoad = JSON.parse(button.getAttribute('data-load'));
+                var planAmount = JSON.parse(button.getAttribute('data-price'));
                 var nameInput = document.getElementById('name');
-                var priceInput = document.getElementById('price');
                 var planIdInput = document.getElementById('planId');
-                var loadInput = document.getElementById('kilowatt');
-                var descriptionEditor = CKEDITOR.instances['plandescriptionEditor'];
+                var descriptionEditor = CKEDITOR.instances['description'];
+                var dynamicField = document.getElementById('dynamic_field');
                 if (planIdInput) planIdInput.value = planId;
                 if (nameInput) nameInput.value = planName;
-                if (priceInput) priceInput.value = planPrice;
-                if (loadInput) loadInput.value = planLoad;
                 if (descriptionEditor) {
                     descriptionEditor.setData(planDescription);
                 } else {
-                    CKEDITOR.replace('plandescriptionEditor', {
+                    CKEDITOR.replace('description', {
                         on: {
                             instanceReady: function(evt) {
                                 evt.editor.setData(planDescription);
@@ -319,30 +296,36 @@
                         }
                     });
                 }
-                categorySelect.removeActiveItems();
-                categorySelect.setChoiceByValue(planCategory);
-                var areaCheckboxes = document.querySelectorAll('[name="area[]"]');
-                if (areaCheckboxes) {
-                    areaCheckboxes.forEach(checkbox => checkbox.checked = false);
+                dynamicField.innerHTML = '';
+                for (let i = 0; i < planLoad.length; i++) {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><label for="load${i}" class="form-label text-dark">Load</label><input type="number" name="load[]" placeholder="Enter your Load" class="form-control name_list" id="load${i}" value="${planLoad[i]}"/></td>
+                        <td><label for="amount${i}" class="form-label text-dark">Amount</label><input type="number" name="amount[]" placeholder="Enter your Amount" class="form-control name_list" id="amount${i}" value="${planAmount[i]}"/></td>
+                        <td><button type="button" name="remove" class="btn btn-danger btn_remove">X</button></td>
+                    `;
+                    dynamicField.appendChild(row);
                 }
-                planArea.forEach(area => {
-                    let checkbox = document.getElementById('area_' + area);
-                    if (checkbox) {
-                        checkbox.checked = true;
-                    }
+                document.querySelectorAll('.btn_remove').forEach(button => {
+                    button.addEventListener('click', function() {
+                        this.closest('tr').remove();
+                    });
                 });
             }
-            CKEDITOR.replace('plandescriptionEditor');
-            document.querySelector('form').addEventListener('submit', function() {
-                for (var instance in CKEDITOR.instances) {
-                    CKEDITOR.instances[instance].updateElement();
-                }
-            });
-            document.querySelectorAll('.editModal').forEach(button => {
-                button.addEventListener('click', function() {
-                    window.editBlog(button);
+
+            document.getElementById('add').addEventListener('click', function() {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="number" name="load[]" placeholder="Enter your Load" class="form-control name_list border-dark"/></td>
+                    <td><input type="number" name="amount[]" placeholder="Enter your Amount" class="form-control name_list border-dark"/></td>
+                    <td><button type="button" name="remove" class="btn btn-danger btn_remove">X</button></td>
+                `;
+                document.getElementById('dynamic_field').appendChild(row);
+                row.querySelector('.btn_remove').addEventListener('click', function() {
+                    this.closest('tr').remove();
                 });
             });
+            CKEDITOR.replace('description');
         });
     </script>
     <script>
@@ -366,105 +349,63 @@
             });
         });
     </script>
-    <script>
-        @if (session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.deleteBtn').forEach(function(deleteButton) {
-                deleteButton.addEventListener('click', function() {
-                    var roleId = this.dataset.planId;
-                    swal.fire({
-                        title: 'Are you sure?',
-                        text: 'You will not be able to recover this Plan!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            deleteFAQ(roleId);
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.deleteBtn').forEach(function(deleteButton) {
+                    deleteButton.addEventListener('click', function() {
+                        var roleId = this.dataset.planId;
+                        swal.fire({
+                            title: 'Are you sure?',
+                            text: 'You will not be able to recover this Wallet Plan!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Yes, delete it!',
+                            cancelButtonText: 'Cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                deleteFAQ(roleId);
+                            }
+                        });
+                    });
+                });
+            });
+    
+            function deleteFAQ(roleId) {
+                var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                var url = "{{ route('wallet-plan-delete', ':roleId') }}".replace(':roleId', roleId);
+                fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': token
                         }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete Wallet Plan');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        swal.fire({
+                            title: 'Deleted!',
+                            text: 'The Wallet Plan has been deleted.',
+                            icon: 'success',
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to delete Wallet Plan.',
+                            icon: 'error'
+                        });
                     });
-                });
-            });
-        });
-
-        function deleteFAQ(roleId) {
-            var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            var url = "{{ route('plan-delete', ':roleId') }}".replace(':roleId', roleId);
-            fetch(url, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-Token': token
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to delete Plan');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    swal.fire({
-                        title: 'Deleted!',
-                        text: 'The Plan has been deleted.',
-                        icon: 'success',
-                        timer: 2000
-                    }).then(() => {
-                        location.reload();
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    swal.fire({
-                        title: 'Error!',
-                        text: 'Failed to delete Plan.',
-                        icon: 'error'
-                    });
-                });
-        }
-    </script>
-    <script>
-        $('.statusSwitch').on('change', function() {
-            var isChecked = $(this).prop('checked');
-            var status = isChecked ? '1' : '0';
-            var currentRow = $(this).closest('tr');
-            var planId = currentRow.data('plan-id');
-            // AJAX request to update status
-            $.ajax({
-                url: '{{ route('update-plan-status') }}',
-                method: 'POST',
-                data: {
-                    status: status,
-                    plan: planId,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log('Status updated successfully.');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Status updated successfully!',
-                    });
-
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error updating status:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'An error occurred while updating the status!',
-                    });
-                }
-            });
-        });
-    </script>
+            }
+        </script>
 @endsection

@@ -136,6 +136,7 @@
                         <ul aria-expanded="false">
                             <li><a href="{{ route('plans-page') }}">All Plans</a></li>
                             <li><a href="{{ route('add-plans') }}">Add Plans</a></li>
+                            <li><a href="{{ route('all-wallet-plans') }}">Wallet Plans</a></li>
                         </ul>
                     </li>
                     <!-- next end -->

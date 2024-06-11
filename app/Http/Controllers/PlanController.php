@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plans;
+use App\Models\WalletPlan;
 use Illuminate\Http\Request;
 
 class PlanController extends Controller
@@ -16,6 +17,17 @@ class PlanController extends Controller
     public function addplans()
     {
         return view('dashboard.plans.add_plans');
+    }
+
+    public function addWalletPlans()
+    {
+        return view('dashboard.plans.add_wallet_plans');
+    }
+
+    public function allWalletPlans()
+    {
+        $plans = WalletPlan::all();
+        return view('dashboard.plans.all_wallet_plans',compact('plans'));
     }
 
     public function store(Request $request)
@@ -97,4 +109,83 @@ class PlanController extends Controller
         return response()->json(['success' => true]);
     }
 
-}
+    public function Walletdelete($id)
+    {
+        $role = WalletPlan::findOrFail($id);
+        $role->delete();
+        return response()->json(['success' => true]);
+    }
+    
+    public function StoreWalletPlan(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'load' => 'required|array',
+            'amount' => 'required|array',
+            'description' => 'required|string',
+            'image' => 'nullable|image',
+        ]);
+        $walletPlan = new WalletPlan();
+        $walletPlan->name = $request->name;
+        $walletPlan->load = json_encode($request->load);
+        $walletPlan->amount = json_encode($request->amount);
+        $walletPlan->description = $request->description;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imageFileName = uniqid() . '.' . $request->image->extension();
+            $imagePath = $request->file('image')->move(public_path('PlanImage/'), $imageFileName);
+            $imageRelativePath = 'PlanImage/' . $imageFileName;
+            $walletPlan->plan_image = $imageRelativePath;
+        }
+        $walletPlan->save();
+        return redirect()->route('wallet-plans')->with('success', 'Plan added successfully!');
+    }
+    public function UpdateWalletPlan(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'load' => 'required|array',
+            'amount' => 'required|array',
+            'description' => 'required|string',
+            'image' => 'nullable|image',
+        ]);
+        $walletPlan = WalletPlan::find($request->planId);
+        $walletPlan->name = $request->name;
+        $walletPlan->load = json_encode($request->load);
+        $walletPlan->amount = json_encode($request->amount);
+        $walletPlan->description = $request->description;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imageFileName = uniqid() . '.' . $request->image->extension();
+            $imagePath = $request->file('image')->move(public_path('PlanImage/'), $imageFileName);
+            $imageRelativePath = 'PlanImage/' . $imageFileName;
+            $walletPlan->plan_image = $imageRelativePath;
+        }
+        $walletPlan->save();
+        return back()->with('success', 'Plan updated successfully!');
+    }
+
+    public function filterdata(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $plans = Plans::whereBetween('created_at', [$startDate, $endDate])->get();
+        return view('dashboard.plans.all_plans', ['plans' => $plans, 'start' => $startDate, 'end' => $endDate]);
+    }
+
+    public function filterwalletdata(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $plans = WalletPlan::whereBetween('created_at', [$startDate, $endDate])->get();
+        // dd($plans);
+        return view('dashboard.plans.all_wallet_plans', ['plans' => $plans, 'start' => $startDate, 'end' => $endDate]);
+    }
+
+}   
