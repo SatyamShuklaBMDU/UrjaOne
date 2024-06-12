@@ -86,6 +86,7 @@ Route::get('get-enquiry/{id}',[EnquiryController::class,'fetchdetails'])->middle
 Route::get('list-final-enquiry',[EnquiryController::class,'finalEnquiry'])->middleware('auth:sanctum');
 Route::get('get-final-enquiry/{id}',[EnquiryController::class,'finaldetails'])->middleware('auth:sanctum');
 Route::get('get-enquiry-category-wise/{category}',[EnquiryController::class,'getEnquiryCategoryWise']);
+
 // Wallet API
 Route::post('credit-wallet',[WalletControlller::class,'credit'])->middleware('auth:sanctum');
 Route::post('debit-wallet',[WalletControlller::class,'debit'])->middleware('auth:sanctum');

@@ -12,18 +12,18 @@ class PlanController extends Controller
     {
         $baseUrl = 'https://bmdublog.com/UrjaOne/public/';
         $normalplans = Plans::where('status',true)->get()->toArray();
-        foreach($normalplans as $plan){
+        $normalplans = array_map(function($plan) use($baseUrl){
             $plan['image'] = $baseUrl.$plan['image'];
-            $plan['description'] = strip_tags($plan['description']);
-        }
-        dd($normalplans);
+            return $plan;
+        },$normalplans);
         $walletplans = WalletPlan::all()->toArray();
+        $walletplans = array_map(function($plan) use($baseUrl){
+            $plan['plan_image'] = $baseUrl.$plan['plan_image'];
+            $plan['load'] = implode(',',json_decode($plan['load']));
+            $plan['amount'] = implode(',',json_decode($plan['amount']));
+            return $plan;
+        },$walletplans);
         $plans = array_merge($normalplans,$walletplans);
-        $plans->each(function ($item) use ($baseUrl) {
-            $item->description = strip_tags($item->description);
-            $item->image = $baseUrl . $item->image;
-        });
-        dd($plans);
         return response()->json(['status' => true, 'message' => 'fetch Succesfully', 'plans' => $plans]);
     }
 }
