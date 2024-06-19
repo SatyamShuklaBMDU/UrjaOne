@@ -7,6 +7,7 @@ use App\Models\Enquiry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class EnquiryController extends Controller
 {
@@ -36,7 +37,7 @@ class EnquiryController extends Controller
             foreach ($validator->errors()->toArray() as $field => $messages) {
                 $response[$field] = $messages[0];
             }
-            return response()->json($response);
+            return response()->json($response, Response::HTTP_NOT_FOUND);
         }
         $uniqueLeadNo = $this->generateUniqueLeadNo($request->category);
         $enquiry = new Enquiry();
@@ -130,7 +131,6 @@ class EnquiryController extends Controller
         do {
             $number = $prefix . str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
         } while (Enquiry::where('lead_no', $number)->exists());
-
         return $number;
     }
 
@@ -145,15 +145,13 @@ class EnquiryController extends Controller
             ]);
         }
         $enquiry->each(function ($item) {
-                // $item->customer_id = $item->Customer->name;
             $item->structure_type = json_decode($item->structure_type);
             $item->solar_panel_type = json_decode($item->solar_panel_type);
             $item->panel_brands = json_decode($item->panel_brands);
             $item->inverter_brands = json_decode($item->inverter_brands);
             $bookPlantTimeArray = json_decode($item->book_plant_time, true);
-            $item->book_plant_time = $bookPlantTimeArray? end($bookPlantTimeArray) : null;
+            $item->book_plant_time = $bookPlantTimeArray ? end($bookPlantTimeArray) : null;
         });
-
         return response()->json([
             'status' => true,
             'message' => 'Fetch all Enquiry.',
@@ -172,14 +170,12 @@ class EnquiryController extends Controller
             ]);
         }
         $enquiry->each(function ($item) {
-            // $item->customer_id = $item->Customer->name;
             $item->structure_type = json_decode($item->structure_type);
             $item->solar_panel_type = json_decode($item->solar_panel_type);
             $item->panel_brands = json_decode($item->panel_brands);
             $item->inverter_brands = json_decode($item->inverter_brands);
             $item->book_plant_time = json_decode($item->book_plant_time);
         });
-
         return response()->json([
             'status' => true,
             'message' => 'Fetch all Enquiry.',
@@ -192,7 +188,6 @@ class EnquiryController extends Controller
     {
         $loginid = Auth::id();
         $enquiry = Enquiry::where('customer_id', $loginid)->where('id', $id)->first();
-        // $enquiry->customer_id = $enquiry->Customer->name;
         $enquiry->structure_type = json_decode($enquiry->structure_type);
         $enquiry->solar_panel_type = json_decode($enquiry->solar_panel_type);
         $enquiry->panel_brands = json_decode($enquiry->panel_brands);
@@ -204,12 +199,10 @@ class EnquiryController extends Controller
             'message' => 'Fetch Enquiry.',
             'data' => $enquiry,
         ]);
-
     }
     public function finaldetails($id)
     {
         $enquiry = Enquiry::where('lead_no', $id)->first();
-        // $enquiry->customer_id = $enquiry->Customer->name;
         $enquiry->structure_type = json_decode($enquiry->structure_type);
         $enquiry->solar_panel_type = json_decode($enquiry->solar_panel_type);
         $enquiry->panel_brands = json_decode($enquiry->panel_brands);
@@ -239,7 +232,6 @@ class EnquiryController extends Controller
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
         }
     }
-
     private function safeImplode($data)
     {
         return is_array($data) ? implode(',', $data) : $data;

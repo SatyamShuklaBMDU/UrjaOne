@@ -184,7 +184,6 @@ class PlanController extends Controller
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $plans = WalletPlan::whereBetween('created_at', [$startDate, $endDate])->get();
-        // dd($plans);
         return view('dashboard.plans.all_wallet_plans', ['plans' => $plans, 'start' => $startDate, 'end' => $endDate]);
     }
 
