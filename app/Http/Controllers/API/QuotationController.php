@@ -17,10 +17,10 @@ class QuotationController extends Controller
         $login = Auth::id();
         $validator = Validator::make($request->all(), [
             'lead_no' => 'required|string|max:255',
-            'price_per_kw' => 'nullable|string|max:255',
-            'panel_warranty' => 'nullable|string|max:255',
-            'inverter_warranty' => 'nullable|string|max:255',
-            'technical_support' => 'nullable|string|max:255',
+            'price_per_kw' => 'required|string|max:255',
+            'panel_warranty' => 'required|string|max:255',
+            'inverter_warranty' => 'required|string|max:255',
+            'technical_support' => 'required|string|max:255',
             'ac_cable_brand' => 'nullable|string|max:255',
             'dc_cable_brand' => 'nullable|string|max:255',
             'mms_structure' => 'nullable|string|max:255',
@@ -64,7 +64,8 @@ class QuotationController extends Controller
             return response()->json(['message' => 'Quotation created successfully', 'quotation' => $quotation], 201);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Failed to create quotation due to an error.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
+            // return response()->json(['error' => 'Failed to create quotation due to an error.'], 500);
         }
     }
 
