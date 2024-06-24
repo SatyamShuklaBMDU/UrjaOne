@@ -97,6 +97,7 @@ class CustomerController extends Controller
         $user = Customer::where('email', $request->email_or_mobile)
             ->orWhere('phone_number', $request->email_or_mobile)
             ->first();
+        dd($user);
         if ($user->status !== 'active') {
             return response()->json(['status' => false, 'message' => 'Account is not active'], 403);
         }

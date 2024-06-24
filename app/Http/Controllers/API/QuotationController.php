@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuotationController extends Controller
 {
@@ -56,8 +57,8 @@ class QuotationController extends Controller
                 'subsidy_support' => $request->subsidy_support,
                 'metering_support' => $request->metering_support,
             ]);
-            $totalQuotations = (int)$enquiry_id->total_quotation + 1; // Convert to int and increment
-            $enquiry_id->total_quotation = (string)$totalQuotations; // Convert back to string    
+            $totalQuotations = (int) $enquiry_id->total_quotation + 1; // Convert to int and increment
+            $enquiry_id->total_quotation = (string) $totalQuotations; // Convert back to string
             $enquiry_id->save();
             $quotation->save();
             DB::commit();
@@ -77,5 +78,16 @@ class QuotationController extends Controller
 
         return $number;
     }
-
+    public function getData(Request $request)
+    {
+        $loginid = Auth::id();
+        $quotations = Quotations::where('vendor_id', $loginid)->latest()->get();
+        if ($quotations->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No data found',
+            ]);
+        }
+        return response()->json(['data' => $quotations], Response::HTTP_OK);
+    }
 }
