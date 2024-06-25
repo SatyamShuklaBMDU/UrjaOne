@@ -97,6 +97,7 @@ Route::get('get-plans',[PlanController::class,'index']);
 // Quotation API
 Route::post('store-quotation',[QuotationController::class,'store'])->middleware('auth:sanctum');
 Route::post('get-quotations',[QuotationController::class,'getData'])->middleware('auth:sanctum');
+Route::post('get-specific-quotations/{leadId}',[QuotationController::class,'getSpecificQuotations'])->middleware('auth:sanctum');
 
 // Subscription Plan API
 Route::post('/perform-subscription',[SubscriptionController::class,'store'])->middleware('auth:sanctum');

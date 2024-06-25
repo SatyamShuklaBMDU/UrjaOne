@@ -90,4 +90,16 @@ class QuotationController extends Controller
         }
         return response()->json(['data' => $quotations], Response::HTTP_OK);
     }
+
+    public function getSpecificQuotations(Request $request, $leadId)
+    {
+        $quotations = Quotations::where('lead_no', $leadId)->latest()->get();
+        if ($quotations->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No data found',
+            ]);
+        }
+        return response()->json(['data' => $quotations], Response::HTTP_OK);
+    }
 }
